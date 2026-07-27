@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+/*
+ * Design System — Artisan Heritage (Pizzaria SaaS Premium)
+ * Palette: cream, charcoal, San Marzano red, gold accent
+ * Type: Playfair Display (display) + Inter (UI)
+ */
+
+@theme inline {
+  /* Radius scale */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  /* Semantic color mappings */
+  --color-background:        var(--background);
+  --color-foreground:        var(--foreground);
+  --color-card:              var(--card);
+  --color-card-foreground:   var(--card-foreground);
+  --color-primary:           var(--primary);
+  --color-primary-foreground:var(--primary-foreground);
+  --color-secondary:         var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:             var(--muted);
+  --color-muted-foreground:  var(--muted-foreground);
+  --color-accent:            var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive:       var(--destructive);
+  --color-border:            var(--border);
+  --color-ring:              var(--ring);
+
+  /* Brand palette */
+  --color-brand:             var(--brand);
+  --color-brand-foreground:  var(--brand-foreground);
+  --color-cream:             var(--cream);
+  --color-charcoal:          var(--charcoal);
+  --color-gold:              var(--gold);
+  --color-stone-100:         var(--stone-100);
+  --color-stone-200:         var(--stone-200);
+  --color-stone-500:         var(--stone-500);
+
+  /* Fonts */
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans:  "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.75rem;
+
+  /* Brand palette */
+  --cream:      #fdfbfa;
+  --charcoal:   #1c1917;
+  --brand:      #941100;
+  --brand-foreground: #fdfbfa;
+  --gold:       #b8860b;
+  --stone-100:  #f5f3ef;
+  --stone-200:  #e7e2da;
+  --stone-500:  #78716c;
+
+  /* Semantic tokens */
+  --background:         #faf7f2;
+  --foreground:         #1c1917;
+  --card:               #ffffff;
+  --card-foreground:    #1c1917;
+  --primary:            #941100;
+  --primary-foreground: #fdfbfa;
+  --secondary:          #f5f3ef;
+  --secondary-foreground: #1c1917;
+  --muted:              #f5f3ef;
+  --muted-foreground:   #78716c;
+  --accent:             #b8860b;
+  --accent-foreground:  #fdfbfa;
+  --destructive:        #dc2626;
+  --border:             #e7e2da;
+  --ring:               #941100;
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html, body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+}
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar { display: none; }
+  scrollbar-width: none;
+}
