@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Painel Admin — Pizzaria Cheia</title>
 <meta name="description" content="Painel de gestão da sua pizzaria. Gerencie produtos, combos, aparência e template do cardápio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script type="module" src="/src/admin/admin.js"></script>
 </head>
 <body>
-<div id="authGate" style="min-height:100vh;display:flex;align-items:center;justify-content:center;color:#78716c;font-family:sans-serif;">Carregando painel…</div>
+<div id="authGate" style="min-height:100vh;display:flex;align-items:center;justify-content:center;color:#94A3B8;font-family:'Inter',sans-serif;font-size:.9rem;letter-spacing:.02em;">Carregando painel…</div>
 <div id="vAdmin" style="display:none">
 <div class="aw">
 <aside class="sb">
@@ -31,8 +33,12 @@
     <button class="sb-btn" onclick="showTab('config',this)"><span class="ico">⚙️</span>Configurações</button>
   </nav>
   <a class="sb-prev" id="liveMenuLink" href="#" target="_blank" rel="noopener" style="text-decoration:none">👁 Ver Cardápio ao Vivo</a>
-  <div style="padding:0 1rem 1rem;font-size:.65rem;color:var(--muted);word-break:break-all;" id="liveMenuUrl"></div>
-  <button class="sb-btn" id="logoutBtn" style="border-top:1px solid var(--border)"><span class="ico">🚪</span>Sair</button>
+  <div id="liveMenuUrl"></div>
+  <div class="sb-theme-toggle" id="themeToggleBtn" title="Alternar tema">
+    <span class="sb-theme-label"><span>🌓</span> Tema</span>
+    <div class="theme-pill"></div>
+  </div>
+  <button class="sb-btn" id="logoutBtn" style="border-top:1px solid var(--border);margin-top:4px;"><span class="ico">🚪</span>Sair</button>
 </aside>
 
 <div class="ac">

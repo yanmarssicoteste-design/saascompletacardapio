@@ -623,6 +623,23 @@ function debounce(fn, ms) {
   let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
 }
 
+// ═══ THEME TOGGLE ═══
+(function initTheme() {
+  const root = document.documentElement;
+  const saved = localStorage.getItem('admin-theme') || 'light';
+  root.setAttribute('data-theme', saved);
+
+  const btn = document.getElementById('themeToggleBtn');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('admin-theme', next);
+  });
+})();
+
 function downloadPoster() {
   const canvas = $('pgCanvas');
   try {
