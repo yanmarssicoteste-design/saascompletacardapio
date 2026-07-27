@@ -25,8 +25,9 @@ if (!slug) {
 }
 
 // ── Subscription ──
-let templateModule = null;
-let unsubscribe    = null;
+let templateModule   = null;
+let currentTemplateId = null;   // rastreamos o ID aqui (módulos ES são imutáveis)
+let unsubscribe      = null;
 
 async function startSubscription(slug) {
   unsubscribe = subscribeStoreBySlug(slug, async (doc) => {
@@ -46,7 +47,7 @@ async function startSubscription(slug) {
     const template = doc.template || 'classic';
 
     // Load template module if changed
-    if (!templateModule || templateModule.__templateId !== template) {
+    if (!templateModule || currentTemplateId !== template) {
       await loadTemplate(template, doc);
     } else {
       // Template already loaded — update live data
@@ -69,8 +70,8 @@ async function loadTemplate(templateId, doc) {
     } else {
       mod = await import('./templates/classic.js');
     }
-    mod.__templateId = templateId;
-    templateModule = mod;
+    currentTemplateId = templateId;   // salva na variável local, não no módulo
+    templateModule    = mod;
     await mod.init($vMenu, doc);
     $loading.style.display = 'none';
     $vMenu.style.display   = 'block';
