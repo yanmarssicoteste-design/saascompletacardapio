@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ══════════════════════════════════════════════
+    //  /stores/{uid}  — documento da pizzaria
+    // ══════════════════════════════════════════════
+    match /stores/{uid} {
+      // Cardápio é PÚBLICO — qualquer pessoa pode ler
+      allow read: if true;
+
+      // Só o dono autenticado pode escrever
+      allow write: if request.auth != null
+                   && request.auth.uid == uid;
+    }
+
+    // ══════════════════════════════════════════════
+    //  /slugs/{slug}  — mapa URL amigável → uid
+    // ══════════════════════════════════════════════
+    match /slugs/{slug} {
+      // Leitura pública — storefront.js precisa resolver o slug
+      allow read: if true;
+
+      // Só o próprio usuário pode criar seu slug
+      allow create: if request.auth != null
+                    && request.resource.data.uid == request.auth.uid;
+
+      // Slugs são imutáveis após criação
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // Tudo mais: bloqueado
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

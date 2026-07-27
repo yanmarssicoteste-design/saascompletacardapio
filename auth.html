@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar — Pizzaria Cheia</title>
+<meta name="description" content="Acesse o painel de gestão da sua pizzaria ou crie uma conta grátis.">
+<script type="module" src="/src/auth/auth.js"></script>
+</head>
+<body>
+
+<div class="auth-wrap">
+  <!-- Branding side (desktop) -->
+  <div class="auth-brand" aria-hidden="true">
+    <div class="auth-brand-content">
+      <div class="auth-brand-logo">🍕</div>
+      <h2 class="auth-brand-title">Pizzaria <em>Cheia</em></h2>
+      <p class="auth-brand-sub">Cardápio digital para pizzarias que levam o sabor a sério.</p>
+      <div class="auth-brand-perks">
+        <div class="auth-perk">✓ Pedidos via WhatsApp</div>
+        <div class="auth-perk">✓ 3 templates premium</div>
+        <div class="auth-perk">✓ Painel de gestão completo</div>
+        <div class="auth-perk">✓ Sem taxa de app</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form side -->
+  <div class="auth-form-side">
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <a href="./index.html" class="auth-back-logo">
+          <span>🍕</span>
+          <span class="auth-back-name">Pizzaria <em>Cheia</em></span>
+        </a>
+      </div>
+
+      <div class="auth-tabs">
+        <button id="tabLogin" class="auth-tab active" type="button">Entrar</button>
+        <button id="tabSignup" class="auth-tab" type="button">Criar conta grátis</button>
+      </div>
+
+      <div id="authError" class="auth-error" style="display:none"></div>
+
+      <!-- Login Form -->
+      <form id="formLogin" class="auth-form">
+        <div class="fg">
+          <label class="lbl" for="loginEmail">E-mail</label>
+          <input class="inp" id="loginEmail" type="email" required autocomplete="email" placeholder="seu@email.com">
+        </div>
+        <div class="fg">
+          <label class="lbl" for="loginPassword">Senha</label>
+          <input class="inp" id="loginPassword" type="password" required autocomplete="current-password" placeholder="••••••••">
+        </div>
+        <button class="auth-submit auth-btn-primary" type="submit">Entrar no painel →</button>
+      </form>
+
+      <!-- Signup Form -->
+      <form id="formSignup" class="auth-form" style="display:none">
+        <div id="authError2" class="auth-error" style="display:none"></div>
+        <div class="fg">
+          <label class="lbl" for="signupStoreName">Nome da pizzaria</label>
+          <input class="inp" id="signupStoreName" type="text" placeholder="Ex: La Bella Pizza" required>
+        </div>
+        <div class="fg">
+          <label class="lbl" for="signupPhone">WhatsApp (com DDD)</label>
+          <input class="inp" id="signupPhone" type="text" placeholder="(13) 99999-9999">
+        </div>
+        <div class="fg">
+          <label class="lbl" for="signupEmail">E-mail</label>
+          <input class="inp" id="signupEmail" type="email" required autocomplete="email" placeholder="seu@email.com">
+        </div>
+        <div class="fg">
+          <label class="lbl" for="signupPassword">Senha</label>
+          <input class="inp" id="signupPassword" type="password" required minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+        </div>
+        <button class="auth-submit auth-btn-primary" type="submit">Criar minha pizzaria grátis →</button>
+        <p class="auth-legal">Ao criar uma conta, você concorda com nossos termos de uso.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

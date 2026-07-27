@@ -1,0 +1,57 @@
+/*
+ * ═══════════════════════════════════════════════════════════
+ * DESIGN TOKENS — Pizzaria SaaS v5
+ * Sistema unificado de variáveis CSS.
+ * ═══════════════════════════════════════════════════════════
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* ── Brand (substituído dinamicamente via JS para cada loja) ── */
+  --red: #c0392b;
+  --red2: #e74c3c;
+  --redglow: rgba(192, 57, 43, 0.3);
+  --green: #27ae60;
+
+  /* ── Paleta Base ── */
+  --cream: #fdfbfa;
+  --charcoal: #1c1917;
+  --gold: #b8860b;
+  --stone-50: #fafaf9;
+  --stone-100: #f5f3ef;
+  --stone-200: #e7e2da;
+  --stone-400: #a8a29e;
+  --stone-500: #78716c;
+  --stone-600: #57534e;
+  --whatsapp: #25d366;
+
+  /* ── Dark / Forno Palette ── */
+  --night: #0f0a08;
+  --night-soft: #1a1210;
+  --night-elev: #241a17;
+  --ember: #ff5a1f;
+  --ash: #a89890;
+  --basil: #7fa650;
+
+  /* ── Tipografia ── */
+  --font-serif: 'Playfair Display', ui-serif, Georgia, serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Radius ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+
+  /* ── Sombras ── */
+  --shadow-sm: 0 1px 3px rgba(28, 25, 23, 0.08);
+  --shadow-md: 0 4px 16px rgba(28, 25, 23, 0.12);
+  --shadow-lg: 0 16px 48px rgba(28, 25, 23, 0.18);
+  --shadow-xl: 0 32px 80px rgba(28, 25, 23, 0.24);
+
+  /* ── Transições ── */
+  --transition: 0.2s ease;
+  --transition-slow: 0.4s ease;
+}
