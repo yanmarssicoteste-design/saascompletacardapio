@@ -1,11 +1,4 @@
-# Cloudflare Pages — Redirect Rules
-# MPA com 4 entradas: index, auth, admin, loja
-#
-# Regra SPA fallback: qualquer rota desconhecida → 404 customizado
-# (Cloudflare Pages já serve os .html diretamente, sem extensão)
-/admin  /admin.html  200
-/auth   /auth.html   200
-/loja   /loja.html   200
-
-# Garantia: requisições para caminhos sem arquivo → index
+# Cloudflare Pages — _redirects
+# Não redirecionar as páginas HTML (CF Pages já resolve .html → rota limpa)
+# Apenas fallback de 404 aponta para a home.
 /*  /index.html  404
