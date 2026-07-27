@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Firebase</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: monospace; background: #0f172a; color: #e2e8f0; padding: 2rem; min-height: 100vh; }
+  h1 { font-size: 1rem; color: #94a3b8; margin-bottom: 1.5rem; font-family: sans-serif; font-weight: 600; }
+  .card { background: #1e293b; border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; border-left: 4px solid #475569; }
+  .card.ok   { border-color: #22c55e; }
+  .card.fail { border-color: #ef4444; }
+  .card.info { border-color: #3b82f6; }
+  .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: #64748b; margin-bottom: .5rem; }
+  .value { font-size: 0.85rem; word-break: break-all; color: #f1f5f9; line-height: 1.8; }
+</style>
+</head>
+<body>
+<h1>🔍 Diagnóstico Firebase — Pizzaria SaaS v5</h1>
+
+<div class="card info" id="card-env">
+  <div class="label">1. Variáveis de Ambiente Injetadas pelo Vite</div>
+  <div class="value" id="val-env">Lendo…</div>
+</div>
+<div class="card" id="card-init">
+  <div class="label">2. Inicialização do Firebase App</div>
+  <div class="value" id="val-init">Aguardando…</div>
+</div>
+<div class="card" id="card-slug">
+  <div class="label">3. Leitura do Slug no Firestore</div>
+  <div class="value" id="val-slug">Aguardando…</div>
+</div>
+<div class="card" id="card-store">
+  <div class="label">4. Leitura do Documento da Loja</div>
+  <div class="value" id="val-store">Aguardando…</div>
+</div>
+<div class="card" id="card-fields">
+  <div class="label">5. Campos encontrados no documento</div>
+  <div class="value" id="val-fields">Aguardando…</div>
+</div>
+
+<script>
+  // As variáveis VITE_ são substituídas literalmente pelo Vite no build.
+  // Este arquivo está em /public, então PRECISAMOS passar os valores via
+  // meta tag gerada pelo HTML plugin. Usamos window.__env como fallback.
+  window.__DIAG_ENV = {
+    apiKey:            "%%VITE_FIREBASE_API_KEY%%",
+    authDomain:        "%%VITE_FIREBASE_AUTH_DOMAIN%%",
+    projectId:         "%%VITE_FIREBASE_PROJECT_ID%%",
+    storageBucket:     "%%VITE_FIREBASE_STORAGE_BUCKET%%",
+    messagingSenderId: "%%VITE_FIREBASE_MESSAGING_SENDER_ID%%",
+    appId:             "%%VITE_FIREBASE_APP_ID%%",
+  };
+</script>
+
+<script type="module">
+import { initializeApp }             from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+
+const $ = (id) => document.getElementById(id);
+
+async function run() {
+  // ── 1. Verificar config ──
+  // Em /public, import.meta.env não é processado pelo Vite.
+  // Vamos tentar lê-las do objeto injetado acima e fallback para
+  // variáveis que o HTML do Cloudflare puder substituir.
+  const cfg = window.__DIAG_ENV || {};
+
+  const keys = ['apiKey','authDomain','projectId','storageBucket','messagingSenderId','appId'];
+  const missing = keys.filter(k => !cfg[k] || cfg[k].startsWith('%%'));
+
+  if (missing.length > 0) {
+    $('card-env').className = 'card fail';
+    $('val-env').innerHTML  =
+      `⚠️ Arquivo em /public — import.meta.env NÃO funciona aqui.<br><br>`
+    + `Isso significa que as variáveis de ambiente do Vite <b>não foram substituídas</b>.<br>`
+    + `<b>Este é o diagnóstico principal do problema!</b><br><br>`
+    + `Para confirmar: as variáveis VITE_ só são injetadas em arquivos dentro do bundle (src/).`
+    + ` Arquivos em /public são copiados como estão.`;
+    $('card-init').className  = 'card fail';
+    $('val-init').textContent = '❌ Sem credenciais — impossível inicializar.';
+    $('val-slug').textContent  = '⏸ Abortado.';
+    $('val-store').textContent = '⏸ Abortado.';
+    $('val-fields').textContent= '⏸ Abortado.';
+    return;
+  }
+
+  $('card-env').className = 'card ok';
+  $('val-env').innerHTML  = keys.map(k => `✓ <b>${k}</b>: ${String(cfg[k]).slice(0,40)}`).join('<br>');
+
+  // ── 2. Inicializar Firebase ──
+  let db;
+  try {
+    const app = initializeApp(cfg, 'diag-' + Date.now());
+    db = getFirestore(app);
+    $('card-init').className  = 'card ok';
+    $('val-init').textContent = '✅ Firebase inicializado. Project: ' + cfg.projectId;
+  } catch(e) {
+    $('card-init').className  = 'card fail';
+    $('val-init').textContent = '❌ ' + e.message;
+    return;
+  }
+
+  // ── 3. Ler slug ──
+  const slug = new URLSearchParams(location.search).get('loja') || 'yanmarssico-teste-2';
+
+  try {
+    const slugSnap = await getDoc(doc(db, 'slugs', slug));
+    if (!slugSnap.exists()) {
+      $('card-slug').className  = 'card fail';
+      $('val-slug').textContent = `❌ Slug "${slug}" não encontrado em /slugs.`;
+      return;
+    }
+    const uid = slugSnap.data().uid;
+    $('card-slug').className  = 'card ok';
+    $('val-slug').textContent = `✅ Slug "${slug}" encontrado → UID: ${uid}`;
+
+    // ── 4. Ler loja ──
+    try {
+      const storeSnap = await getDoc(doc(db, 'stores', uid));
+      if (!storeSnap.exists()) {
+        $('card-store').className  = 'card fail';
+        $('val-store').textContent = `❌ /stores/${uid} não existe.`;
+        return;
+      }
+      const data = storeSnap.data();
+      $('card-store').className  = 'card ok';
+      $('val-store').textContent = `✅ Loja: "${data.name}"  |  template: ${data.template}`;
+
+      $('card-fields').className = 'card ok';
+      $('val-fields').innerHTML  = Object.keys(data).map(k => {
+        const v = data[k];
+        const preview = Array.isArray(v)
+          ? `[Array(${v.length})]`
+          : typeof v === 'object' && v !== null
+            ? JSON.stringify(v).slice(0,60)+'…'
+            : String(v).slice(0,80);
+        return `✓ <b>${k}</b>: ${preview}`;
+      }).join('<br>');
+
+    } catch(e) {
+      $('card-store').className  = 'card fail';
+      $('val-store').textContent = '❌ Erro ao ler loja: ' + e.message + ' | code: ' + (e.code || '-');
+      $('card-fields').className  = 'card fail';
+      $('val-fields').textContent = 'Abortado.';
+    }
+
+  } catch(e) {
+    $('card-slug').className  = 'card fail';
+    $('val-slug').textContent = '❌ Erro ao ler slug: ' + e.message + ' | code: ' + (e.code || '-');
+  }
+}
+
+run();
+</script>
+</body>
+</html>
