@@ -777,7 +777,8 @@ function ReviewsView({ store, onSave }: { store: StoreData; onSave: (p: Partial<
 // ─────────────────────────────────────────────
 function AparenciaView({ store, onSave }: { store: StoreData; onSave: (p: Partial<StoreData>) => void }) {
   const [local, setLocal] = useState({ name: store.name ?? '', tagline: store.tagline ?? '', phone: store.phone ?? '', address: store.address ?? '', hours: store.hours ?? '' });
-  const [selectedColor, setSelectedColor] = useState(store.accentColor ?? '#941100');
+  const [selectedColor, setSelectedColor]       = useState(store.accentColor ?? '#941100');
+  const [selectedTemplate, setSelectedTemplate] = useState(store.template   ?? 'classic');
 
   const palettes = [
     { name: 'San Marzano', color: '#941100' },
@@ -787,8 +788,15 @@ function AparenciaView({ store, onSave }: { store: StoreData; onSave: (p: Partia
     { name: 'Oro',         color: '#b8860b' },
   ];
 
+  // Exatamente os 3 templates originais enviados pelo usuário
+  const templates = [
+    { id: 'classic',   name: '🍕 Clássico',   desc: 'Tema escuro dramático com hero animado, countdown de urgência e prova social em tempo real.' },
+    { id: 'editorial', name: '📰 Editorial',   desc: 'Layout claro e clean focado em conversão. Hero persuasivo, barra de frete grátis e busca integrada.' },
+    { id: 'dark',      name: '🔥 Dark Forno',  desc: 'Estética noturna premium com efeito grain, gradiente ember e glassmorphism. Para pizzarias que querem se destacar.' },
+  ];
+
   const handleSave = () => {
-    onSave({ ...local, accentColor: selectedColor });
+    onSave({ ...local, accentColor: selectedColor, template: selectedTemplate });
   };
 
   return (
@@ -833,6 +841,51 @@ function AparenciaView({ store, onSave }: { store: StoreData; onSave: (p: Partia
                   </div>
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* ── Template Picker (igual ao original) ── */}
+          <div>
+            <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500">Template do Cardápio</p>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {templates.map(t => {
+                const active = selectedTemplate === t.id;
+                // Cores de preview iguais ao original: classic=escuro, editorial=claro, dark=preto
+                const previewBg = t.id === 'editorial' ? 'bg-stone-100' : t.id === 'dark' ? 'bg-[#0d0d0d]' : 'bg-[#1a0a00]';
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => setSelectedTemplate(t.id)}
+                    className={`group flex flex-col overflow-hidden rounded-2xl border text-left transition ${
+                      active ? 'border-charcoal shadow-md ring-1 ring-charcoal' : 'border-stone-200 bg-white hover:border-charcoal/50'
+                    }`}
+                  >
+                    {/* Preview visual */}
+                    <div className={`relative flex h-24 w-full items-center justify-center ${previewBg}`}>
+                      <span className="text-4xl">{t.name.split(' ')[0]}</span>
+                      {active && (
+                        <span className="absolute right-2 top-2 rounded-full bg-charcoal px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white">
+                          Em uso
+                        </span>
+                      )}
+                    </div>
+                    {/* Info */}
+                    <div className="flex flex-col gap-2 p-4">
+                      <p className="font-serif text-base font-bold">{t.name}</p>
+                      <p className="text-[11px] leading-relaxed text-stone-500">{t.desc}</p>
+                      <span
+                        className={`mt-1 w-full rounded-lg py-2 text-center text-xs font-semibold transition ${
+                          active
+                            ? 'bg-stone-100 text-stone-400 cursor-default'
+                            : 'bg-charcoal text-white group-hover:bg-brand'
+                        }`}
+                      >
+                        {active ? '✓ Ativo' : 'Usar este template'}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
