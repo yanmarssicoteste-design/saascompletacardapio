@@ -1,7 +1,8 @@
 /**
- * storefront.js — Pizzaria SaaS v5
+ * storefront.js — Pizzaria SaaS v5 — build: 2026-07-27-v2
  * Orquestrador: lê o slug da URL, busca dados no Firestore,
  * e delega a renderização para o template escolhido pelo lojista.
+ * FIX: currentTemplateId — ES modules são imutáveis, não use mod.prop = x
  */
 
 import '../styles/variables.css';
