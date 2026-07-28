@@ -38,7 +38,7 @@ function loadDoc(doc) {
 // ═══════════════════════════════════════════════
 function buildHTML() {
   return `
-  <div class="dk-topbar">🔥 Pedidos abertos por mais <span id="dk-countdown">--:--:--</span> 🔥</div>
+  <div class="dk-topbar" id="dk-topbar">🔥 PEDIDOS ABERTOS ATÉ <span id="dk-countdown">23h00</span> • ENTREGA RÁPIDA 🔥</div>
 
   <section class="dk-hero">
     <div class="dk-hero-bg"></div>
@@ -408,16 +408,8 @@ function startSocial() {
 
 function startCountdown() {
   const closeTime = store.closeTime || '23:00';
-  function tick() {
-    const now = new Date(); const [h, m] = closeTime.split(':').map(Number);
-    const close = new Date(); close.setHours(h, m, 0, 0);
-    const diff = close - now; if (diff <= 0) return;
-    const hh = String(Math.floor(diff/3600000)).padStart(2,'0');
-    const mm = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-    const ss = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-    const el = $('dk-countdown'); if (el) el.textContent = `${hh}:${mm}:${ss}`;
-  }
-  tick(); setInterval(tick, 1000);
+  const formattedClose = closeTime.replace(':', 'h');
+  const el = $('dk-countdown'); if (el) el.textContent = formattedClose;
 }
 
 function initScroll() {

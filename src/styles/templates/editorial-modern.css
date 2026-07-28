@@ -19,7 +19,8 @@
 body { background: #f7f4ef; }
 
 /* ── Topbar de urgência ── */
-.ed-topbar { background: var(--ed-red); color: #fff; padding: 8px 1rem; text-align: center; font-size: .72rem; font-weight: 700; letter-spacing: .08em; }
+.ed-topbar { background: var(--ed-red); color: #fff; padding: 8px 1rem; text-align: center; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+#ed-countdown { font-family: var(--font-sans); font-weight: 800; color: #ffe082; letter-spacing: .05em; }
 
 /* ── Hero ── */
 .ed-hero { background: var(--ed-bg); border-bottom: 1px solid var(--ed-border); padding: 3.5rem 1.5rem; text-align: center; }

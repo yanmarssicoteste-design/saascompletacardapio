@@ -48,7 +48,7 @@ function loadDoc(doc) {
 // ═══════════════════════════════════════════════
 function buildHTML() {
   return `
-  <div class="mu" id="muBar">🔥 Pedidos abertos por mais <span id="mcd">--:--:--</span> 🔥</div>
+  <div class="mu" id="muBar">🔥 PEDIDOS ABERTOS ATÉ <span id="mcd">23h00</span> • FAÇA SEU PEDIDO ONLINE 🔥</div>
   <section class="mhero">
     <div class="mhero-bg"></div>
     <div class="porbit" id="porbit">🍕</div>
@@ -563,20 +563,20 @@ window.checkout = function checkout() {
 function startCountdown() {
   const urgencyEnabled = store.features?.urgency ?? true;
   const bar = $('muBar');
-  if (!urgencyEnabled) { bar.style.display = 'none'; return; }
+  if (!urgencyEnabled) { if (bar) bar.style.display = 'none'; return; }
   const closeTime = store.closeTime || '23:00';
+  const formattedClose = closeTime.replace(':', 'h');
+  const cdEl = $('mcd');
+  if (cdEl) cdEl.textContent = formattedClose;
+
   function tick() {
     const now    = new Date();
     const [h, m] = closeTime.split(':').map(Number);
     const close  = new Date(); close.setHours(h, m, 0, 0);
     const diff   = close - now;
-    if (diff <= 0) { bar.style.display = 'none'; return; }
-    const hh = String(Math.floor(diff / 3600000)).padStart(2, '0');
-    const mm = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-    const ss = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-    $('mcd').textContent = `${hh}:${mm}:${ss}`;
+    if (diff <= 0) { if (bar) bar.style.display = 'none'; return; }
   }
-  tick(); setInterval(tick, 1000);
+  tick(); setInterval(tick, 60000);
 }
 
 // ═══════════════════════════════════════════════

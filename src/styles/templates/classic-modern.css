@@ -12,9 +12,9 @@
   --green:#27ae60;--greenf:rgba(39,174,96,.15); }
 body { background: #07050A; }
 
-.mu{background:linear-gradient(90deg,#5a0000,var(--red),#5a0000);background-size:200%;animation:bgs 4s linear infinite;padding:9px 1rem;text-align:center;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:white;}
+.mu{background:linear-gradient(90deg,#5a0000,var(--red),#5a0000);background-size:200%;animation:bgs 4s linear infinite;padding:9px 1rem;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:white;}
 @keyframes bgs{0%{background-position:0%}100%{background-position:200%}}
-#mcd{font-family:var(--font-serif);font-size:.88rem;color:var(--gold);}
+#mcd{font-family:var(--font-sans);font-weight:800;color:#ffe082;letter-spacing:.05em;}
 .mhero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;overflow:hidden;}
 .mhero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 110%,rgba(192,57,43,.26) 0%,transparent 60%),radial-gradient(ellipse 50% 35% at 20% 50%,rgba(212,160,67,.07) 0%,transparent 50%),var(--black);}
 .porbit{position:absolute;font-size:clamp(8rem,22vw,18rem);opacity:.055;animation:orbit 50s linear infinite;pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);}

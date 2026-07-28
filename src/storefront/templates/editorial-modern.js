@@ -40,7 +40,7 @@ function loadDoc(doc) {
 // ═══════════════════════════════════════════════
 function buildHTML() {
   return `
-  <div class="ed-topbar" id="ed-topbar">🔥 Pedidos abertos • <span id="ed-countdown">--:--:--</span></div>
+  <div class="ed-topbar" id="ed-topbar">🔥 PEDIDOS ABERTOS ATÉ <span id="ed-countdown">23h00</span> • PEÇA ONLINE 🔥</div>
   <header class="ed-hero">
     <div class="ed-hero-inner">
       <img id="ed-logo" class="ed-logo" src="" alt="" style="display:none">
@@ -427,17 +427,8 @@ function startSocial() {
 function startCountdown() {
   const bar = $('ed-topbar');
   const closeTime = store.closeTime || '23:00';
-  function tick() {
-    const now = new Date(); const [h, m] = closeTime.split(':').map(Number);
-    const close = new Date(); close.setHours(h, m, 0, 0);
-    const diff = close - now;
-    if (diff <= 0) { bar.style.display = 'none'; return; }
-    const hh = String(Math.floor(diff/3600000)).padStart(2,'0');
-    const mm = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-    const ss = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-    $('ed-countdown').textContent = `${hh}:${mm}:${ss}`;
-  }
-  tick(); setInterval(tick, 1000);
+  const formattedClose = closeTime.replace(':', 'h');
+  const cdEl = $('ed-countdown'); if (cdEl) cdEl.textContent = formattedClose;
 }
 
 function initScroll() {
