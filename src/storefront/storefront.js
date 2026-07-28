@@ -45,7 +45,7 @@ async function startSubscription(slug) {
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute('content', `Peça sua ${doc.name.toLowerCase()} online direto pelo WhatsApp. ${doc.tagline || ''}`);
 
-    const template = doc.template || 'classic';
+    const template = doc.template || 'classic-modern';
 
     // Load template module if changed
     if (!templateModule || currentTemplateId !== template) {
@@ -64,11 +64,20 @@ async function loadTemplate(templateId, doc) {
 
   try {
     let mod;
-    if (templateId === 'editorial') {
+    // ── Grupo Modernos & Premium (templates originais dramáticos) ──
+    if (templateId === 'classic-modern') {
+      mod = await import('./templates/classic-modern.js');
+    } else if (templateId === 'dark-modern') {
+      mod = await import('./templates/dark-modern.js');
+    } else if (templateId === 'editorial-modern') {
+      mod = await import('./templates/editorial-modern.js');
+    // ── Grupo Simples & Clean (baseados nos ZIPs) ──
+    } else if (templateId === 'editorial') {
       mod = await import('./templates/editorial.js');
     } else if (templateId === 'dark') {
       mod = await import('./templates/dark.js');
     } else {
+      // 'classic' ou qualquer outro → Artisan Heritage
       mod = await import('./templates/classic.js');
     }
     currentTemplateId = templateId;   // salva na variável local, não no módulo

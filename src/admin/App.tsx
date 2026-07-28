@@ -788,11 +788,18 @@ function AparenciaView({ store, onSave }: { store: StoreData; onSave: (p: Partia
     { name: 'Oro',         color: '#b8860b' },
   ];
 
-  // Exatamente os 3 templates originais enviados pelo usuário
-  const templates = [
-    { id: 'classic',   name: '🍕 Clássico',   desc: 'Tema escuro dramático com hero animado, countdown de urgência e prova social em tempo real.' },
-    { id: 'editorial', name: '📰 Editorial',   desc: 'Layout claro e clean focado em conversão. Hero persuasivo, barra de frete grátis e busca integrada.' },
-    { id: 'dark',      name: '🔥 Dark Forno',  desc: 'Estética noturna premium com efeito grain, gradiente ember e glassmorphism. Para pizzarias que querem se destacar.' },
+  // Grupo 1 — Modernos & Premium (templates originais dramáticos restaurados do git)
+  const templatesModern = [
+    { id: 'classic-modern',   name: '🍕 Clássico',   desc: 'Tema escuro dramático com hero animado, emoji orbitando, countdown de urgência e prova social em tempo real.' },
+    { id: 'editorial-modern', name: '📰 Editorial',   desc: 'Layout premium com hero grande, efeito glassmorphism e stepper animado de quantidades.' },
+    { id: 'dark-modern',      name: '🔥 Dark Forno',  desc: 'Estética noturna com efeito grain, gradiente ember e glassmorphism. Para pizzarias que querem se destacar.' },
+  ];
+
+  // Grupo 2 — Simples & Clean (baseados nos ZIPs Templates ideias)
+  const templatesSimple = [
+    { id: 'classic',   name: '☀️ Artisan',    desc: 'Visual claro cream com hero split, categorias Playfair italic e grid de produtos limpo.' },
+    { id: 'editorial', name: '📋 Conversão',   desc: 'Focado em conversão: trust badges, barra de frete grátis, busca integrada e stepper no card.' },
+    { id: 'dark',      name: '🌑 Notturno',    desc: 'Fundo carvão com 3 camadas (radiais + grain + halo), título com gradiente âmbar.' },
   ];
 
   const handleSave = () => {
@@ -844,48 +851,87 @@ function AparenciaView({ store, onSave }: { store: StoreData; onSave: (p: Partia
             </div>
           </div>
 
-          {/* ── Template Picker (igual ao original) ── */}
-          <div>
-            <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500">Template do Cardápio</p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {templates.map(t => {
-                const active = selectedTemplate === t.id;
-                // Cores de preview iguais ao original: classic=escuro, editorial=claro, dark=preto
-                const previewBg = t.id === 'editorial' ? 'bg-stone-100' : t.id === 'dark' ? 'bg-[#0d0d0d]' : 'bg-[#1a0a00]';
-                return (
-                  <button
-                    key={t.id}
-                    onClick={() => setSelectedTemplate(t.id)}
-                    className={`group flex flex-col overflow-hidden rounded-2xl border text-left transition ${
-                      active ? 'border-charcoal shadow-md ring-1 ring-charcoal' : 'border-stone-200 bg-white hover:border-charcoal/50'
-                    }`}
-                  >
-                    {/* Preview visual */}
-                    <div className={`relative flex h-24 w-full items-center justify-center ${previewBg}`}>
-                      <span className="text-4xl">{t.name.split(' ')[0]}</span>
-                      {active && (
-                        <span className="absolute right-2 top-2 rounded-full bg-charcoal px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white">
-                          Em uso
+          {/* ── Template Picker em 2 Grupos ── */}
+          <div className="space-y-8">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500">Template do Cardápio</p>
+
+            {/* GRUPO 1 — Modernos & Premium */}
+            <div>
+              <div className="mb-3 flex items-center gap-3">
+                <span className="rounded-full bg-charcoal px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">Modernos & Premium</span>
+                <span className="text-[11px] text-stone-400">Animações, efeitos e hero dramático</span>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {templatesModern.map(t => {
+                  const active = selectedTemplate === t.id;
+                  const previewBg = t.id === 'editorial-modern' ? 'bg-[#1a1a2e]' : t.id === 'dark-modern' ? 'bg-[#0d0d0d]' : 'bg-[#1a0a00]';
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => setSelectedTemplate(t.id)}
+                      className={`group flex flex-col overflow-hidden rounded-2xl border text-left transition ${
+                        active ? 'border-charcoal shadow-md ring-1 ring-charcoal' : 'border-stone-200 bg-white hover:border-charcoal/50'
+                      }`}
+                    >
+                      <div className={`relative flex h-24 w-full items-center justify-center ${previewBg}`}>
+                        <span className="text-4xl">{t.name.split(' ')[0]}</span>
+                        {active && (
+                          <span className="absolute right-2 top-2 rounded-full bg-charcoal px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white">Em uso</span>
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2 p-4">
+                        <p className="font-serif text-base font-bold">{t.name}</p>
+                        <p className="text-[11px] leading-relaxed text-stone-500">{t.desc}</p>
+                        <span className={`mt-1 w-full rounded-lg py-2 text-center text-xs font-semibold transition ${
+                          active ? 'bg-stone-100 text-stone-400 cursor-default' : 'bg-charcoal text-white group-hover:bg-brand'
+                        }`}>
+                          {active ? '✓ Ativo' : 'Usar este template'}
                         </span>
-                      )}
-                    </div>
-                    {/* Info */}
-                    <div className="flex flex-col gap-2 p-4">
-                      <p className="font-serif text-base font-bold">{t.name}</p>
-                      <p className="text-[11px] leading-relaxed text-stone-500">{t.desc}</p>
-                      <span
-                        className={`mt-1 w-full rounded-lg py-2 text-center text-xs font-semibold transition ${
-                          active
-                            ? 'bg-stone-100 text-stone-400 cursor-default'
-                            : 'bg-charcoal text-white group-hover:bg-brand'
-                        }`}
-                      >
-                        {active ? '✓ Ativo' : 'Usar este template'}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* GRUPO 2 — Simples & Clean */}
+            <div>
+              <div className="mb-3 flex items-center gap-3">
+                <span className="rounded-full border border-stone-300 bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-stone-600">Simples & Clean</span>
+                <span className="text-[11px] text-stone-400">Visual limpo e direto ao ponto</span>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {templatesSimple.map(t => {
+                  const active = selectedTemplate === t.id;
+                  const previewBg = t.id === 'editorial' ? 'bg-[#f7f4ef]' : t.id === 'dark' ? 'bg-[#0f0a08]' : 'bg-[#fdfbfa]';
+                  const previewText = t.id === 'editorial' ? 'text-stone-800' : t.id === 'dark' ? 'text-[#ff5a1f]' : 'text-stone-800';
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => setSelectedTemplate(t.id)}
+                      className={`group flex flex-col overflow-hidden rounded-2xl border text-left transition ${
+                        active ? 'border-charcoal shadow-md ring-1 ring-charcoal' : 'border-stone-200 bg-white hover:border-charcoal/50'
+                      }`}
+                    >
+                      <div className={`relative flex h-24 w-full items-center justify-center ${previewBg}`}>
+                        <span className={`text-4xl ${previewText}`}>{t.name.split(' ')[0]}</span>
+                        {active && (
+                          <span className="absolute right-2 top-2 rounded-full bg-charcoal px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white">Em uso</span>
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2 p-4">
+                        <p className="font-serif text-base font-bold">{t.name}</p>
+                        <p className="text-[11px] leading-relaxed text-stone-500">{t.desc}</p>
+                        <span className={`mt-1 w-full rounded-lg py-2 text-center text-xs font-semibold transition ${
+                          active ? 'bg-stone-100 text-stone-400 cursor-default' : 'bg-charcoal text-white group-hover:bg-brand'
+                        }`}>
+                          {active ? '✓ Ativo' : 'Usar este template'}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
