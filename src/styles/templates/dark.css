@@ -171,7 +171,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.nt-tagline { font-size: 1rem; color: var(--ash); max-width: 28rem; margin: 0; line-height: 1.6; }
+.nt-tagline { font-size: 1rem; color: #c8bbb6; max-width: 28rem; margin: 0; line-height: 1.6; }
 .nt-hero-meta {
   display: flex;
   flex-wrap: wrap;
@@ -183,7 +183,7 @@
 @media (min-width: 768px) { .nt-hero-meta { justify-content: flex-start; } }
 .nt-phone { font-weight: 600; color: var(--cream); text-decoration: underline; text-decoration-color: var(--ember); text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .nt-sep { color: rgba(255,255,255,0.2); }
-.nt-delivery-info { color: var(--ash); }
+.nt-delivery-info { color: #d0c4be; font-weight: 500; }
 
 /* Imagem hero com halo de fogo — camada 3 */
 .nt-hero-img-wrap {
