@@ -1,14 +1,15 @@
 /**
- * dark.js — Template Dark Forno
- * Estética noturna premium: grain, gradiente ember,
- * glassmorphism e carrinho drawer com cores escuras.
+ * dark.js — Template Notturno (Dark Forno)
+ * Fundo carvão com 3 camadas: radiais ember+brand, grain SVG noise, halo blur-3xl hero.
+ * Título com gradiente âmbar, badge "Forno aceso" pulsante, cards glassmorphism.
+ * Fiel ao ZIP "Templates ideias/loja-dark (1).zip" e dossiê técnico.
  */
 
 import '../../styles/templates/dark.css';
 
 let store = {}, categories = [], products = [], combos = [], reviews = [];
 let cart = [];
-let imCurrentPid = null;
+let activeCat = 'all';
 
 const fmtR = (v) => `R$ ${Number(v).toFixed(2).replace('.', ',')}`;
 const $ = (id) => document.getElementById(id);
@@ -22,10 +23,9 @@ export async function init(container, doc) {
 
 export function update(doc) {
   loadDoc(doc);
-  renderSections();
-  renderCombos();
-  renderReviews();
-  populateHero();
+  populateStore();
+  renderCats();
+  renderMain();
 }
 
 function loadDoc(doc) {
@@ -38,97 +38,129 @@ function loadDoc(doc) {
 // ═══════════════════════════════════════════════
 function buildHTML() {
   return `
-  <div class="dk-topbar">🔥 Pedidos abertos por mais <span id="dk-countdown">--:--:--</span> 🔥</div>
+  <div class="nt-root">
 
-  <section class="dk-hero">
-    <div class="dk-hero-bg"></div>
-    <div class="dk-orbit">🍕</div>
-    <div class="dk-hero-inner">
-      <div class="dk-badge"><span class="dk-badge-dot"></span>Sem taxas · Pedido direto</div>
-      <img id="dk-logo" class="dk-logo" src="" alt="">
-      <h1 class="dk-title"><span class="dk-t1" id="dk-t1">La Bella</span><span class="dk-t2" id="dk-t2">Pizza</span></h1>
-      <p class="dk-tagline" id="dk-tagline">Feita com amor, entregue com sabor</p>
-      <div class="dk-stats">
-        <div class="dk-stat"><span class="dk-stat-icon">⏱</span><span class="dk-stat-label">Entrega</span><span class="dk-stat-val" id="dk-time">40–60 min</span></div>
-        <div class="dk-stat"><span class="dk-stat-icon">🛵</span><span class="dk-stat-label">Frete</span><span class="dk-stat-val" id="dk-fee">R$5</span></div>
-        <div class="dk-stat"><span class="dk-stat-icon">⭐</span><span class="dk-stat-label">Avaliação</span><span class="dk-stat-val" id="dk-rating">4.9</span></div>
-        <div class="dk-stat"><span class="dk-stat-icon">🕐</span><span class="dk-stat-label">Hoje</span><span class="dk-stat-val" id="dk-hours">18h–23h</span></div>
-      </div>
-      <button class="dk-cta" onclick="document.getElementById('dk-nav').scrollIntoView({behavior:'smooth'})">🍕 Ver Cardápio</button>
-    </div>
-  </section>
+    <!-- GRAIN SVG — camada 2: noise texture em overlay -->
+    <div class="nt-grain" aria-hidden="true"></div>
 
-  <nav class="dk-nav" id="dk-nav">
-    <div class="dk-nav-inner">
-      <div class="dk-nav-logo" id="dk-nav-logo">La <em>Bella</em></div>
-      <div class="dk-nav-cats" id="dk-nav-cats"></div>
-      <button class="dk-cart-btn" onclick="dkToggleCart()">🛒<span class="dk-cart-badge" id="dk-cart-badge">0</span></button>
-    </div>
-  </nav>
+    <!-- NAV sticky top-0 -->
+    <nav class="nt-nav">
+      <div class="nt-nav-inner">
+        <span class="nt-nav-logo" id="nt-nav-logo">Fornace</span>
+        <div class="nt-nav-right">
+          <div class="nt-nav-status">
+            <span class="nt-ember-dot"></span>
+            <div>
+              <p class="nt-status-label">Forno aceso</p>
+              <p class="nt-status-hours" id="nt-hours">18h–23h</p>
+            </div>
+          </div>
+          <button class="nt-cart-pill" onclick="ntToggleCart()">
+            Carrinho
+            <span class="nt-cart-count" id="nt-cart-count">0</span>
+          </button>
+        </div>
+      </div>
+    </nav>
 
-  <main class="dk-main">
-    <div id="dk-social" class="dk-social dk-fi-anim">
-      <div class="dk-social-dot"></div>
-      <div class="dk-social-txt"><strong id="dk-social-txt">12 pessoas vendo agora</strong><span id="dk-social-sub">Última venda há 8 min</span></div>
-      <span class="dk-social-live">🔴 Ao vivo</span>
-    </div>
-    <div id="dk-promo" class="dk-promo dk-fi-anim" style="display:none">
-      <div><strong id="dk-promo-txt"></strong><div class="dk-promo-sub">Promoção por tempo limitado</div></div>
-      <div class="dk-promo-pill" id="dk-promo-tag">SÓ HOJE</div>
-    </div>
-    <div id="dk-minbar" class="dk-minbar dk-fi-anim">
-      <div class="dk-minbar-top"><span id="dk-min-lbl">Pedido mínimo: R$ 30</span><span id="dk-min-val">R$ 0 / R$ 30</span></div>
-      <div class="dk-minbar-track"><div class="dk-minbar-fill" id="dk-min-fill" style="width:0%"></div></div>
-    </div>
-    <div id="dk-combos" class="dk-combos dk-fi-anim"></div>
-    <div id="dk-sections"></div>
-    <div id="dk-reviews" class="dk-reviews dk-fi-anim"></div>
-  </main>
+    <!-- HERO split: texto esquerda + imagem com halo de fogo -->
+    <header class="nt-hero">
+      <div class="nt-hero-inner">
+        <div class="nt-hero-text">
+          <span class="nt-eyebrow">Forno a lenha · 485°C</span>
+          <h1 class="nt-h1">
+            A alma de <br>
+            <em class="nt-h1-grad" id="nt-name">Nápoles antiga.</em>
+          </h1>
+          <p class="nt-tagline" id="nt-tagline">Massa 48h de fermentação natural, forno a lenha a 485°C.</p>
+          <div class="nt-hero-meta">
+            <a href="tel:" class="nt-phone" id="nt-phone">(11) 4002-8922</a>
+            <span class="nt-sep">|</span>
+            <span class="nt-delivery-info">Entrega grátis acima de R$ 90</span>
+          </div>
+        </div>
+        <!-- IMAGEM com halo de fogo — camada 3 -->
+        <div class="nt-hero-img-wrap">
+          <div class="nt-halo" aria-hidden="true"></div>
+          <img
+            id="nt-hero-img"
+            class="nt-hero-img"
+            src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80"
+            alt="Pizza artesanal"
+          >
+        </div>
+      </div>
+    </header>
 
-  <!-- ITEM MODAL -->
-  <div class="dk-imbg" id="dk-imbg" onclick="dkCloseIM(event)">
-    <div class="dk-imbox">
-      <div class="dk-imimg">
-        <img id="dk-im-img" src="" alt="" style="display:none">
-        <div class="dk-imnoimg" id="dk-im-noimg">🍕</div>
-        <button class="dk-imclose" onclick="document.getElementById('dk-imbg').classList.remove('on')">✕</button>
+    <!-- CATEGORY STRIP sticky top-16 -->
+    <section class="nt-cats-strip">
+      <div class="nt-cats-inner" id="nt-cats-inner">
+        <button class="nt-cat-chip active" onclick="ntSetCat('all', this)">Combos</button>
       </div>
-      <div class="dk-imbody">
-        <div class="dk-imcat" id="dk-imcat"></div>
-        <div class="dk-imname" id="dk-imname"></div>
-        <div class="dk-imdesc" id="dk-imdesc"></div>
-        <div class="dk-imlbl">Escolha o tamanho</div>
-        <div class="dk-imsizes" id="dk-imsizes"></div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="nt-main">
+
+      <!-- COMBOS -->
+      <section class="nt-combos-sec" id="nt-combos-sec">
+        <h2 class="nt-sec-title">Combos em destaque</h2>
+        <div class="nt-combos-grid" id="nt-combos-grid"></div>
+      </section>
+
+      <!-- PRODUTOS grid 3 colunas com foto quadrada + gradiente na base -->
+      <section class="nt-products-sec">
+        <h2 class="nt-sec-title" id="nt-products-title">Le Pizze</h2>
+        <div class="nt-products-grid" id="nt-products-grid"></div>
+      </section>
+
+      <!-- REVIEWS glassmorphism escuro -->
+      <section class="nt-reviews-sec" id="nt-reviews-sec">
+        <h2 class="nt-sec-title nt-reviews-title">O que dizem nossos vizinhos</h2>
+        <div class="nt-reviews-grid" id="nt-reviews-grid"></div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="nt-footer">
+      <p class="nt-footer-logo" id="nt-footer-logo">Fornace</p>
+      <p class="nt-footer-addr" id="nt-footer-addr">R. Aspicuelta, 421 — Vila Madalena</p>
+      <p class="nt-footer-copy" id="nt-footer-copy">© 2026 Fornace. Feito com fogo e carinho.</p>
+    </footer>
+
+    <!-- CART OVERLAY + DRAWER -->
+    <div class="nt-cart-overlay" id="nt-cart-overlay" onclick="ntToggleCart()"></div>
+    <div class="nt-cart-drawer" id="nt-cart-drawer">
+      <div class="nt-cart-head">
+        <span class="nt-cart-title">🛒 Seu Pedido</span>
+        <button class="nt-cart-close" onclick="ntToggleCart()">✕</button>
       </div>
-      <div class="dk-imft">
-        <div class="dk-imtotal" id="dk-imtotal">R$ 0</div>
-        <button class="dk-imadd" onclick="dkAddFromIM()">+ Adicionar ao pedido</button>
+      <div class="nt-cart-body" id="nt-cart-body">
+        <div class="nt-cart-empty">
+          <span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p>
+        </div>
+      </div>
+      <div class="nt-cart-footer" id="nt-cart-footer" style="display:none">
+        <div class="nt-cart-row"><span>Subtotal</span><span id="nt-cart-sub">R$ 0,00</span></div>
+        <div class="nt-cart-row"><span>Taxa de entrega</span><span id="nt-cart-fee">R$ 7,00</span></div>
+        <div class="nt-cart-total"><span>Total</span><span id="nt-cart-ttl">R$ 0,00</span></div>
+        <input class="nt-input" id="nt-name" type="text" placeholder="Seu nome">
+        <input class="nt-input" id="nt-addr" type="text" placeholder="Endereço de entrega">
+        <button class="nt-order-btn" onclick="ntCheckout()">Fechar pelo WhatsApp 🍕</button>
       </div>
     </div>
+
+    <!-- STICKY WHATSAPP CTA -->
+    <div class="nt-wa-cta" id="nt-wa-cta" style="display:none" onclick="ntToggleCart()">
+      <span class="nt-wa-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </span>
+      <span class="nt-wa-txt">Fechar pelo WhatsApp</span>
+      <span class="nt-wa-total" id="nt-wa-total">R$ 0,00</span>
+    </div>
+
   </div>
-
-  <!-- CART DRAWER -->
-  <div class="dk-cov" id="dk-cov" onclick="dkToggleCart()"></div>
-  <div class="dk-cdr" id="dk-cdr">
-    <div class="dk-chd"><div class="dk-chd-t">🛒 Seu Pedido</div><button class="dk-cx" onclick="dkToggleCart()">✕</button></div>
-    <div class="dk-cbody" id="dk-cbody"><div class="dk-cempty">Carrinho vazio 🍕</div></div>
-    <div class="dk-cft" id="dk-cft" style="display:none">
-      <div class="dk-crow"><span>Subtotal</span><span id="dk-csub">R$ 0,00</span></div>
-      <div class="dk-crow"><span>Taxa de entrega</span><span id="dk-cfee">R$ 5,00</span></div>
-      <div class="dk-cttl"><span>Total</span><span id="dk-cttl">R$ 0,00</span></div>
-      <div class="dk-cwarn" id="dk-cwarn" style="display:none">⚠️ Mínimo R$<span id="dk-cwarn-min">30</span>. Faltam R$<span id="dk-cwarn-diff">30</span></div>
-      <input class="dk-fi" id="dk-cname" placeholder="Seu nome">
-      <input class="dk-fi" id="dk-caddr" placeholder="Endereço de entrega">
-      <button class="dk-obtn" onclick="dkCheckout()">Fazer Pedido 🍕</button>
-    </div>
-  </div>
-
-  <footer class="dk-footer">
-    <div class="dk-footer-name" id="dk-foot-name">La <em>Bella</em> Pizza</div>
-    <div class="dk-footer-info" id="dk-foot-addr"></div>
-    <div class="dk-footer-info" id="dk-foot-phone"></div>
-    <div class="dk-footer-pow">Powered by Pizzaria Cheia ✦</div>
-  </footer>
   `;
 }
 
@@ -136,299 +168,227 @@ function buildHTML() {
 // BOOT
 // ═══════════════════════════════════════════════
 function boot() {
-  populateHero();
-  renderNav();
-  renderSections();
-  renderCombos();
-  renderReviews();
-  startSocial();
-  startCountdown();
-  initScroll();
+  populateStore();
+  renderCats();
+  renderMain();
+  window.ntToggleCart = ntToggleCart;
+  window.ntSetCat     = ntSetCat;
+  window.ntCheckout   = ntCheckout;
+  window.ntAdd        = ntAdd;
+  window.ntAddCombo   = ntAddCombo;
+  window.ntChangeQty  = ntChangeQty;
+}
 
-  window.dkToggleCart = dkToggleCart;
-  window.dkCloseIM    = dkCloseIM;
-  window.dkAddFromIM  = dkAddFromIM;
-  window.dkCheckout   = dkCheckout;
-  window.dkAddToCart  = dkAddToCart;
-  window.dkAddCombo   = dkAddCombo;
-  window.dkChangeQty  = dkChangeQty;
-  window.dkOpenIM     = dkOpenIM;
-  window.dkSelectSize = dkSelectSize;
+function populateStore() {
+  const n = store.name || 'Fornace';
+  if ($('nt-nav-logo'))    $('nt-nav-logo').textContent    = n;
+  if ($('nt-name'))        $('nt-name').textContent        = n;
+  if ($('nt-tagline'))     $('nt-tagline').textContent     = store.tagline || '';
+  if ($('nt-hours'))       $('nt-hours').textContent       = store.hours   || '';
+  if ($('nt-phone'))       { $('nt-phone').textContent = store.phone || ''; $('nt-phone').href = `tel:${store.phone || ''}`; }
+  if ($('nt-footer-logo')) $('nt-footer-logo').textContent = n;
+  if ($('nt-footer-addr')) $('nt-footer-addr').textContent = store.address || store.addr || '';
+  if ($('nt-footer-copy')) $('nt-footer-copy').textContent = `© 2026 ${n}. Feito com fogo e carinho.`;
 }
 
 // ═══════════════════════════════════════════════
-// POPULATE
+// CATEGORIES
 // ═══════════════════════════════════════════════
-function populateHero() {
-  const n = store.name || 'La Bella Pizza';
-  const [p1, ...rest] = n.trim().split(' ');
-  $('dk-t1').textContent = p1;
-  $('dk-t2').textContent = rest.join(' ');
-  $('dk-tagline').textContent = store.tagline || '';
-  $('dk-time').textContent    = store.deliveryTime || '40–60 min';
-  $('dk-fee').textContent     = store.fee ? `R$${store.fee}` : 'R$5';
-  $('dk-rating').textContent  = store.rating || '4.9 ★';
-  $('dk-hours').textContent   = store.hours || '';
-  $('dk-nav-logo').innerHTML  = `${p1} <em>${rest.join(' ')}</em>`;
-  $('dk-foot-name').innerHTML = `${p1} <em>${rest.join(' ')}</em>`;
-  $('dk-foot-addr').textContent  = store.addr  || '';
-  $('dk-foot-phone').textContent = store.phone ? `📞 ${store.phone}` : '';
-  const logo = $('dk-logo');
-  if (store.logo) { logo.src = store.logo; logo.classList.add('show'); }
-  if (store.promoTxt) {
-    $('dk-promo-txt').textContent = store.promoTxt;
-    $('dk-promo-tag').textContent = store.promoTag || 'SÓ HOJE';
-    $('dk-promo').style.display   = 'flex';
-  }
-  const min = store.minOrder || 30;
-  $('dk-min-lbl').textContent = `Pedido mínimo: R$ ${min}`;
-  $('dk-min-val').textContent = `R$ 0 / R$ ${min}`;
-}
-
-function renderNav() {
-  $('dk-nav-cats').innerHTML = categories.map((c) =>
-    `<button class="dk-cat-btn" onclick="document.getElementById('dk-sec-${c.id}')?.scrollIntoView({behavior:'smooth'});document.querySelectorAll('.dk-cat-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${c.emoji} ${c.name}</button>`
+function renderCats() {
+  const inner = $('nt-cats-inner');
+  if (!inner) return;
+  const combosBtn = `<button class="nt-cat-chip ${activeCat === 'all' ? 'active' : ''}" onclick="ntSetCat('all', this)">Combos</button>`;
+  const catBtns   = categories.map(c =>
+    `<button class="nt-cat-chip ${activeCat === c.id ? 'active' : ''}" onclick="ntSetCat('${c.id}', this)">${c.emoji ? c.emoji + ' ' : ''}${c.name}</button>`
   ).join('');
+  inner.innerHTML = combosBtn + catBtns;
 }
 
+window.ntSetCat = function(catId, btn) {
+  activeCat = catId;
+  document.querySelectorAll('.nt-cat-chip').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderMain();
+};
+
 // ═══════════════════════════════════════════════
-// SECTIONS
+// MAIN RENDER
 // ═══════════════════════════════════════════════
-function renderSections() {
-  $('dk-sections').innerHTML = categories.map((cat) => {
-    const items = products.filter((p) => p.cat === cat.id && p.active !== false);
-    if (!items.length) return '';
-    if (cat.display === 'list') return dkListSec(cat, items);
-    return dkGridSec(cat, items);
+function renderMain() { renderCombos(); renderProducts(); renderReviews(); }
+
+function renderCombos() {
+  const sec  = $('nt-combos-sec');
+  const grid = $('nt-combos-grid');
+  if (!sec || !grid) return;
+  if (activeCat !== 'all' || !combos.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  grid.innerHTML = combos.filter(c => c.active !== false).map(c => {
+    const disc = c.origPrice || c.originalPrice;
+    return `
+    <article class="nt-combo-card">
+      <div class="nt-combo-img-wrap">
+        ${c.img || c.image
+          ? `<img src="${c.img || c.image}" alt="${c.name}" class="nt-combo-img">`
+          : `<div class="nt-combo-placeholder">🎁</div>`}
+      </div>
+      <div class="nt-combo-head">
+        <h3 class="nt-combo-name">${c.name}</h3>
+        <div class="nt-combo-price-wrap">
+          ${disc ? `<span class="nt-combo-old">${fmtR(disc)}</span>` : ''}
+          <span class="nt-combo-price">${fmtR(c.price)}</span>
+        </div>
+      </div>
+      <p class="nt-combo-desc">${c.desc || c.description || c.items || ''}</p>
+      <button class="nt-combo-btn" onclick="ntAddCombo('${c.id}')">Adicionar ao pedido</button>
+    </article>`;
   }).join('');
 }
 
-function dkGridSec(cat, items) {
-  return `<div class="dk-sec dk-fi-anim" id="dk-sec-${cat.id}">
-    <div class="dk-sec-head"><h2 class="dk-sec-title">${cat.emoji} <em>${cat.name}</em></h2><span class="dk-sec-count">${items.length} itens</span></div>
-    <div class="dk-grid">${items.map((p) => dkCard(p, cat)).join('')}</div>
-  </div>`;
-}
-
-function dkListSec(cat, items) {
-  return `<div class="dk-sec dk-fi-anim" id="dk-sec-${cat.id}">
-    <div class="dk-sec-head"><h2 class="dk-sec-title">${cat.emoji} <em>${cat.name}</em></h2><span class="dk-sec-count">${items.length} itens</span></div>
-    <div class="dk-list">${items.map((p) => dkListItem(p)).join('')}</div>
-  </div>`;
-}
-
-function dkCard(p, cat) {
-  return `<div class="dk-card" onclick="dkOpenIM('${p.id}')">
-    <div class="dk-card-img">${p.img ? `<img src="${p.img}" alt="${p.name}">` : '🍕'}</div>
-    <div class="dk-card-body">
-      <div class="dk-card-cat">${cat.name}</div>
-      <div class="dk-card-name">${p.name}</div>
-      <div class="dk-card-desc">${p.desc}</div>
-      <div class="dk-card-foot">
-        <div class="dk-card-price">R$ ${p.prices?.[0] ?? 0}</div>
-        <button class="dk-card-add" onclick="event.stopPropagation();dkAddToCart('${p.id}',0)">+</button>
+function renderProducts() {
+  const grid  = $('nt-products-grid');
+  const title = $('nt-products-title');
+  if (!grid) return;
+  let visible = activeCat === 'all'
+    ? products
+    : products.filter(p => p.cat === activeCat || p.category === activeCat);
+  visible = visible.filter(p => p.active !== false);
+  if (title) {
+    title.textContent = activeCat === 'all'
+      ? 'Le Pizze'
+      : (categories.find(c => c.id === activeCat)?.name || '');
+  }
+  grid.innerHTML = visible.map(p => {
+    const price = p.prices?.[0] ?? p.price ?? 0;
+    return `
+    <article class="nt-product-card">
+      <div class="nt-product-img-wrap">
+        ${p.img || p.image
+          ? `<img src="${p.img || p.image}" alt="${p.name}" class="nt-product-img"><div class="nt-product-grad"></div>`
+          : `<div class="nt-product-placeholder">🍕</div>`}
       </div>
-    </div>
-  </div>`;
-}
-
-function dkListItem(p) {
-  return `<div class="dk-list-item" onclick="dkOpenIM('${p.id}')">
-    <div class="dk-list-img">${p.img ? `<img src="${p.img}" alt="">` : '🍕'}</div>
-    <div style="flex:1">
-      <div class="dk-list-name">${p.name}</div>
-      <div class="dk-list-desc">${p.desc}</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:.65rem;flex-shrink:0">
-      <div class="dk-list-price">R$ ${p.prices?.[0] ?? 0}</div>
-      <button class="dk-list-add" onclick="event.stopPropagation();dkAddToCart('${p.id}',0)">+</button>
-    </div>
-  </div>`;
-}
-
-// ═══════════════════════════════════════════════
-// COMBOS
-// ═══════════════════════════════════════════════
-function renderCombos() {
-  const sec = $('dk-combos');
-  if (!combos.length) { sec.style.display = 'none'; return; }
-  sec.innerHTML = `<div class="dk-sec-head"><h2 class="dk-sec-title">🎁 <em>Combos</em> Especiais</h2><span class="dk-sec-count">${combos.length} opções</span></div>
-  <div class="dk-combos-scroll">${combos.filter((c) => c.active !== false).map((c) => `
-    <div class="dk-combo-card" onclick="dkAddCombo('${c.id}')">
-      <div class="dk-combo-img">${c.img ? `<img src="${c.img}" alt="">` : '🎁'}${c.saving ? `<div class="dk-combo-save">${c.saving}</div>` : ''}</div>
-      <div class="dk-combo-body">
-        <div class="dk-combo-name">${c.name}</div>
-        <div class="dk-combo-items">${c.items}</div>
-        <div class="dk-combo-foot">
-          <div>${c.origPrice ? `<span class="dk-combo-old">R$${c.origPrice}</span> ` : ''}<span class="dk-combo-price">R$${c.price}</span></div>
-          <button class="dk-combo-add" onclick="event.stopPropagation();dkAddCombo('${c.id}')">+ Pedir</button>
-        </div>
+      <div class="nt-product-meta">
+        <h3 class="nt-product-name">${p.name}</h3>
+        <span class="nt-product-price">${fmtR(price)}</span>
       </div>
-    </div>`).join('')}
-  </div>`;
+      <p class="nt-product-desc">${p.desc || p.description || ''}</p>
+      <button class="nt-product-add" onclick="ntAdd('${p.id}')">+ Adicionar ao pedido</button>
+    </article>`;
+  }).join('');
 }
 
-// ═══════════════════════════════════════════════
-// REVIEWS
-// ═══════════════════════════════════════════════
 function renderReviews() {
-  const sec = $('dk-reviews');
-  if (!reviews.length) { sec.style.display = 'none'; return; }
-  const avg = (reviews.reduce((s, r) => s + (r.stars || 5), 0) / reviews.length).toFixed(1);
-  sec.innerHTML = `<div class="dk-sec-head"><h2 class="dk-sec-title">⭐ <em>Avaliações</em></h2></div>
-  <div class="dk-reviews-avg"><span class="dk-score">${avg}</span><div><div style="color:var(--dk-gold)">${'⭐'.repeat(5)}</div><div style="font-size:.72rem;color:var(--dk-muted)">${reviews.length} avaliações</div></div></div>
-  <div class="dk-reviews-grid">${reviews.map((r) => `
-    <div class="dk-review-card">
-      <div class="dk-rc-top">
-        <div class="dk-rc-av">👤</div>
-        <div><div class="dk-rc-name">${r.name}</div><div class="dk-rc-stars">${'⭐'.repeat(r.stars || 5)}</div></div>
-      </div>
-      <div class="dk-rc-text">${r.text}</div>
-      ${r.product ? `<div class="dk-rc-product">📦 ${r.product}</div>` : ''}
-    </div>`).join('')}
-  </div>`;
+  const sec  = $('nt-reviews-sec');
+  const grid = $('nt-reviews-grid');
+  if (!sec || !grid) return;
+  const pub = (reviews || []).filter(r => r.published !== false);
+  if (!pub.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  grid.innerHTML = pub.map(r => `
+    <div class="nt-review-card">
+      <div class="nt-review-stars">★★★★★</div>
+      <p class="nt-review-text">"${r.text}"</p>
+      <p class="nt-review-author">— ${r.name || r.author}</p>
+      ${r.role ? `<p class="nt-review-role">${r.role}</p>` : ''}
+    </div>
+  `).join('');
 }
-
-// ═══════════════════════════════════════════════
-// ITEM MODAL
-// ═══════════════════════════════════════════════
-window.dkOpenIM = function (pid) {
-  imCurrentPid = pid;
-  const p   = products.find((x) => x.id === pid);
-  const cat = categories.find((c) => c.id === p?.cat);
-  if (!p) return;
-  $('dk-imcat').textContent  = cat?.name || '';
-  $('dk-imname').textContent = p.name;
-  $('dk-imdesc').textContent = p.desc;
-  const imgEl = $('dk-im-img'); const noImg = $('dk-im-noimg');
-  if (p.img) { imgEl.src = p.img; imgEl.style.display = 'block'; noImg.style.display = 'none'; }
-  else { imgEl.style.display = 'none'; noImg.style.display = 'flex'; }
-  const labels = ['Pequeno', 'Médio', 'Grande'];
-  $('dk-imsizes').innerHTML = (p.prices || []).map((price, i) =>
-    `<div class="dk-imsz ${i === 0 ? 'sel' : ''}" onclick="dkSelectSize(this,${price})">
-      <span class="dk-imsz-l">${cat?.type === 'sizes' ? labels[i] : 'Tamanho'}</span>
-      <span class="dk-imsz-p">R$${price}</span>
-    </div>`
-  ).join('');
-  $('dk-imtotal').textContent = `R$ ${p.prices?.[0] ?? 0}`;
-  $('dk-imbg').classList.add('on');
-};
-window.dkSelectSize = function (el, price) {
-  document.querySelectorAll('.dk-imsz').forEach((x) => x.classList.remove('sel'));
-  el.classList.add('sel');
-  $('dk-imtotal').textContent = `R$ ${price}`;
-};
-window.dkCloseIM = function (e) { if (e.target === $('dk-imbg')) $('dk-imbg').classList.remove('on'); };
-window.dkAddFromIM = function () {
-  const sel = document.querySelector('.dk-imsz.sel'); if (!sel) return;
-  const price = parseFloat(sel.querySelector('.dk-imsz-p').textContent.replace('R$', ''));
-  const size  = sel.querySelector('.dk-imsz-l').textContent;
-  const p = products.find((x) => x.id === imCurrentPid);
-  cart.push({ id: Date.now(), name: p.name, size, price, img: p.img });
-  $('dk-imbg').classList.remove('on');
-  renderCart(); showToast('✅ Adicionado!');
-};
 
 // ═══════════════════════════════════════════════
 // CART
 // ═══════════════════════════════════════════════
-window.dkAddToCart = function (pid, idx) {
-  const p = products.find((x) => x.id === pid); if (!p) return;
-  const cat = categories.find((c) => c.id === p.cat);
-  cart.push({ id: Date.now(), name: p.name, size: cat?.type === 'sizes' ? ['P','M','G'][idx] : '', price: p.prices?.[idx] ?? p.prices?.[0] ?? 0, img: p.img });
-  renderCart(); showToast('✅ Adicionado!');
+window.ntAdd = function(pid) {
+  const p = products.find(x => x.id === pid);
+  if (!p) return;
+  const price = p.prices?.[0] ?? p.price ?? 0;
+  const found = cart.find(i => i.id === pid);
+  if (found) { found.qty++; } else { cart.push({ id: pid, name: p.name, price, img: p.img || p.image, qty: 1 }); }
+  renderCart();
+  showToastMsg('✅ Adicionado!');
 };
-window.dkAddCombo = function (cid) {
-  const c = combos.find((x) => x.id === cid); if (!c) return;
-  cart.push({ id: Date.now(), name: c.name, size: 'Combo', price: c.price, img: c.img });
-  renderCart(); showToast('✅ Combo adicionado!');
+
+window.ntAddCombo = function(cid) {
+  const c = combos.find(x => x.id === cid);
+  if (!c) return;
+  const found = cart.find(i => i.id === cid);
+  if (found) { found.qty++; } else { cart.push({ id: cid, name: c.name, price: c.price, img: c.img || c.image, qty: 1 }); }
+  renderCart();
+  showToastMsg('✅ Combo adicionado!');
 };
-window.dkChangeQty = function (cartId, delta) {
-  const idx = cart.findIndex((x) => x.id === cartId); if (idx === -1) return;
-  cart[idx].qty = (cart[idx].qty || 1) + delta;
-  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+
+window.ntChangeQty = function(pid, delta) {
+  const item = cart.find(i => i.id === pid);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart.splice(cart.indexOf(item), 1);
   renderCart();
 };
+
 function renderCart() {
-  const count = cart.length;
-  const badge = $('dk-cart-badge');
-  badge.textContent = count; badge.classList.toggle('on', count > 0);
-  if (!count) { $('dk-cbody').innerHTML = '<div class="dk-cempty">Carrinho vazio 🍕</div>'; $('dk-cft').style.display = 'none'; return; }
-  const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
-  const fee = store.fee ?? 5; const total = sub + fee;
-  const min = store.minOrder ?? 30;
-  $('dk-cbody').innerHTML = cart.map((item) => `
-    <div class="dk-ci">
-      <div class="dk-ci-img">${item.img ? `<img src="${item.img}" alt="">` : '🍕'}</div>
-      <div style="flex:1">
-        <div class="dk-ci-nm">${item.name}</div>
-        <div class="dk-ci-sz">${item.size}</div>
-        <div class="dk-ci-pr">${fmtR(item.price)}</div>
-        <div class="dk-ci-ctrl">
-          <button class="dk-qb" onclick="dkChangeQty(${item.id},-1)">−</button>
-          <span class="dk-qn">${item.qty || 1}</span>
-          <button class="dk-qb" onclick="dkChangeQty(${item.id},+1)">+</button>
+  const count     = cart.reduce((s, i) => s + i.qty, 0);
+  const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const fee       = cartTotal >= 90 ? 0 : (store.fee ?? 7);
+  const total     = cartTotal + fee;
+
+  const pill = $('nt-cart-count');
+  if (pill) pill.textContent = count;
+
+  const waCta = $('nt-wa-cta');
+  if (waCta) {
+    waCta.style.display = count > 0 ? 'flex' : 'none';
+    const waTotal = $('nt-wa-total');
+    if (waTotal) waTotal.textContent = fmtR(cartTotal);
+  }
+
+  if (!count) {
+    $('nt-cart-body').innerHTML = `<div class="nt-cart-empty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div>`;
+    if ($('nt-cart-footer')) $('nt-cart-footer').style.display = 'none';
+    return;
+  }
+
+  $('nt-cart-body').innerHTML = cart.map(item => `
+    <div class="nt-ci">
+      <div class="nt-ci-img">${item.img ? `<img src="${item.img}" alt="">` : '🍕'}</div>
+      <div class="nt-ci-info">
+        <div class="nt-ci-name">${item.name}</div>
+        <div class="nt-ci-price">${fmtR(item.price)}</div>
+        <div class="nt-ci-ctrl">
+          <button class="nt-qb" onclick="ntChangeQty('${item.id}', -1)">−</button>
+          <span class="nt-qn">${item.qty}</span>
+          <button class="nt-qb" onclick="ntChangeQty('${item.id}', +1)">+</button>
         </div>
       </div>
-    </div>`).join('');
-  $('dk-csub').textContent = fmtR(sub);
-  $('dk-cfee').textContent = fmtR(fee);
-  $('dk-cttl').textContent = fmtR(total);
-  $('dk-cft').style.display = 'block';
-  const warn = $('dk-cwarn');
-  if (sub < min) { warn.style.display = 'block'; $('dk-cwarn-min').textContent = min; $('dk-cwarn-diff').textContent = (min - sub).toFixed(2); }
-  else warn.style.display = 'none';
-  const minPct = Math.min(100, (sub / min) * 100);
-  const mf = $('dk-min-fill'); if (mf) mf.style.width = minPct + '%';
-  const mv = $('dk-min-val');  if (mv) mv.textContent = `R$ ${sub.toFixed(2)} / R$ ${min}`;
+    </div>
+  `).join('');
+
+  if ($('nt-cart-footer')) $('nt-cart-footer').style.display = 'block';
+  if ($('nt-cart-sub'))    $('nt-cart-sub').textContent  = fmtR(cartTotal);
+  if ($('nt-cart-fee'))    $('nt-cart-fee').textContent  = fee === 0 ? 'Grátis 🎉' : fmtR(fee);
+  if ($('nt-cart-ttl'))    $('nt-cart-ttl').textContent  = fmtR(total);
 }
-window.dkToggleCart = function () { $('dk-cdr').classList.toggle('on'); $('dk-cov').classList.toggle('on'); };
-window.dkCheckout = function () {
-  const name = $('dk-cname').value.trim(); const addr = $('dk-caddr').value.trim();
-  if (!name || !addr) { showToast('⚠️ Informe nome e endereço', 'red'); return; }
-  const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
-  const min = store.minOrder ?? 30;
-  if (sub < min) { showToast(`⚠️ Mínimo R$${min}`, 'red'); return; }
-  const fee = store.fee ?? 5; const total = sub + fee;
-  const lines = cart.map((i) => `• ${i.name}${i.size ? ' (' + i.size + ')' : ''} — R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
-  const msg = encodeURIComponent(`🍕 *Novo Pedido*\n\n${lines}\n\n*Frete:* R$${fee}\n*Total:* R$${total.toFixed(2)}\n\n*Nome:* ${name}\n*Endereço:* ${addr}`);
-  const phone = (store.phone || '').replace(/\D/g, '');
+
+window.ntToggleCart = function() {
+  $('nt-cart-drawer')?.classList.toggle('open');
+  $('nt-cart-overlay')?.classList.toggle('on');
+};
+
+window.ntCheckout = function() {
+  const name = $('nt-name')?.value.trim();
+  const addr = $('nt-addr')?.value.trim();
+  if (!name || !addr) { showToastMsg('⚠️ Informe nome e endereço', 'red'); return; }
+  const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const fee       = cartTotal >= 90 ? 0 : (store.fee ?? 7);
+  const total     = cartTotal + fee;
+  const lines     = cart.map(i => `• ${i.name} x${i.qty} — ${fmtR(i.price * i.qty)}`).join('\n');
+  const msg       = encodeURIComponent(`🍕 *Novo Pedido*\n\n${lines}\n\n*Taxa:* ${fmtR(fee)}\n*Total:* ${fmtR(total)}\n\n*Nome:* ${name}\n*Endereço:* ${addr}`);
+  const phone     = (store.phone || '').replace(/\D/g, '');
   window.open(`https://wa.me/55${phone}?text=${msg}`, '_blank');
 };
 
-// ═══════════════════════════════════════════════
-// SOCIAL + COUNTDOWN
-// ═══════════════════════════════════════════════
-function startSocial() {
-  const sec = $('dk-social');
-  if (!(store.features?.social ?? true)) { sec.style.display = 'none'; return; }
-  $('dk-social-txt').textContent = `${Math.floor(Math.random()*30+8)} pessoas vendo agora`;
-  $('dk-social-sub').textContent = `Última venda há ${Math.floor(Math.random()*15+1)} minutos`;
-}
-
-function startCountdown() {
-  const closeTime = store.closeTime || '23:00';
-  function tick() {
-    const now = new Date(); const [h, m] = closeTime.split(':').map(Number);
-    const close = new Date(); close.setHours(h, m, 0, 0);
-    const diff = close - now; if (diff <= 0) return;
-    const hh = String(Math.floor(diff/3600000)).padStart(2,'0');
-    const mm = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-    const ss = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-    const el = $('dk-countdown'); if (el) el.textContent = `${hh}:${mm}:${ss}`;
-  }
-  tick(); setInterval(tick, 1000);
-}
-
-function initScroll() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('vis'), i*80); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.dk-fi-anim').forEach((el) => obs.observe(el));
-}
-
-function showToast(msg, type = '') {
-  const t = document.getElementById('toast'); if (!t) return;
-  t.textContent = msg; t.className = 'toast' + (type ? ' ' + type : '');
-  t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 2600);
+function showToastMsg(msg, type = '') {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.className   = 'toast' + (type ? ' ' + type : '');
+  t.classList.add('on');
+  setTimeout(() => t.classList.remove('on'), 2600);
 }

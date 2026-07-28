@@ -2,10 +2,9 @@
  * ═══════════════════════════════════════════════════════════
  * DESIGN TOKENS — Pizzaria SaaS v5
  * Sistema unificado de variáveis CSS.
+ * Fontes carregadas via <link> em loja.html (evita Lightning CSS @import errors).
  * ═══════════════════════════════════════════════════════════
  */
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   /* ── Brand (substituído dinamicamente via JS para cada loja) ── */

@@ -1,22 +1,22 @@
 /**
- * classic.js — Template Clássico
- * Tema escuro dramático com hero animado, countdown de urgência,
- * prova social em tempo real, combos e carrinho drawer.
- * Portado da storefront.js da v4.
+ * classic.js — Template Artisan Heritage (Claro)
+ * Fundo cream quente, tipografia Playfair Display,
+ * Hero split, categorias sticky, grid 3 col, reviews e CTA WhatsApp.
+ * Fiel ao dossiê técnico e ZIP "Templates ideias/loja.zip".
  */
 
 import '../../styles/templates/classic.css';
 
-// ── Estado ──
 let store = {}, categories = [], products = [], combos = [], reviews = [];
 let cart = [];
-let selectedSizes = {};
+let activeCat = 'all';
+let searchQuery = '';
 
 const fmtR = (v) => `R$ ${Number(v).toFixed(2).replace('.', ',')}`;
 const $ = (id) => document.getElementById(id);
 
 // ═══════════════════════════════════════════════
-// INIT — monta o HTML e inicializa a lógica
+// INIT
 // ═══════════════════════════════════════════════
 export async function init(container, doc) {
   loadDoc(doc);
@@ -26,17 +26,14 @@ export async function init(container, doc) {
 
 export function update(doc) {
   loadDoc(doc);
-  // Re-render sections sem recriar tudo
-  renderSections();
-  renderCombos();
-  renderReviews();
-  renderNav();
-  populateHero();
+  populateStore();
+  renderCats();
+  renderMain();
 }
 
 function loadDoc(doc) {
-  const { categories: c, products: p, combos: co, reviews: r, ...storeFields } = doc;
-  store      = storeFields;
+  const { categories: c, products: p, combos: co, reviews: r, ...s } = doc;
+  store      = s;
   categories = c  || [];
   products   = p  || [];
   combos     = co || [];
@@ -44,589 +41,396 @@ function loadDoc(doc) {
 }
 
 // ═══════════════════════════════════════════════
-// HTML SHELL
+// HTML SHELL — layout Artisan Heritage
 // ═══════════════════════════════════════════════
 function buildHTML() {
   return `
-  <div class="mu" id="muBar">🔥 Pedidos abertos por mais <span id="mcd">--:--:--</span> 🔥</div>
-  <section class="mhero">
-    <div class="mhero-bg"></div>
-    <div class="porbit" id="porbit">🍕</div>
-    <div class="mhc">
-      <div class="mbadge">Sem taxas · Pedido direto</div>
-      <img id="mhlogo" class="mhlogo" src="" alt="Logo">
-      <h1 class="mhtitle"><span class="t1" id="mhN1">La Bella</span><span class="t2" id="mhN2">Pizza</span></h1>
-      <p class="mhtagline" id="mhTag">Feita com amor, entregue com sabor</p>
-      <div class="mdiv"><span>✦</span></div>
-      <div class="mstats">
-        <div class="mst"><span class="mi">⏱</span><span class="ml">Entrega</span><span class="mv" id="msTime">40–60 min</span></div>
-        <div class="mst"><span class="mi">🛵</span><span class="ml">Frete</span><span class="mv" id="msFee">A partir R$5</span></div>
-        <div class="mst"><span class="mi">⭐</span><span class="ml">Avaliação</span><span class="mv" id="msRating">4.9 (312)</span></div>
-        <div class="mst"><span class="mi">🕐</span><span class="ml">Hoje</span><span class="mv" id="msHours">18h–23h</span></div>
-      </div>
-      <button class="mcta" onclick="document.getElementById('mNav').scrollIntoView({behavior:'smooth'})">🍕 Ver Cardápio</button>
-    </div>
-  </section>
-  <nav class="mnav" id="mNav">
-    <div class="mnav-inner">
-      <div class="mnav-logo" id="mNavLogo">La <em>Bella</em></div>
-      <div class="mnav-cats" id="mNavCats"></div>
-      <button class="ctrig" onclick="toggleCart()">🛒<span class="cbadge" id="cbadge">0</span></button>
-    </div>
-  </nav>
-  <main class="mmain">
-    <div id="mSocial" class="sp-banner fi-anim">
-      <div class="sp-avatars" id="spAvatars"></div>
-      <div class="sp-txt"><strong id="spTxt">12 pessoas viram esse cardápio hoje</strong><span id="spSub">Última venda há 8 minutos</span></div>
-      <div class="sp-live"><div class="sp-dot"></div>Ao vivo</div>
-    </div>
-    <div id="mPromo" class="mpromo fi-anim"><div class="mpt"><strong id="mPromoTxt">🔥 Promoção!</strong></div><div class="mppill" id="mPromoTag">SÓ HOJE</div></div>
-    <div id="mCombosSection" class="combos-sec fi-anim">
-      <div class="msec-head"><h2 class="msec-title">🎁 <em>Combos</em> Especiais</h2><span class="msec-count" id="combosCount"></span></div>
-      <div class="combos-scroll" id="combosScroll"></div>
-    </div>
-    <div id="mMinBar" class="mbar fi-anim">
-      <div class="mbar-top"><span id="minLbl">Pedido mínimo: R$ 30</span><span id="minVal">R$ 0 / R$ 30</span></div>
-      <div class="pt"><div class="pf" id="pFill" style="width:0%"></div></div>
-    </div>
-    <div id="mSections"></div>
-    <div id="mReviewsSec" class="reviews-sec fi-anim">
-      <div class="reviews-header">
-        <div class="reviews-avg">
-          <span class="reviews-score" id="rvScore">4.9</span>
-          <div><div class="reviews-stars-big">⭐⭐⭐⭐⭐</div><div class="reviews-total" id="rvTotal">312 avaliações</div></div>
+  <div class="ah-root">
+    <!-- NAV sticky top-0 h-16 -->
+    <nav class="ah-nav" id="ah-nav">
+      <div class="ah-nav-inner">
+        <a href="#" class="ah-nav-logo" id="ah-nav-logo">Fornace</a>
+        <div class="ah-nav-right">
+          <div class="ah-nav-status">
+            <span class="ah-status-dot"></span>
+            <div>
+              <p class="ah-status-label">Aberto agora</p>
+              <p class="ah-status-hours" id="ah-hours">18h–23h</p>
+            </div>
+          </div>
+          <button class="ah-cart-pill" onclick="ahToggleCart()">
+            🛒 Carrinho
+            <span class="ah-cart-count" id="ah-cart-count">0</span>
+          </button>
         </div>
       </div>
-      <div class="reviews-grid" id="rvGrid"></div>
-    </div>
-  </main>
+    </nav>
 
-  <!-- ITEM MODAL -->
-  <div class="imbg" id="imbg" onclick="closeIM(event)">
-    <div class="imbox">
-      <div class="imimg" id="imImgWrap">
-        <img id="imImg" src="" alt="" style="display:none">
-        <div class="imnoimg" id="imNoImg">🍕</div>
-        <div class="imimg-ov"></div>
-        <button class="imclose" onclick="closeIMDirect()">✕</button>
+    <!-- HERO split: texto esquerda + imagem direita -->
+    <header class="ah-hero">
+      <div class="ah-hero-inner">
+        <div class="ah-hero-text">
+          <span class="ah-eyebrow">Forno a lenha · Massa 48h</span>
+          <h1 class="ah-h1">
+            <span id="ah-name-line1">A alma de</span><br>
+            <em id="ah-name-line2">Nápoles antiga.</em>
+          </h1>
+          <p class="ah-tagline" id="ah-tagline">Massa 48h de fermentação natural, forno a lenha a 485°C.</p>
+          <div class="ah-hero-meta">
+            <a href="tel:" class="ah-phone" id="ah-phone">(11) 4002-8922</a>
+            <span class="ah-sep">|</span>
+            <span class="ah-delivery-info">Entrega grátis acima de R$ 90</span>
+          </div>
+        </div>
+        <div class="ah-hero-img-wrap">
+          <img
+            id="ah-hero-img"
+            class="ah-hero-img"
+            src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80"
+            alt="Pizza artesanal"
+          >
+        </div>
       </div>
-      <div class="imbody">
-        <div class="im-cat" id="imCat"></div>
-        <div class="im-name" id="imName"></div>
-        <div class="im-social" id="imSocial"><div class="dot"></div><span id="imSocialTxt"></span></div>
-        <div class="im-desc" id="imDesc"></div>
-        <div class="im-lbl">Escolha o tamanho</div>
-        <div class="im-sizes" id="imSizes"></div>
+    </header>
+
+    <!-- CATEGORY STRIP sticky top-16 -->
+    <section class="ah-cats-strip" id="ah-cats-strip">
+      <div class="ah-cats-inner" id="ah-cats-inner">
+        <button class="ah-cat-chip active" onclick="ahSetCat('all', this)">Combos</button>
       </div>
-      <div class="imft">
-        <div class="im-total" id="imTotal">R$ 0</div>
-        <button class="im-add" onclick="addFromIM()">+ Adicionar ao pedido</button>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="ah-main" id="ah-menu">
+
+      <!-- COMBOS -->
+      <section class="ah-combos-sec" id="ah-combos-sec">
+        <h2 class="ah-sec-title">Combos em destaque</h2>
+        <div class="ah-combos-grid" id="ah-combos-grid"></div>
+      </section>
+
+      <!-- PRODUTOS -->
+      <section class="ah-products-sec" id="ah-products-sec">
+        <h2 class="ah-sec-title" id="ah-products-title">Le Pizze</h2>
+        <div class="ah-products-grid" id="ah-products-grid"></div>
+      </section>
+
+      <!-- REVIEWS faixa stone-100 -->
+      <section class="ah-reviews-sec" id="ah-reviews-sec">
+        <h2 class="ah-sec-title ah-reviews-title">O que dizem nossos vizinhos</h2>
+        <div class="ah-reviews-grid" id="ah-reviews-grid"></div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="ah-footer">
+      <p class="ah-footer-logo" id="ah-footer-logo">Fornace</p>
+      <p class="ah-footer-addr" id="ah-footer-addr">R. Aspicuelta, 421 — Vila Madalena</p>
+      <p class="ah-footer-copy" id="ah-footer-copy">© 2026 Fornace. Feito com carinho.</p>
+    </footer>
+
+    <!-- CART DRAWER -->
+    <div class="ah-cart-overlay" id="ah-cart-overlay" onclick="ahToggleCart()"></div>
+    <div class="ah-cart-drawer" id="ah-cart-drawer">
+      <div class="ah-cart-head">
+        <span class="ah-cart-title">🛒 Seu Pedido</span>
+        <button class="ah-cart-close" onclick="ahToggleCart()">✕</button>
       </div>
+      <div class="ah-cart-body" id="ah-cart-body">
+        <div class="ah-cart-empty">
+          <span>🍕</span>
+          <p>Carrinho vazio.<br>Escolha uma pizza!</p>
+        </div>
+      </div>
+      <div class="ah-cart-footer" id="ah-cart-footer" style="display:none">
+        <div class="ah-cart-freebar" id="ah-freebar">
+          🎉 Frete grátis acima de R$ 90
+          <div class="ah-freebar-track"><div class="ah-freebar-fill" id="ah-freebar-fill" style="width:0%"></div></div>
+        </div>
+        <div class="ah-cart-row"><span>Subtotal</span><span id="ah-cart-sub">R$ 0,00</span></div>
+        <div class="ah-cart-row"><span>Taxa de entrega</span><span id="ah-cart-fee">R$ 7,00</span></div>
+        <div class="ah-cart-total"><span>Total</span><span id="ah-cart-ttl">R$ 0,00</span></div>
+        <input class="ah-input" id="ah-name" type="text" placeholder="Seu nome">
+        <input class="ah-input" id="ah-addr" type="text" placeholder="Endereço de entrega">
+        <button class="ah-order-btn" onclick="ahCheckout()">Fechar pelo WhatsApp 🍕</button>
+      </div>
+    </div>
+
+    <!-- STICKY WHATSAPP CTA (aparece quando tem itens) -->
+    <div class="ah-wa-cta" id="ah-wa-cta" style="display:none" onclick="ahToggleCart()">
+      <span class="ah-wa-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </span>
+      <span class="ah-wa-txt">Fechar pelo WhatsApp</span>
+      <span class="ah-wa-total" id="ah-wa-total">R$ 0,00</span>
     </div>
   </div>
-
-  <!-- CART -->
-  <div class="cov" id="cov" onclick="toggleCart()"></div>
-  <div class="cdr" id="cdr">
-    <div class="chd"><div class="chd-t">🛒 Seu Pedido</div><button class="cx" onclick="toggleCart()">✕</button></div>
-    <div class="cbody" id="cbody"><div class="cempty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div></div>
-    <div class="cft" id="cft" style="display:none">
-      <div id="upsellWrap"></div>
-      <div class="crow2"><span>Subtotal</span><span id="cSub">R$ 0,00</span></div>
-      <div class="crow2"><span>Taxa de entrega</span><span id="cFee">R$ 5,00</span></div>
-      <div class="cttl"><span>Total</span><span id="cTtl">R$ 0,00</span></div>
-      <div class="mwarn" id="cWarn" style="display:none">⚠️ Pedido mínimo R$<span id="cWarnMin">30</span>. Faltam R$<span id="cWarnDiff">30</span></div>
-      <input class="fi2" type="text" id="cName" placeholder="Seu nome">
-      <input class="fi2" type="text" id="cAddr" placeholder="Endereço de entrega">
-      <button class="obtn" onclick="checkout()">Fazer Pedido 🍕</button>
-    </div>
-  </div>
-
-  <footer class="mfoot">
-    <div class="mfl" id="mFootName">La <em>Bella</em> Pizza</div>
-    <div class="mfi2" id="mFootAddr">Rua das Flores, 123 — Centro</div>
-    <div class="mfi2" id="mFootPhone">📞 (13) 99999-9999</div>
-    <div class="mpow">Powered by Pizzaria Cheia ✦</div>
-  </footer>
   `;
 }
 
 // ═══════════════════════════════════════════════
-// BOOT — bind events e render inicial
+// BOOT
 // ═══════════════════════════════════════════════
 function boot() {
-  populateHero();
-  renderNav();
-  renderSections();
-  renderCombos();
-  renderReviews();
-  startSocialProof();
-  startCountdown();
-  initScrollObserver();
-  hideDisabledFeatures();
+  populateStore();
+  renderCats();
+  renderMain();
+  window.ahToggleCart  = ahToggleCart;
+  window.ahSetCat      = ahSetCat;
+  window.ahCheckout    = ahCheckout;
+  window.ahAdd         = ahAdd;
+  window.ahDec         = ahDec;
+  window.ahChangeQty   = ahChangeQty;
+}
 
-  // Expose globals needed by inline handlers
-  window.toggleCart    = toggleCart;
-  window.openIM        = openIM;
-  window.closeIM       = closeIM;
-  window.closeIMDirect = closeIMDirect;
-  window.addFromIM     = addFromIM;
-  window.checkout      = checkout;
-  window.addToCart     = addToCart;
-  window.addComboToCart = addComboToCart;
-  window.changeQty     = changeQty;
-  window.showToast     = showToast;
+function populateStore() {
+  const n = store.name || 'Fornace';
+  if ($('ah-nav-logo'))      $('ah-nav-logo').textContent      = n;
+  if ($('ah-name-line1'))    $('ah-name-line1').textContent    = 'A alma de';
+  if ($('ah-name-line2'))    $('ah-name-line2').textContent    = n;
+  if ($('ah-tagline'))       $('ah-tagline').textContent       = store.tagline || '';
+  if ($('ah-hours'))         $('ah-hours').textContent         = store.hours   || '';
+  if ($('ah-phone'))         $('ah-phone').textContent         = store.phone   || '';
+  if ($('ah-phone'))         $('ah-phone').href                = `tel:${store.phone || ''}`;
+  if ($('ah-footer-logo'))   $('ah-footer-logo').textContent   = n;
+  if ($('ah-footer-addr'))   $('ah-footer-addr').textContent   = store.address || store.addr || '';
+  if ($('ah-footer-copy'))   $('ah-footer-copy').textContent   = `© 2026 ${n}. Feito com carinho.`;
+  const fee = store.fee ?? 7;
+  if ($('ah-cart-fee'))      $('ah-cart-fee').textContent      = fmtR(fee);
 }
 
 // ═══════════════════════════════════════════════
-// POPULATE
+// CATEGORIES
 // ═══════════════════════════════════════════════
-function populateHero() {
-  const n = store.name || 'La Bella';
-  const [p1, ...rest] = n.trim().split(' ');
-  $('mhN1').textContent = p1 || n;
-  $('mhN2').textContent = rest.join(' ') || '';
-  $('mhTag').textContent = store.tagline || '';
-  $('msTime').textContent   = store.deliveryTime || '40–60 min';
-  $('msFee').textContent    = store.fee ? `A partir R$${store.fee}` : 'A partir R$5';
-  $('msRating').textContent = store.rating || '4.9 ★';
-  $('msHours').textContent  = store.hours || '';
-  $('mFootName').innerHTML  = `${p1 || n} <em>${rest.join(' ')}</em>`;
-  $('mFootAddr').textContent  = store.addr  || '';
-  $('mFootPhone').textContent = `📞 ${store.phone || ''}`;
-
-  const logo = $('mhlogo');
-  if (store.logo) { logo.src = store.logo; logo.classList.add('show'); }
-  else logo.classList.remove('show');
-
-  $('mPromoTxt').textContent = store.promoTxt || '';
-  $('mPromoTag').textContent = store.promoTag || 'SÓ HOJE';
-  if (!store.promoTxt) $('mPromo').style.display = 'none';
-
-  const minVal = store.minOrder || 30;
-  $('minLbl').textContent = `Pedido mínimo: R$ ${minVal}`;
-  $('minVal').textContent = `R$ 0 / R$ ${minVal}`;
-}
-
-function renderNav() {
-  const n = store.name || 'La Bella';
-  const [p1, ...rest] = n.trim().split(' ');
-  $('mNavLogo').innerHTML = `${p1} <em>${rest.join(' ')}</em>`;
-  $('mNavCats').innerHTML = categories.map((c) =>
-    `<button class="mnc" onclick="scrollToSec('sec-${c.id}',this)">${c.emoji} ${c.name}</button>`
+function renderCats() {
+  const inner = $('ah-cats-inner');
+  if (!inner) return;
+  const combosBtn = `<button class="ah-cat-chip ${activeCat === 'all' ? 'active' : ''}" onclick="ahSetCat('all', this)">Combos</button>`;
+  const catBtns = categories.map(c =>
+    `<button class="ah-cat-chip ${activeCat === c.id ? 'active' : ''}" onclick="ahSetCat('${c.id}', this)">${c.emoji ? c.emoji + ' ' : ''}${c.name}</button>`
   ).join('');
-  window.scrollToSec = (id, btn) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.scrollIntoView({ behavior: 'smooth' });
-    document.querySelectorAll('.mnc').forEach((b) => b.classList.remove('active'));
-    btn.classList.add('active');
-  };
+  inner.innerHTML = combosBtn + catBtns;
 }
 
+window.ahSetCat = function(catId, btn) {
+  activeCat = catId;
+  document.querySelectorAll('.ah-cat-chip').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderMain();
+};
+
 // ═══════════════════════════════════════════════
-// SECTIONS
+// MAIN CONTENT RENDER
 // ═══════════════════════════════════════════════
-function renderSections() {
-  $('mSections').innerHTML = categories.map((cat) => {
-    const catProducts = products.filter((p) => p.cat === cat.id && p.active !== false);
-    if (!catProducts.length) return '';
-    if (cat.display === 'featured') return renderFeaturedSection(cat, catProducts);
-    if (cat.display === 'list')     return renderListSection(cat, catProducts);
-    return renderGridSection(cat, catProducts);
+function renderMain() {
+  renderCombos();
+  renderProducts();
+  renderReviews();
+}
+
+function renderCombos() {
+  const sec  = $('ah-combos-sec');
+  const grid = $('ah-combos-grid');
+  if (!sec || !grid) return;
+  if (activeCat !== 'all' || !combos.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  grid.innerHTML = combos.filter(c => c.active !== false).map(c => {
+    const disc = c.origPrice || c.originalPrice;
+    return `
+    <article class="ah-combo-card">
+      <div class="ah-combo-img-wrap">
+        ${c.img || c.image
+          ? `<img src="${c.img || c.image}" alt="${c.name}" class="ah-combo-img">`
+          : `<div class="ah-combo-img-placeholder">🎁</div>`}
+      </div>
+      <div class="ah-combo-body">
+        <div class="ah-combo-head">
+          <h3 class="ah-combo-name">${c.name}</h3>
+          <div class="ah-combo-price-wrap">
+            ${disc ? `<span class="ah-combo-old">${fmtR(disc)}</span>` : ''}
+            <span class="ah-combo-price">${fmtR(c.price)}</span>
+          </div>
+        </div>
+        <p class="ah-combo-desc">${c.desc || c.description || c.items || ''}</p>
+        <button class="ah-combo-btn" onclick="ahAddCombo('${c.id}')">Adicionar ao pedido</button>
+      </div>
+    </article>`;
   }).join('');
 }
 
-function renderGridSection(cat, items) {
-  return `<div class="msec fi-anim" id="sec-${cat.id}">
-    <div class="msec-head"><h2 class="msec-title">${cat.emoji} <em>${cat.name}</em></h2><span class="msec-count">${items.length} itens</span></div>
-    <div class="mgrid">${items.map((p) => cardHTML(p, cat)).join('')}</div>
-  </div>`;
-}
-
-function renderFeaturedSection(cat, items) {
-  const [feat, ...rest] = items;
-  return `<div class="msec fi-anim" id="sec-${cat.id}">
-    <div class="msec-head"><h2 class="msec-title">${cat.emoji} <em>${cat.name}</em></h2><span class="msec-count">${items.length} itens</span></div>
-    ${featCardHTML(feat, cat)}
-    ${rest.length ? `<div class="mgrid">${rest.map((p) => cardHTML(p, cat)).join('')}</div>` : ''}
-  </div>`;
-}
-
-function renderListSection(cat, items) {
-  return `<div class="msec fi-anim" id="sec-${cat.id}">
-    <div class="msec-head"><h2 class="msec-title">${cat.emoji} <em>${cat.name}</em></h2><span class="msec-count">${items.length} itens</span></div>
-    <div class="mlist">${items.map((p) => listItemHTML(p, cat)).join('')}</div>
-  </div>`;
-}
-
-function cardHTML(p, cat) {
-  const price = p.prices?.[0] ?? 0;
-  return `<div class="mcard" onclick="openIM('${p.id}')">
-    <div class="mcard-img">
-      ${p.img ? `<img src="${p.img}" alt="${p.name}">` : `<div class="mcard-noimg">🍕</div>`}
-      <div class="mcard-ov"></div>
-    </div>
-    <div class="mcard-body">
-      <div class="mcard-cat">${cat.name}</div>
-      <div class="mcard-name">${p.name}</div>
-      <div class="mcard-desc">${p.desc}</div>
-      ${cat.type === 'sizes' ? sizeTagsHTML(p) : ''}
-      <div class="mcard-foot">
-        <div class="mcard-pr"><sup>R$</sup>${price}</div>
-        <button class="miadd" onclick="event.stopPropagation();addToCart('${p.id}',0)">+</button>
+function renderProducts() {
+  const grid  = $('ah-products-grid');
+  const title = $('ah-products-title');
+  if (!grid) return;
+  let visible = activeCat === 'all'
+    ? products
+    : products.filter(p => p.cat === activeCat || p.category === activeCat);
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    visible = visible.filter(p => p.name.toLowerCase().includes(q) || (p.desc || p.description || '').toLowerCase().includes(q));
+  }
+  visible = visible.filter(p => p.active !== false);
+  if (title) {
+    if (activeCat === 'all') {
+      title.textContent = 'Le Pizze';
+    } else {
+      const cat = categories.find(c => c.id === activeCat);
+      title.textContent = cat ? `${cat.emoji ? cat.emoji + ' ' : ''}${cat.name}` : '';
+    }
+  }
+  grid.innerHTML = visible.map(p => {
+    const price = p.prices?.[0] ?? p.price ?? 0;
+    return `
+    <article class="ah-product-card">
+      <div class="ah-product-img-wrap">
+        ${p.img || p.image
+          ? `<img src="${p.img || p.image}" alt="${p.name}" class="ah-product-img">`
+          : `<div class="ah-product-img-placeholder">🍕</div>`}
       </div>
-    </div>
-  </div>`;
-}
-
-function featCardHTML(p, cat) {
-  const price = p.prices?.[0] ?? 0;
-  return `<div class="mfeat" onclick="openIM('${p.id}')">
-    <div class="mfi">
-      ${p.img ? `<img src="${p.img}" alt="${p.name}"><div class="mfi-tag">Destaque</div>` : `<div class="mcard-noimg" style="height:100%">🍕</div>`}
-    </div>
-    <div class="mfb">
-      <div class="mfcat">${cat.name}</div>
-      <div class="mfname">${p.name}</div>
-      <div class="mfdesc">${p.desc}</div>
-      <div class="item-social"><div class="dot"></div>${Math.floor(Math.random()*30+5)} pessoas pediram hoje</div>
-      <div class="mff">
-        <div class="mpr"><sup>R$</sup>${price}</div>
-        <button class="madd-btn" onclick="event.stopPropagation();addToCart('${p.id}',0)">+ Adicionar</button>
+      <div class="ah-product-meta">
+        <h3 class="ah-product-name">${p.name}</h3>
+        <span class="ah-product-price">${fmtR(price)}</span>
       </div>
-    </div>
-  </div>`;
+      <p class="ah-product-desc">${p.desc || p.description || ''}</p>
+      <button class="ah-product-add" onclick="ahAdd('${p.id}')">+ Adicionar ao pedido</button>
+    </article>`;
+  }).join('');
 }
 
-function listItemHTML(p, cat) {
-  const price = p.prices?.[0] ?? 0;
-  return `<div class="mlist-item" onclick="openIM('${p.id}')">
-    <div class="mlist-img">${p.img ? `<img src="${p.img}" alt="${p.name}">` : '🍕'}</div>
-    <div class="mlist-info"><div class="mlist-name">${p.name}</div><div class="mlist-desc">${p.desc}</div></div>
-    <div class="mlist-right">
-      <div class="mlist-pr">R$ ${price}</div>
-      <button class="mlist-add" onclick="event.stopPropagation();addToCart('${p.id}',0)">+</button>
-    </div>
-  </div>`;
-}
-
-function sizeTagsHTML(p) {
-  const labels = ['P', 'M', 'G'];
-  return `<div class="mcard-sizes">${(p.prices || []).map((pr, i) => `<span class="msz">${labels[i]}: R$${pr}</span>`).join('')}</div>`;
-}
-
-// ═══════════════════════════════════════════════
-// COMBOS
-// ═══════════════════════════════════════════════
-function renderCombos() {
-  const sec = $('mCombosSection');
-  if (!combos.length) { sec.style.display = 'none'; return; }
-  sec.style.display = 'block';
-  $('combosCount').textContent = `${combos.length} opção${combos.length > 1 ? 'ões' : ''}`;
-  $('combosScroll').innerHTML = combos.filter((c) => c.active !== false).map((c) => `
-    <div class="combo-card" onclick="addComboToCart('${c.id}')">
-      <div class="combo-card-img">
-        ${c.img ? `<img src="${c.img}" alt="${c.name}">` : `<div class="mcard-noimg" style="height:100%">🎁</div>`}
-        ${c.saving ? `<div class="combo-save-badge">${c.saving}</div>` : ''}
-      </div>
-      <div class="combo-card-body">
-        <div class="combo-card-name">${c.name}</div>
-        <div class="combo-card-items">${c.items}</div>
-        <div class="combo-card-foot">
-          <div>${c.origPrice ? `<span class="combo-old-price">R$${c.origPrice}</span>` : ''}<span class="combo-new-price">R$${c.price}</span></div>
-          <button class="combo-add-btn" onclick="event.stopPropagation();addComboToCart('${c.id}')">+ Pedir</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ═══════════════════════════════════════════════
-// REVIEWS
-// ═══════════════════════════════════════════════
 function renderReviews() {
-  const sec = $('mReviewsSec');
-  if (!reviews.length) { sec.style.display = 'none'; return; }
+  const sec  = $('ah-reviews-sec');
+  const grid = $('ah-reviews-grid');
+  if (!sec || !grid) return;
+  const pub = (reviews || []).filter(r => r.published !== false);
+  if (!pub.length) { sec.style.display = 'none'; return; }
   sec.style.display = 'block';
-  const avg = (reviews.reduce((s, r) => s + (r.stars || 5), 0) / reviews.length).toFixed(1);
-  $('rvScore').textContent = avg;
-  $('rvTotal').textContent = `${reviews.length} avaliações`;
-  $('rvGrid').innerHTML = reviews.map((r) => `
-    <div class="review-card">
-      <div class="rc-top">
-        <div class="rc-av">${r.avatar ? `<img src="${r.avatar}">` : '👤'}</div>
-        <div>
-          <div class="rc-name">${r.name}</div>
-          <div class="rc-stars">${'⭐'.repeat(r.stars || 5)}</div>
-          <div class="rc-date">${r.date || ''}</div>
-        </div>
-      </div>
-      <div class="rc-text">${r.text}</div>
-      ${r.product ? `<div class="rc-product">📦 ${r.product}</div>` : ''}
+  grid.innerHTML = pub.map(r => `
+    <div class="ah-review-card">
+      <div class="ah-review-stars">★★★★★</div>
+      <p class="ah-review-text">"${r.text}"</p>
+      <p class="ah-review-author">— ${r.name || r.author}</p>
+      ${r.role ? `<p class="ah-review-role">${r.role}</p>` : ''}
     </div>
   `).join('');
 }
-
-// ═══════════════════════════════════════════════
-// ITEM MODAL
-// ═══════════════════════════════════════════════
-let imCurrentPid = null;
-
-window.openIM = function openIM(pid) {
-  imCurrentPid = pid;
-  const p   = products.find((x) => x.id === pid);
-  const cat = categories.find((c) => c.id === p?.cat);
-  if (!p) return;
-
-  $('imCat').textContent  = cat?.name || '';
-  $('imName').textContent = p.name;
-  $('imDesc').textContent = p.desc;
-  $('imSocialTxt').textContent = `${Math.floor(Math.random()*20+3)} pessoas pediram hoje`;
-
-  const imgEl = $('imImg'); const noImg = $('imNoImg');
-  if (p.img) { imgEl.src = p.img; imgEl.style.display = 'block'; noImg.style.display = 'none'; }
-  else { imgEl.style.display = 'none'; noImg.style.display = 'flex'; }
-
-  const isSizes = cat?.type === 'sizes';
-  const labels  = ['Pequeno', 'Médio', 'Grande'];
-  $('imSizes').innerHTML = (p.prices || []).map((price, i) => `
-    <div class="imsz ${i === 0 ? 'sel' : ''}" onclick="selectSize(this, ${price})">
-      <span class="imsz-l">${isSizes ? labels[i] : 'Tamanho'}</span>
-      <span class="imsz-d">${isSizes ? ['P', 'M', 'G'][i] : '—'}</span>
-      <span class="imsz-p">R$${price}</span>
-    </div>
-  `).join('');
-
-  $('imTotal').textContent = `R$ ${p.prices?.[0] || 0}`;
-  $('imbg').classList.add('on');
-
-  window.selectSize = (el, price) => {
-    document.querySelectorAll('.imsz').forEach((x) => x.classList.remove('sel'));
-    el.classList.add('sel');
-    $('imTotal').textContent = `R$ ${price}`;
-  };
-};
-
-window.closeIM = function closeIM(e) {
-  if (e.target === $('imbg')) $('imbg').classList.remove('on');
-};
-window.closeIMDirect = function () { $('imbg').classList.remove('on'); };
-
-window.addFromIM = function addFromIM() {
-  const sel = document.querySelector('.imsz.sel');
-  if (!sel) return;
-  const price = parseFloat(sel.querySelector('.imsz-p').textContent.replace('R$', ''));
-  const sizeLabel = sel.querySelector('.imsz-l').textContent;
-  const p = products.find((x) => x.id === imCurrentPid);
-  cart.push({ id: Date.now(), name: p.name, size: sizeLabel, price, img: p.img });
-  $('imbg').classList.remove('on');
-  renderCart();
-  showToast('✅ Adicionado ao pedido!');
-};
 
 // ═══════════════════════════════════════════════
 // CART
 // ═══════════════════════════════════════════════
-window.addToCart = function addToCart(pid, sizeIdx) {
-  const p = products.find((x) => x.id === pid);
+window.ahAdd = function(pid) {
+  const p = products.find(x => x.id === pid);
   if (!p) return;
-  const price = p.prices?.[sizeIdx] ?? p.prices?.[0] ?? 0;
-  const cat   = categories.find((c) => c.id === p.cat);
-  const labels = ['P', 'M', 'G'];
-  const size  = cat?.type === 'sizes' ? labels[sizeIdx] : '';
-  cart.push({ id: Date.now(), name: p.name, size, price, img: p.img });
+  const price = p.prices?.[0] ?? p.price ?? 0;
+  const found = cart.find(i => i.id === pid);
+  if (found) { found.qty++; } else { cart.push({ id: pid, name: p.name, price, img: p.img || p.image, qty: 1 }); }
   renderCart();
-  showToast('✅ Adicionado!');
+  showToastMsg('✅ Adicionado!');
 };
 
-window.addComboToCart = function addComboToCart(cid) {
-  const c = combos.find((x) => x.id === cid);
+window.ahAddCombo = function(cid) {
+  const c = combos.find(x => x.id === cid);
   if (!c) return;
-  cart.push({ id: Date.now(), name: c.name, size: 'Combo', price: c.price, img: c.img });
+  const found = cart.find(i => i.id === cid);
+  if (found) { found.qty++; } else { cart.push({ id: cid, name: c.name, price: c.price, img: c.img || c.image, qty: 1 }); }
   renderCart();
-  showToast('✅ Combo adicionado!');
+  showToastMsg('✅ Combo adicionado!');
 };
 
-window.changeQty = function changeQty(cartId, delta) {
-  const idx = cart.findIndex((x) => x.id === cartId);
+window.ahDec = function(pid) {
+  const idx = cart.findIndex(i => i.id === pid);
   if (idx === -1) return;
-  cart[idx].qty = (cart[idx].qty || 1) + delta;
+  cart[idx].qty--;
   if (cart[idx].qty <= 0) cart.splice(idx, 1);
   renderCart();
 };
 
+window.ahChangeQty = function(pid, delta) {
+  const item = cart.find(i => i.id === pid);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart.splice(cart.indexOf(item), 1);
+  renderCart();
+};
+
 function renderCart() {
-  const count = cart.length;
-  const badge = $('cbadge');
-  badge.textContent = count;
-  badge.classList.toggle('on', count > 0);
+  const count      = cart.reduce((s, i) => s + i.qty, 0);
+  const cartTotal  = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const fee        = cartTotal >= 90 ? 0 : (store.fee ?? 7);
+  const total      = cartTotal + fee;
+  const freeThresh = 90;
+  const remaining  = Math.max(0, freeThresh - cartTotal);
+
+  // pill badge
+  const pill = $('ah-cart-count');
+  if (pill) pill.textContent = count;
+
+  // sticky WA cta
+  const waCta = $('ah-wa-cta');
+  if (waCta) {
+    waCta.style.display = count > 0 ? 'flex' : 'none';
+    const waTotal = $('ah-wa-total');
+    if (waTotal) waTotal.textContent = fmtR(cartTotal);
+  }
 
   if (!count) {
-    $('cbody').innerHTML = `<div class="cempty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div>`;
-    $('cft').style.display = 'none';
+    $('ah-cart-body').innerHTML = `<div class="ah-cart-empty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div>`;
+    if ($('ah-cart-footer')) $('ah-cart-footer').style.display = 'none';
     return;
   }
 
-  const sub  = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
-  const fee  = store.fee ?? 5;
-  const total = sub + fee;
-  const min  = store.minOrder ?? 30;
-
-  $('cbody').innerHTML = cart.map((item) => `
-    <div class="ci">
-      <div class="ci-img">${item.img ? `<img src="${item.img}" alt="">` : '🍕'}</div>
-      <div class="ci-info">
-        <div class="ci-nm">${item.name}</div>
-        <div class="ci-sz">${item.size}</div>
-        <div class="ci-pr">${fmtR(item.price)}</div>
-        <div class="ci-ctrl">
-          <button class="qb" onclick="changeQty(${item.id}, -1)">−</button>
-          <span class="qn">${item.qty || 1}</span>
-          <button class="qb" onclick="changeQty(${item.id}, +1)">+</button>
+  $('ah-cart-body').innerHTML = cart.map(item => `
+    <div class="ah-ci">
+      <div class="ah-ci-img">${item.img ? `<img src="${item.img}" alt="">` : '🍕'}</div>
+      <div class="ah-ci-info">
+        <div class="ah-ci-name">${item.name}</div>
+        <div class="ah-ci-price">${fmtR(item.price)}</div>
+        <div class="ah-ci-ctrl">
+          <button class="ah-qb" onclick="ahChangeQty('${item.id}', -1)">−</button>
+          <span class="ah-qn">${item.qty}</span>
+          <button class="ah-qb" onclick="ahChangeQty('${item.id}', +1)">+</button>
         </div>
       </div>
     </div>
   `).join('');
 
-  $('cSub').textContent = fmtR(sub);
-  $('cFee').textContent = fmtR(fee);
-  $('cTtl').textContent = fmtR(total);
-  $('cft').style.display = 'block';
+  if ($('ah-cart-footer')) $('ah-cart-footer').style.display = 'block';
+  if ($('ah-cart-sub'))    $('ah-cart-sub').textContent  = fmtR(cartTotal);
+  if ($('ah-cart-fee'))    $('ah-cart-fee').textContent  = fee === 0 ? 'Grátis 🎉' : fmtR(fee);
+  if ($('ah-cart-ttl'))    $('ah-cart-ttl').textContent  = fmtR(total);
 
-  const warn = $('cWarn');
-  if (sub < min) {
-    warn.style.display = 'block';
-    $('cWarnMin').textContent  = min;
-    $('cWarnDiff').textContent = (min - sub).toFixed(2);
-  } else {
-    warn.style.display = 'none';
+  // free shipping bar
+  const pct = Math.min(100, (cartTotal / freeThresh) * 100);
+  if ($('ah-freebar-fill')) $('ah-freebar-fill').style.width = pct + '%';
+  const freebar = $('ah-freebar');
+  if (freebar) {
+    freebar.innerHTML = cartTotal >= freeThresh
+      ? '🎉 Frete grátis desbloqueado! <div class="ah-freebar-track"><div class="ah-freebar-fill" id="ah-freebar-fill" style="width:100%"></div></div>'
+      : `🎉 Faltam ${fmtR(remaining)} para frete grátis <div class="ah-freebar-track"><div class="ah-freebar-fill" id="ah-freebar-fill" style="width:${pct}%"></div></div>`;
   }
-
-  updateMinBar(sub);
-  renderUpsell();
 }
 
-function updateMinBar(sub) {
-  const min = store.minOrder ?? 30;
-  const pct = Math.min(100, (sub / min) * 100);
-  const fill = $('pFill');
-  if (fill) fill.style.width = pct + '%';
-  const valEl = $('minVal');
-  if (valEl) valEl.textContent = `R$ ${sub.toFixed(2)} / R$ ${min}`;
-}
-
-function renderUpsell() {
-  const wrap = $('upsellWrap');
-  if (!wrap || !(store.features?.upsell ?? true)) return;
-  const cartNames = cart.map((i) => i.name);
-  const suggestions = products.filter((p) => p.active !== false && !cartNames.includes(p.name)).slice(0, 2);
-  if (!suggestions.length) { wrap.innerHTML = ''; return; }
-  wrap.innerHTML = `<div class="upsell">
-    <div class="upsell-title">✨ Adicionar ao pedido</div>
-    <div class="upsell-items">${suggestions.map((p) => `
-      <div class="upsell-item">
-        <div class="upsell-item-img">${p.img ? `<img src="${p.img}" alt="">` : '🍕'}</div>
-        <div class="upsell-item-info">
-          <div class="upsell-item-name">${p.name}</div>
-          <div class="upsell-item-price">R$ ${p.prices?.[0] ?? 0}</div>
-        </div>
-        <button class="upsell-add" onclick="addToCart('${p.id}',0)">+ Add</button>
-      </div>`).join('')}
-    </div>
-  </div>`;
-}
-
-window.toggleCart = function toggleCart() {
-  $('cdr').classList.toggle('on');
-  $('cov').classList.toggle('on');
+window.ahToggleCart = function() {
+  $('ah-cart-drawer')?.classList.toggle('open');
+  $('ah-cart-overlay')?.classList.toggle('on');
 };
 
-window.checkout = function checkout() {
-  const name = $('cName').value.trim();
-  const addr = $('cAddr').value.trim();
-  if (!name || !addr) { showToast('⚠️ Informe nome e endereço', 'red'); return; }
-  const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
-  const min = store.minOrder ?? 30;
-  if (sub < min) { showToast(`⚠️ Mínimo R$${min}`, 'red'); return; }
-  const fee   = store.fee ?? 5;
-  const total = sub + fee;
-  const lines = cart.map((i) => `• ${item.name}${i.size ? ' (' + i.size + ')' : ''} — R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
-  const msg   = encodeURIComponent(`🍕 *Novo Pedido*\n\n${lines}\n\n*Taxa:* R$${fee}\n*Total:* R$${total.toFixed(2)}\n\n*Nome:* ${name}\n*Endereço:* ${addr}`);
-  const phone = (store.phone || '').replace(/\D/g, '');
+window.ahCheckout = function() {
+  const name = $('ah-name')?.value.trim();
+  const addr = $('ah-addr')?.value.trim();
+  if (!name || !addr) { showToastMsg('⚠️ Informe nome e endereço', 'red'); return; }
+  const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const fee       = cartTotal >= 90 ? 0 : (store.fee ?? 7);
+  const total     = cartTotal + fee;
+  const lines     = cart.map(i => `• ${i.name} x${i.qty} — ${fmtR(i.price * i.qty)}`).join('\n');
+  const msg       = encodeURIComponent(`🍕 *Novo Pedido*\n\n${lines}\n\n*Taxa:* ${fmtR(fee)}\n*Total:* ${fmtR(total)}\n\n*Nome:* ${name}\n*Endereço:* ${addr}`);
+  const phone     = (store.phone || '').replace(/\D/g, '');
   window.open(`https://wa.me/55${phone}?text=${msg}`, '_blank');
 };
 
-// ═══════════════════════════════════════════════
-// COUNTDOWN
-// ═══════════════════════════════════════════════
-function startCountdown() {
-  const urgencyEnabled = store.features?.urgency ?? true;
-  const bar = $('muBar');
-  if (!urgencyEnabled) { bar.style.display = 'none'; return; }
-  const closeTime = store.closeTime || '23:00';
-  function tick() {
-    const now    = new Date();
-    const [h, m] = closeTime.split(':').map(Number);
-    const close  = new Date(); close.setHours(h, m, 0, 0);
-    const diff   = close - now;
-    if (diff <= 0) { bar.style.display = 'none'; return; }
-    const hh = String(Math.floor(diff / 3600000)).padStart(2, '0');
-    const mm = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-    const ss = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-    $('mcd').textContent = `${hh}:${mm}:${ss}`;
-  }
-  tick(); setInterval(tick, 1000);
-}
-
-// ═══════════════════════════════════════════════
-// SOCIAL PROOF
-// ═══════════════════════════════════════════════
-function startSocialProof() {
-  const enabled = store.features?.social ?? true;
-  const sec = $('mSocial');
-  if (!enabled) { sec.style.display = 'none'; return; }
-  const count = Math.floor(Math.random() * 30 + 10);
-  $('spTxt').textContent = `${count} pessoas viram esse cardápio hoje`;
-  $('spSub').textContent = `Última venda há ${Math.floor(Math.random()*20+1)} minutos`;
-  const avatarEmojis = ['👩', '👨', '🧔', '👩‍🦱', '👩‍🦰', '🧑', '🧑‍🍳'];
-  $('spAvatars').innerHTML = avatarEmojis.slice(0, 5).map((e) =>
-    `<div class="sp-av">${e}</div>`
-  ).join('');
-}
-
-// ═══════════════════════════════════════════════
-// FEATURES
-// ═══════════════════════════════════════════════
-function hideDisabledFeatures() {
-  const f = store.features || {};
-  if (!(f.promo   ?? true)) $('mPromo').style.display   = 'none';
-  if (!(f.combos  ?? true)) $('mCombosSection').style.display = 'none';
-  if (!(f.minbar  ?? true)) $('mMinBar').style.display  = 'none';
-  if (!(f.reviews ?? true)) $('mReviewsSec').style.display = 'none';
-  if (!(f.orbit   ?? true)) $('porbit').style.display   = 'none';
-}
-
-// ═══════════════════════════════════════════════
-// SCROLL OBSERVER (fade-in)
-// ═══════════════════════════════════════════════
-function initScrollObserver() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('vis'), i * 80);
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fi-anim').forEach((el) => obs.observe(el));
-}
-
-// ═══════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════
-function showToast(msg, type = '') {
-  const t = $('toast');
+function showToastMsg(msg, type = '') {
+  const t = document.getElementById('toast');
+  if (!t) return;
   t.textContent = msg;
   t.className   = 'toast' + (type ? ' ' + type : '');
   t.classList.add('on');

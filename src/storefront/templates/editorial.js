@@ -1,19 +1,22 @@
 /**
- * editorial.js — Template Editorial
- * Layout claro e clean: hero persuasivo, busca integrada,
- * barra de frete grátis, stepper de quantidade e carrinho drawer.
+ * editorial.js — Template Editorial (Conversão)
+ * Fundo #f7f4ef quente, trust badges, stepper direto no card,
+ * busca integrada sticky, progresso frete grátis e drawer lateral.
+ * Fiel ao ZIP "Templates ideias/loja-editorial.zip".
  */
 
 import '../../styles/templates/editorial.css';
 
 let store = {}, categories = [], products = [], combos = [], reviews = [];
-let cart = [];
-let imCurrentPid = null;
-let imQty = 1;
-let searchQuery = '';
+let cart       = [];
+let activeCat  = 'all';
+let searchQ    = '';
+let cartOpen   = false;
 
 const fmtR = (v) => `R$ ${Number(v).toFixed(2).replace('.', ',')}`;
 const $ = (id) => document.getElementById(id);
+
+const FREE_SHIP = 90; // limiar para frete grátis
 
 // ═══════════════════════════════════════════════
 export async function init(container, doc) {
@@ -24,10 +27,10 @@ export async function init(container, doc) {
 
 export function update(doc) {
   loadDoc(doc);
-  renderSections();
+  populateStore();
+  renderCats();
+  renderProducts();
   renderCombos();
-  renderReviews();
-  populateHero();
 }
 
 function loadDoc(doc) {
@@ -40,106 +43,209 @@ function loadDoc(doc) {
 // ═══════════════════════════════════════════════
 function buildHTML() {
   return `
-  <div class="ed-topbar" id="ed-topbar">🔥 Pedidos abertos • <span id="ed-countdown">--:--:--</span></div>
-  <header class="ed-hero">
-    <div class="ed-hero-inner">
-      <img id="ed-logo" class="ed-logo" src="" alt="" style="display:none">
-      <h1 class="ed-store-name" id="ed-store-name">La Bella Pizza</h1>
-      <p class="ed-tagline" id="ed-tagline">Feita com amor, entregue com sabor</p>
-      <div class="ed-stats">
-        <div class="ed-stat">⏱ <strong id="ed-time">40–60 min</strong></div>
-        <div class="ed-stat">🛵 <strong id="ed-fee">Frete R$5</strong></div>
-        <div class="ed-stat">⭐ <strong id="ed-rating">4.9</strong></div>
-        <div class="ed-stat">🕐 <strong id="ed-hours">18h–23h</strong></div>
-      </div>
-      <div class="ed-free-bar" id="ed-free-bar">
-        🎉 Frete grátis acima de R$ <span id="ed-free-threshold">50</span>
-        <div class="ed-progress"><div class="ed-progress-fill" id="ed-free-fill" style="width:0%"></div></div>
-      </div>
-    </div>
-  </header>
+  <div class="ed2-root">
 
-  <nav class="ed-nav">
-    <div class="ed-nav-inner">
-      <div class="ed-nav-logo" id="ed-nav-logo">La Bella</div>
-      <div class="ed-search">
-        <span class="ed-search-icon">🔍</span>
-        <input class="ed-search-inp" id="ed-search" type="text" placeholder="Buscar no cardápio…" oninput="onSearch(this.value)">
+    <!-- TOP BAR sticky: logo + busca + carrinho -->
+    <header class="ed2-topbar" id="ed2-topbar">
+      <div class="ed2-topbar-inner">
+        <div class="ed2-brand">
+          <div class="ed2-brand-avatar">Fa</div>
+          <div class="ed2-brand-info">
+            <p class="ed2-brand-name" id="ed2-brand-name">Fornace</p>
+            <p class="ed2-brand-status">
+              <span class="ed2-status-dot"></span>
+              Aberto · entrega 35–45min
+            </p>
+          </div>
+        </div>
+        <button class="ed2-cart-btn" id="ed2-cart-btn" onclick="edToggleCart()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l2.4 12.6a2 2 0 0 0 2 1.6h9.2a2 2 0 0 0 2-1.6L23 6H6"/><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/></svg>
+          <span class="ed2-cart-btn-txt">Ver pedido</span>
+          <span class="ed2-cart-badge" id="ed2-cart-badge" style="display:none">0</span>
+        </button>
       </div>
-      <div class="ed-cats" id="ed-cats"></div>
-      <button class="ed-cart-btn" onclick="edToggleCart()">🛒<span class="ed-cart-badge" id="ed-cart-badge">0</span></button>
-    </div>
-  </nav>
+    </header>
 
-  <main class="ed-main">
-    <div id="ed-social" class="ed-social ed-fi-anim">
-      <div class="ed-social-dot"></div>
-      <div class="ed-social-txt"><strong id="ed-social-txt">12 pessoas vendo agora</strong><span id="ed-social-sub">Última venda há 8 min</span></div>
-      <span class="ed-social-live">Ao vivo</span>
-    </div>
-    <div id="ed-promo" class="ed-promo ed-fi-anim" style="display:none">
-      <div class="ed-promo-text"><strong id="ed-promo-txt"></strong><span>Promoção por tempo limitado</span></div>
-      <div class="ed-promo-pill" id="ed-promo-tag">SÓ HOJE</div>
-    </div>
-    <div id="ed-minbar" class="ed-minbar ed-fi-anim">
-      <div class="ed-minbar-top"><span id="ed-min-lbl">Pedido mínimo: R$ 30</span><span id="ed-min-val">R$ 0 / R$ 30</span></div>
-      <div class="ed-minbar-track"><div class="ed-minbar-fill" id="ed-min-fill" style="width:0%"></div></div>
-    </div>
-    <div id="ed-combos" class="ed-combos ed-fi-anim"></div>
-    <div id="ed-sections"></div>
-    <div id="ed-reviews" class="ed-reviews ed-fi-anim"></div>
-  </main>
-
-  <!-- Item modal -->
-  <div class="ed-imbg" id="ed-imbg" onclick="edCloseIM(event)">
-    <div class="ed-imbox">
-      <div class="ed-imimg" id="ed-imimg">
-        <img id="ed-im-img" src="" alt="" style="display:none">
-        <div class="ed-imnoimg" id="ed-im-noimg">🍕</div>
-        <button class="ed-imclose" onclick="document.getElementById('ed-imbg').classList.remove('on')">✕</button>
-      </div>
-      <div class="ed-imbody">
-        <div class="ed-imcat" id="ed-imcat"></div>
-        <div class="ed-imname" id="ed-imname"></div>
-        <div class="ed-imdesc" id="ed-imdesc"></div>
-        <div class="ed-imlbl" id="ed-imlbl">Escolha o tamanho</div>
-        <div class="ed-imsizes" id="ed-imsizes"></div>
-        <div class="ed-imlbl">Quantidade</div>
-        <div class="ed-qty-stepper">
-          <button class="ed-qty-btn" onclick="edChangeImQty(-1)">−</button>
-          <span class="ed-qty-num" id="ed-qty-num">1</span>
-          <button class="ed-qty-btn" onclick="edChangeImQty(1)">+</button>
+    <!-- HERO persuasivo split + trust badges -->
+    <section class="ed2-hero">
+      <div class="ed2-hero-inner">
+        <div class="ed2-hero-text">
+          <p class="ed2-hero-eyebrow">
+            <span class="ed2-eyebrow-dot"></span>
+            Frete grátis acima de R$ 90
+          </p>
+          <h1 class="ed2-h1">
+            Pizza napolitana,<br>
+            <span class="ed2-h1-brand" id="ed2-h1-brand">no seu endereço</span> em 40min.
+          </h1>
+          <p class="ed2-hero-sub" id="ed2-hero-sub">
+            Massa de fermentação natural 48h, forno a lenha 485°C. Peça agora e receba quentinha.
+          </p>
+          <div class="ed2-hero-ctas">
+            <a href="#ed2-menu" class="ed2-cta-primary">
+              Ver cardápio
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+            <a href="#ed2-combos" class="ed2-cta-secondary">Combos com desconto</a>
+          </div>
+          <div class="ed2-trust-badges">
+            <span class="ed2-trust"><span>⭐</span> 4.9 · 2.140 avaliações</span>
+            <span class="ed2-trust"><span>🔥</span> Forno a lenha</span>
+            <span class="ed2-trust"><span>🛵</span> Entrega até 45min</span>
+          </div>
+        </div>
+        <div class="ed2-hero-img-side">
+          <div class="ed2-hero-img-wrap">
+            <img
+              id="ed2-hero-img"
+              class="ed2-hero-img"
+              src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80"
+              alt="Pizza artesanal"
+            >
+            <div class="ed2-hero-pill">
+              <p class="ed2-hero-pill-label">Mais pedida</p>
+              <p class="ed2-hero-pill-name">Margherita D.O.P.</p>
+              <p class="ed2-hero-pill-price" id="ed2-pill-price">R$ 62,00</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="ed-imft">
-        <div class="ed-imtotal" id="ed-imtotal">R$ 0</div>
-        <button class="ed-imadd" onclick="edAddFromIM()">+ Adicionar</button>
+    </section>
+
+    <!-- COMBOS strip fundo #efeae2 -->
+    <section class="ed2-combos-strip" id="ed2-combos">
+      <div class="ed2-combos-inner">
+        <div class="ed2-combos-head">
+          <div>
+            <p class="ed2-combos-eyebrow">Ofertas de hoje</p>
+            <h2 class="ed2-combos-title">Combos com desconto</h2>
+          </div>
+          <p class="ed2-combos-valid">Válido até 23h30</p>
+        </div>
+        <div class="ed2-combos-grid" id="ed2-combos-grid"></div>
+      </div>
+    </section>
+
+    <!-- STICKY NAV: busca + categorias (top-[64px]) -->
+    <div class="ed2-sticky-nav" id="ed2-menu">
+      <div class="ed2-sticky-inner">
+        <div class="ed2-search-wrap">
+          <svg class="ed2-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input
+            class="ed2-search"
+            id="ed2-search"
+            type="text"
+            placeholder="Buscar pizza..."
+            oninput="edSearch(this.value)"
+          >
+        </div>
+        <div class="ed2-cats" id="ed2-cats">
+          <button class="ed2-cat active" onclick="edSetCat('all', this)">Tudo</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Cart drawer -->
-  <div class="ed-cov" id="ed-cov" onclick="edToggleCart()"></div>
-  <div class="ed-cdr" id="ed-cdr">
-    <div class="ed-chd"><div class="ed-chd-t">🛒 Seu Pedido</div><button class="ed-cx" onclick="edToggleCart()">✕</button></div>
-    <div class="ed-cbody" id="ed-cbody"><div class="ed-cempty">Carrinho vazio 🍕</div></div>
-    <div class="ed-cft" id="ed-cft" style="display:none">
-      <div class="ed-crow"><span>Subtotal</span><span id="ed-csub">R$ 0,00</span></div>
-      <div class="ed-crow"><span>Taxa de entrega</span><span id="ed-cfee">R$ 5,00</span></div>
-      <div class="ed-cttl"><span>Total</span><span id="ed-cttl">R$ 0,00</span></div>
-      <div class="ed-cwarn" id="ed-cwarn" style="display:none">⚠️ Mínimo R$<span id="ed-cwarn-min">30</span>. Faltam R$<span id="ed-cwarn-diff">30</span></div>
-      <input class="ed-fi" id="ed-cname" placeholder="Seu nome">
-      <input class="ed-fi" id="ed-caddr" placeholder="Endereço de entrega">
-      <button class="ed-obtn" onclick="edCheckout()">Fazer Pedido 🍕</button>
-    </div>
-  </div>
+    <!-- PRODUTOS GRID -->
+    <section class="ed2-products-sec">
+      <div class="ed2-products-inner" id="ed2-products-inner"></div>
+    </section>
 
-  <footer class="ed-footer">
-    <div class="ed-footer-name" id="ed-foot-name">La Bella Pizza</div>
-    <div class="ed-footer-info" id="ed-foot-addr"></div>
-    <div class="ed-footer-info" id="ed-foot-phone"></div>
-    <div class="ed-footer-pow">Powered by Pizzaria Cheia ✦</div>
-  </footer>
+    <!-- TRUST SECTION -->
+    <section class="ed2-trust-sec">
+      <div class="ed2-trust-inner">
+        <div class="ed2-trust-block">
+          <span class="ed2-trust-icon">🔥</span>
+          <p class="ed2-trust-title">Forno a lenha 485°C</p>
+          <p class="ed2-trust-desc">Assamos em 90 segundos, direto na sua caixa.</p>
+        </div>
+        <div class="ed2-trust-block">
+          <span class="ed2-trust-icon">🌿</span>
+          <p class="ed2-trust-title">Ingredientes D.O.P.</p>
+          <p class="ed2-trust-desc">Tomate San Marzano, mozzarella fresca todos os dias.</p>
+        </div>
+        <div class="ed2-trust-block">
+          <span class="ed2-trust-icon">🛵</span>
+          <p class="ed2-trust-title">Entrega em até 45min</p>
+          <p class="ed2-trust-desc">Motoboys próprios com bag térmica de última geração.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="ed2-footer">
+      <div class="ed2-footer-inner">
+        <div>
+          <p class="ed2-footer-label">Endereço</p>
+          <p class="ed2-footer-val" id="ed2-footer-addr">Rua das Flores, 123</p>
+        </div>
+        <div>
+          <p class="ed2-footer-label">Funcionamento</p>
+          <p class="ed2-footer-val" id="ed2-footer-hours">18h–23h</p>
+          <p class="ed2-footer-val" id="ed2-footer-min">Pedido mínimo · R$ 30</p>
+        </div>
+        <div>
+          <p class="ed2-footer-label">Fale com a gente</p>
+          <p class="ed2-footer-phone" id="ed2-footer-phone">(11) 4002-8922</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- STICKY CART BAR (mobile / appears when cart > 0) -->
+    <button class="ed2-sticky-cart" id="ed2-sticky-cart" style="display:none" onclick="edToggleCart()">
+      <div class="ed2-sticky-cart-count" id="ed2-sticky-count">0</div>
+      <div class="ed2-sticky-cart-info">
+        <p class="ed2-sticky-cart-label">Seu pedido</p>
+        <p class="ed2-sticky-cart-total" id="ed2-sticky-total">R$ 0,00</p>
+      </div>
+      <span class="ed2-sticky-cart-ver">
+        Ver
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </button>
+
+    <!-- CART DRAWER -->
+    <div class="ed2-drawer-overlay" id="ed2-drawer-overlay" onclick="edToggleCart()"></div>
+    <aside class="ed2-cart-drawer" id="ed2-cart-drawer">
+      <header class="ed2-drawer-head">
+        <div>
+          <p class="ed2-drawer-sublabel">Seu pedido</p>
+          <p class="ed2-drawer-count" id="ed2-drawer-count">0 itens</p>
+        </div>
+        <button class="ed2-drawer-close" onclick="edToggleCart()">✕</button>
+      </header>
+
+      <!-- Free shipping progress -->
+      <div class="ed2-freeship" id="ed2-freeship">
+        <p class="ed2-freeship-txt" id="ed2-freeship-txt">Faltam R$ 90,00 para frete grátis</p>
+        <div class="ed2-freeship-track">
+          <div class="ed2-freeship-fill" id="ed2-freeship-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="ed2-drawer-body" id="ed2-drawer-body">
+        <div class="ed2-drawer-empty">
+          <p class="ed2-drawer-empty-title">Carrinho vazio</p>
+          <p class="ed2-drawer-empty-sub">Adicione uma pizza para começar.</p>
+        </div>
+      </div>
+
+      <footer class="ed2-drawer-footer" id="ed2-drawer-footer" style="display:none">
+        <div class="ed2-drawer-totals">
+          <div class="ed2-drawer-row"><span>Subtotal</span><span id="ed2-sub">R$ 0,00</span></div>
+          <div class="ed2-drawer-row"><span>Entrega</span><span id="ed2-fee" class="ed2-fee-val">R$ 8,00</span></div>
+          <div class="ed2-drawer-total"><span>Total</span><span id="ed2-ttl">R$ 0,00</span></div>
+        </div>
+        <input class="ed2-input" id="ed2-name" type="text" placeholder="Seu nome">
+        <input class="ed2-input" id="ed2-addr" type="text" placeholder="Endereço de entrega">
+        <button class="ed2-whatsapp-btn" onclick="edCheckout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Finalizar no WhatsApp
+        </button>
+        <p class="ed2-drawer-caption">Entrega em 35–45min · Pagamento na entrega ou Pix</p>
+      </footer>
+    </aside>
+
+  </div>
   `;
 }
 
@@ -147,309 +253,274 @@ function buildHTML() {
 // BOOT
 // ═══════════════════════════════════════════════
 function boot() {
-  populateHero();
-  renderNav();
-  renderSections();
+  populateStore();
+  renderCats();
+  renderProducts();
   renderCombos();
-  renderReviews();
-  startSocial();
-  startCountdown();
-  initScroll();
-
-  window.onSearch      = onSearch;
-  window.edToggleCart  = edToggleCart;
-  window.edCloseIM     = edCloseIM;
-  window.edAddFromIM   = edAddFromIM;
-  window.edChangeImQty = edChangeImQty;
-  window.edCheckout    = edCheckout;
-  window.edAddToCart   = edAddToCart;
-  window.edAddCombo    = edAddCombo;
-  window.edChangeQty   = edChangeQty;
-  window.edOpenIM      = edOpenIM;
-  window.edSelectSize  = edSelectSize;
+  window.edToggleCart = edToggleCart;
+  window.edSetCat     = edSetCat;
+  window.edSearch     = edSearch;
+  window.edAdd        = edAdd;
+  window.edDec        = edDec;
+  window.edAddCombo   = edAddCombo;
+  window.edCheckout   = edCheckout;
 }
 
-function populateHero() {
-  $('ed-store-name').textContent = store.name || '';
-  $('ed-tagline').textContent    = store.tagline || '';
-  $('ed-time').textContent    = store.deliveryTime || '40–60 min';
-  $('ed-fee').textContent     = store.fee ? `Frete R$${store.fee}` : 'Frete R$5';
-  $('ed-rating').textContent  = store.rating || '4.9 ★';
-  $('ed-hours').textContent   = store.hours || '';
-  $('ed-foot-name').textContent  = store.name || '';
-  $('ed-foot-addr').textContent  = store.addr || '';
-  $('ed-foot-phone').textContent = store.phone ? `📞 ${store.phone}` : '';
-  $('ed-nav-logo').textContent   = store.name || '';
-  const logo = $('ed-logo');
-  if (store.logo) { logo.src = store.logo; logo.style.display = 'block'; }
-  if (store.promoTxt) {
-    $('ed-promo-txt').textContent = store.promoTxt;
-    $('ed-promo-tag').textContent = store.promoTag || 'SÓ HOJE';
-    $('ed-promo').style.display   = 'flex';
-  }
-  const min = store.minOrder || 30;
-  $('ed-min-lbl').textContent = `Pedido mínimo: R$ ${min}`;
-  $('ed-min-val').textContent = `R$ 0 / R$ ${min}`;
-  const freeThreshold = (store.fee ?? 5) * 10;
-  $('ed-free-threshold').textContent = freeThreshold;
+function populateStore() {
+  const n = store.name || 'Fornace';
+  if ($('ed2-brand-name'))   $('ed2-brand-name').textContent   = n;
+  if ($('ed2-h1-brand'))     $('ed2-h1-brand').textContent     = store.tagline ? store.tagline.split(',')[0] : 'no seu endereço';
+  if ($('ed2-hero-sub'))     $('ed2-hero-sub').textContent     = store.tagline || '';
+  if ($('ed2-footer-addr'))  $('ed2-footer-addr').textContent  = store.address || store.addr || '';
+  if ($('ed2-footer-hours')) $('ed2-footer-hours').textContent = store.hours   || '';
+  if ($('ed2-footer-min'))   $('ed2-footer-min').textContent   = `Pedido mínimo · ${fmtR(store.minOrder || 30)}`;
+  if ($('ed2-footer-phone')) $('ed2-footer-phone').textContent = store.phone   || '';
 }
 
-function renderNav() {
-  $('ed-cats').innerHTML = categories.map((c) =>
-    `<button class="ed-cat-btn" onclick="document.getElementById('ed-sec-${c.id}')?.scrollIntoView({behavior:'smooth'});document.querySelectorAll('.ed-cat-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${c.emoji} ${c.name}</button>`
-  ).join('');
+// ═══════════════════════════════════════════════
+// CATEGORIES
+// ═══════════════════════════════════════════════
+function renderCats() {
+  const el = $('ed2-cats');
+  if (!el) return;
+  const all = `<button class="ed2-cat ${activeCat === 'all' ? 'active' : ''}" onclick="edSetCat('all',this)">Tudo · ${products.length}</button>`;
+  const cats = categories.map(c => {
+    const count = products.filter(p => p.cat === c.id || p.category === c.id).length;
+    if (!count) return '';
+    return `<button class="ed2-cat ${activeCat === c.id ? 'active' : ''}" onclick="edSetCat('${c.id}',this)">${c.emoji ? c.emoji + ' ' : ''}${c.name}</button>`;
+  }).join('');
+  el.innerHTML = all + cats;
 }
 
-function renderSections() {
-  const q = (searchQuery || '').toLowerCase();
-  const filteredProds = q
-    ? products.filter((p) => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))
-    : products;
+window.edSetCat = function(catId, btn) {
+  activeCat = catId;
+  document.querySelectorAll('.ed2-cat').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderProducts();
+};
 
-  $('ed-sections').innerHTML = categories.map((cat) => {
-    const items = filteredProds.filter((p) => p.cat === cat.id && p.active !== false);
-    if (!items.length) return '';
-    if (cat.display === 'list') return listSec(cat, items);
-    return gridSec(cat, items);
+window.edSearch = function(val) {
+  searchQ = val;
+  renderProducts();
+};
+
+// ═══════════════════════════════════════════════
+// COMBOS
+// ═══════════════════════════════════════════════
+function renderCombos() {
+  const grid = $('ed2-combos-grid');
+  const sec  = document.querySelector('.ed2-combos-strip');
+  if (!grid) return;
+  const active = combos.filter(c => c.active !== false);
+  if (!active.length) { if (sec) sec.style.display = 'none'; return; }
+  if (sec) sec.style.display = 'block';
+
+  grid.innerHTML = active.map(c => {
+    const disc = c.origPrice || c.originalPrice;
+    const off  = disc ? Math.round(((disc - c.price) / disc) * 100) : 0;
+    return `
+    <article class="ed2-combo-card">
+      <div class="ed2-combo-img-wrap">
+        ${c.img || c.image
+          ? `<img src="${c.img || c.image}" alt="${c.name}" class="ed2-combo-img">`
+          : `<div class="ed2-combo-placeholder">🎁</div>`}
+        ${off ? `<span class="ed2-combo-badge">-${off}%</span>` : ''}
+      </div>
+      <div class="ed2-combo-body">
+        <h3 class="ed2-combo-name">${c.name}</h3>
+        <p class="ed2-combo-desc">${c.desc || c.description || c.items || ''}</p>
+        <div class="ed2-combo-foot">
+          <div>
+            ${disc ? `<p class="ed2-combo-old">${fmtR(disc)}</p>` : ''}
+            <p class="ed2-combo-price">${fmtR(c.price)}</p>
+          </div>
+          <button class="ed2-combo-btn" onclick="edAddCombo('${c.id}')">Adicionar</button>
+        </div>
+      </div>
+    </article>`;
   }).join('');
 }
 
-function gridSec(cat, items) {
-  return `<div class="ed-sec ed-fi-anim" id="ed-sec-${cat.id}">
-    <div class="ed-section-head"><h2 class="ed-section-title">${cat.emoji} ${cat.name}</h2><span class="ed-section-count">${items.length} itens</span></div>
-    <div class="ed-grid">${items.map((p) => edCard(p, cat)).join('')}</div>
-  </div>`;
-}
+// ═══════════════════════════════════════════════
+// PRODUCTS — stepper direto no card
+// ═══════════════════════════════════════════════
+function renderProducts() {
+  const inner = $('ed2-products-inner');
+  if (!inner) return;
 
-function listSec(cat, items) {
-  return `<div class="ed-sec ed-fi-anim" id="ed-sec-${cat.id}">
-    <div class="ed-section-head"><h2 class="ed-section-title">${cat.emoji} ${cat.name}</h2><span class="ed-section-count">${items.length} itens</span></div>
-    <div class="ed-list">${items.map((p) => edListItem(p)).join('')}</div>
-  </div>`;
-}
+  let visible = activeCat === 'all'
+    ? products
+    : products.filter(p => p.cat === activeCat || p.category === activeCat);
+  if (searchQ) {
+    const q = searchQ.toLowerCase();
+    visible = visible.filter(p => p.name.toLowerCase().includes(q) || (p.desc || p.description || '').toLowerCase().includes(q));
+  }
+  visible = visible.filter(p => p.active !== false);
 
-function edCard(p, cat) {
-  return `<div class="ed-card" onclick="edOpenIM('${p.id}')">
-    <div class="ed-card-img">${p.img ? `<img src="${p.img}" alt="${p.name}">` : '🍕'}</div>
-    <div class="ed-card-body">
-      <div class="ed-card-cat">${cat.name}</div>
-      <div class="ed-card-name">${p.name}</div>
-      <div class="ed-card-desc">${p.desc}</div>
-      <div class="ed-card-foot">
-        <div class="ed-card-price">R$ ${p.prices?.[0] ?? 0}</div>
-        <button class="ed-card-add" onclick="event.stopPropagation();edAddToCart('${p.id}',0)">+</button>
+  if (!visible.length) {
+    inner.innerHTML = `<div class="ed2-empty"><p class="ed2-empty-title">Nada encontrado</p><p class="ed2-empty-sub">Tente outra busca ou categoria.</p></div>`;
+    return;
+  }
+
+  inner.innerHTML = `<div class="ed2-grid">${visible.map(p => {
+    const price = p.prices?.[0] ?? p.price ?? 0;
+    const qty   = qtyOf(p.id);
+    return `
+    <article class="ed2-pcard">
+      <div class="ed2-pcard-img-wrap">
+        ${p.img || p.image
+          ? `<img src="${p.img || p.image}" alt="${p.name}" class="ed2-pcard-img">`
+          : `<div class="ed2-pcard-placeholder">🍕</div>`}
+        ${p.featured ? `<span class="ed2-pcard-badge">⭐ Mais pedida</span>` : ''}
       </div>
-    </div>
-  </div>`;
-}
-
-function edListItem(p) {
-  return `<div class="ed-list-item" onclick="edOpenIM('${p.id}')">
-    <div class="ed-list-img">${p.img ? `<img src="${p.img}" alt="">` : '🍕'}</div>
-    <div class="ed-list-info"><div class="ed-list-name">${p.name}</div><div class="ed-list-desc">${p.desc}</div></div>
-    <div class="ed-list-right">
-      <div class="ed-list-price">R$ ${p.prices?.[0] ?? 0}</div>
-      <button class="ed-list-add" onclick="event.stopPropagation();edAddToCart('${p.id}',0)">+</button>
-    </div>
-  </div>`;
-}
-
-function renderCombos() {
-  const sec = $('ed-combos');
-  if (!combos.length) { sec.style.display = 'none'; return; }
-  sec.innerHTML = `<div class="ed-section-head"><h2 class="ed-section-title">🎁 Combos Especiais</h2><span class="ed-section-count">${combos.length} opções</span></div>
-  <div class="ed-combos-scroll">${combos.filter((c) => c.active !== false).map((c) => `
-    <div class="ed-combo-card" onclick="edAddCombo('${c.id}')">
-      <div class="ed-combo-img">${c.img ? `<img src="${c.img}" alt="">` : '🎁'}${c.saving ? `<div class="ed-combo-save">${c.saving}</div>` : ''}</div>
-      <div class="ed-combo-body">
-        <div class="ed-combo-name">${c.name}</div>
-        <div class="ed-combo-items">${c.items}</div>
-        <div class="ed-combo-foot">
-          <div>${c.origPrice ? `<span class="ed-combo-old">R$${c.origPrice}</span> ` : ''}<span class="ed-combo-price">R$${c.price}</span></div>
-          <button class="ed-combo-add" onclick="event.stopPropagation();edAddCombo('${c.id}')">+ Pedir</button>
+      <div class="ed2-pcard-body">
+        <div class="ed2-pcard-head">
+          <h3 class="ed2-pcard-name">${p.name}</h3>
+          <p class="ed2-pcard-price">${fmtR(price)}</p>
+        </div>
+        <p class="ed2-pcard-desc">${p.desc || p.description || ''}</p>
+        <div class="ed2-pcard-ctrl" id="ctrl-${p.id}">
+          ${qty === 0
+            ? `<button class="ed2-pcard-add" onclick="edAdd('${p.id}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                Adicionar
+               </button>`
+            : `<div class="ed2-stepper">
+                <button class="ed2-step-btn" onclick="edDec('${p.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+                <span class="ed2-step-qty">${qty} no pedido</span>
+                <button class="ed2-step-btn" onclick="edAdd('${p.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+               </div>`
+          }
         </div>
       </div>
-    </div>`).join('')}
-  </div>`;
+    </article>`;
+  }).join('')}</div>`;
 }
 
-function renderReviews() {
-  const sec = $('ed-reviews');
-  if (!reviews.length) { sec.style.display = 'none'; return; }
-  sec.innerHTML = `<div class="ed-section-head"><h2 class="ed-section-title">⭐ Avaliações</h2></div>
-  <div class="ed-reviews-grid">${reviews.map((r) => `
-    <div class="ed-review-card">
-      <div class="ed-review-stars">${'★'.repeat(r.stars || 5)}</div>
-      <div class="ed-review-text">${r.text}</div>
-      <div class="ed-review-author">${r.name}</div>
-      <div class="ed-review-date">${r.date || ''}</div>
-    </div>`).join('')}
-  </div>`;
-}
+function qtyOf(pid) { return cart.find(i => i.id === pid)?.qty ?? 0; }
 
-// ── ITEM MODAL ──
-window.edOpenIM = function edOpenIM(pid) {
-  imCurrentPid = pid; imQty = 1;
-  const p   = products.find((x) => x.id === pid);
-  const cat = categories.find((c) => c.id === p?.cat);
+// ═══════════════════════════════════════════════
+// CART
+// ═══════════════════════════════════════════════
+window.edAdd = function(pid) {
+  const p = products.find(x => x.id === pid) || combos.find(x => x.id === pid);
   if (!p) return;
-  $('ed-imcat').textContent  = cat?.name || '';
-  $('ed-imname').textContent = p.name;
-  $('ed-imdesc').textContent = p.desc;
-  const imgEl = $('ed-im-img'); const noImg = $('ed-im-noimg');
-  if (p.img) { imgEl.src = p.img; imgEl.style.display = 'block'; noImg.style.display = 'none'; }
-  else { imgEl.style.display = 'none'; noImg.style.display = 'flex'; }
-  const labels = ['Pequeno', 'Médio', 'Grande'];
-  $('ed-imsizes').innerHTML = (p.prices || []).map((price, i) =>
-    `<div class="ed-imsz ${i === 0 ? 'sel' : ''}" onclick="edSelectSize(this,${price})">
-      <span class="ed-imsz-l">${cat?.type === 'sizes' ? labels[i] : 'Tamanho'}</span>
-      <span class="ed-imsz-p">R$${price}</span>
-    </div>`
-  ).join('');
-  $('ed-qty-num').textContent = '1';
-  updateImTotal();
-  $('ed-imbg').classList.add('on');
-};
-window.edSelectSize = function (el, price) {
-  document.querySelectorAll('.ed-imsz').forEach((x) => x.classList.remove('sel'));
-  el.classList.add('sel');
-  updateImTotal();
-};
-window.edChangeImQty = function (delta) {
-  imQty = Math.max(1, imQty + delta);
-  $('ed-qty-num').textContent = imQty;
-  updateImTotal();
-};
-function updateImTotal() {
-  const sel = document.querySelector('.ed-imsz.sel');
-  if (!sel) return;
-  const price = parseFloat(sel.querySelector('.ed-imsz-p').textContent.replace('R$',''));
-  $('ed-imtotal').textContent = fmtR(price * imQty);
-}
-window.edCloseIM = function (e) { if (e.target === $('ed-imbg')) $('ed-imbg').classList.remove('on'); };
-window.edAddFromIM = function () {
-  const sel = document.querySelector('.ed-imsz.sel');
-  if (!sel) return;
-  const price = parseFloat(sel.querySelector('.ed-imsz-p').textContent.replace('R$',''));
-  const size  = sel.querySelector('.ed-imsz-l').textContent;
-  const p     = products.find((x) => x.id === imCurrentPid);
-  for (let i = 0; i < imQty; i++) cart.push({ id: Date.now() + i, name: p.name, size, price, img: p.img });
-  $('ed-imbg').classList.remove('on');
+  const price = p.prices?.[0] ?? p.price ?? 0;
+  const found = cart.find(i => i.id === pid);
+  if (found) { found.qty++; } else { cart.push({ id: pid, name: p.name, price, img: p.img || p.image, qty: 1 }); }
   renderCart();
-  showToast('✅ Adicionado!');
+  renderProducts();
+  showToastMsg('✅ Adicionado!');
 };
 
-// ── CART ──
-window.edAddToCart = function (pid, idx) {
-  const p = products.find((x) => x.id === pid); if (!p) return;
-  const cat = categories.find((c) => c.id === p.cat);
-  cart.push({ id: Date.now(), name: p.name, size: cat?.type === 'sizes' ? ['P','M','G'][idx] : '', price: p.prices?.[idx] ?? p.prices?.[0] ?? 0, img: p.img });
-  renderCart(); showToast('✅ Adicionado!');
-};
-window.edAddCombo = function (cid) {
-  const c = combos.find((x) => x.id === cid); if (!c) return;
-  cart.push({ id: Date.now(), name: c.name, size: 'Combo', price: c.price, img: c.img });
-  renderCart(); showToast('✅ Combo adicionado!');
-};
-window.edChangeQty = function (cartId, delta) {
-  const idx = cart.findIndex((x) => x.id === cartId); if (idx === -1) return;
-  cart[idx].qty = (cart[idx].qty || 1) + delta;
-  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+window.edDec = function(pid) {
+  const item = cart.find(i => i.id === pid);
+  if (!item) return;
+  item.qty--;
+  if (item.qty <= 0) cart.splice(cart.indexOf(item), 1);
   renderCart();
+  renderProducts();
 };
+
+window.edAddCombo = function(cid) {
+  const c = combos.find(x => x.id === cid);
+  if (!c) return;
+  const found = cart.find(i => i.id === cid);
+  if (found) { found.qty++; } else { cart.push({ id: cid, name: c.name, price: c.price, img: c.img || c.image, qty: 1 }); }
+  renderCart();
+  showToastMsg('✅ Combo adicionado!');
+};
+
 function renderCart() {
-  const count = cart.length;
-  const badge = $('ed-cart-badge');
-  badge.textContent = count; badge.classList.toggle('on', count > 0);
-  if (!count) { $('ed-cbody').innerHTML = '<div class="ed-cempty">Carrinho vazio 🍕</div>'; $('ed-cft').style.display = 'none'; return; }
-  const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
-  const fee = store.fee ?? 5; const total = sub + fee;
-  const min = store.minOrder ?? 30;
-  $('ed-cbody').innerHTML = cart.map((item) => `
-    <div class="ed-ci">
-      <div class="ed-ci-img">${item.img ? `<img src="${item.img}" alt="">` : '🍕'}</div>
-      <div class="ed-ci-info">
-        <div class="ed-ci-nm">${item.name}</div>
-        <div class="ed-ci-sz">${item.size}</div>
-        <div class="ed-ci-pr">${fmtR(item.price)}</div>
-        <div class="ed-ci-ctrl">
-          <button class="ed-qb" onclick="edChangeQty(${item.id},-1)">−</button>
-          <span class="ed-qn">${item.qty || 1}</span>
-          <button class="ed-qb" onclick="edChangeQty(${item.id},+1)">+</button>
+  const count     = cart.reduce((s, i) => s + i.qty, 0);
+  const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const freeShip  = cartTotal >= FREE_SHIP;
+  const fee       = freeShip ? 0 : 8;
+  const total     = cartTotal + fee;
+  const remaining = Math.max(0, FREE_SHIP - cartTotal);
+  const pct       = Math.min(100, (cartTotal / FREE_SHIP) * 100);
+
+  // top bar badge
+  const badge = $('ed2-cart-badge');
+  if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'flex' : 'none'; }
+
+  // sticky bar
+  const stickyCart = $('ed2-sticky-cart');
+  if (stickyCart) {
+    stickyCart.style.display = (count > 0 && !cartOpen) ? 'flex' : 'none';
+    if ($('ed2-sticky-count')) $('ed2-sticky-count').textContent = count;
+    if ($('ed2-sticky-total')) $('ed2-sticky-total').textContent = fmtR(cartTotal);
+  }
+
+  // free shipping progress
+  const freeTxt  = $('ed2-freeship-txt');
+  const freeFill = $('ed2-freeship-fill');
+  if (freeTxt) freeTxt.textContent = freeShip ? '🎉 Você ganhou frete grátis!' : `Faltam ${fmtR(remaining)} para frete grátis`;
+  if (freeFill) freeFill.style.width = pct + '%';
+  if ($('ed2-fee')) { $('ed2-fee').textContent = freeShip ? 'Grátis' : fmtR(fee); $('ed2-fee').className = freeShip ? 'ed2-fee-val ed2-fee-free' : 'ed2-fee-val'; }
+
+  // drawer count
+  if ($('ed2-drawer-count')) $('ed2-drawer-count').textContent = `${count} ${count === 1 ? 'item' : 'itens'}`;
+
+  if (!count) {
+    $('ed2-drawer-body').innerHTML = `<div class="ed2-drawer-empty"><p class="ed2-drawer-empty-title">Carrinho vazio</p><p class="ed2-drawer-empty-sub">Adicione uma pizza para começar.</p></div>`;
+    if ($('ed2-drawer-footer')) $('ed2-drawer-footer').style.display = 'none';
+    return;
+  }
+
+  // drawer items
+  $('ed2-drawer-body').innerHTML = `<ul class="ed2-drawer-list">${cart.map(i => `
+    <li class="ed2-drawer-item">
+      <div class="ed2-drawer-img">${i.img ? `<img src="${i.img}" alt="">` : '🍕'}</div>
+      <div class="ed2-drawer-item-info">
+        <div class="ed2-drawer-item-top">
+          <p class="ed2-drawer-item-name">${i.name}</p>
+          <p class="ed2-drawer-item-total">${fmtR(i.price * i.qty)}</p>
+        </div>
+        <div class="ed2-drawer-item-bot">
+          <div class="ed2-drawer-stepper">
+            <button class="ed2-drawer-step" onclick="edDec('${i.id}')">−</button>
+            <span class="ed2-drawer-qty">${i.qty}</span>
+            <button class="ed2-drawer-step" onclick="edAdd('${i.id}')">+</button>
+          </div>
+          <p class="ed2-drawer-item-price">${fmtR(i.price)} un.</p>
         </div>
       </div>
-    </div>`).join('');
-  $('ed-csub').textContent = fmtR(sub);
-  $('ed-cfee').textContent = fmtR(fee);
-  $('ed-cttl').textContent = fmtR(total);
-  $('ed-cft').style.display = 'block';
-  const warn = $('ed-cwarn');
-  if (sub < min) { warn.style.display = 'block'; $('ed-cwarn-min').textContent = min; $('ed-cwarn-diff').textContent = (min - sub).toFixed(2); }
-  else warn.style.display = 'none';
-  // Free shipping bar
-  const freeThreshold = (store.fee ?? 5) * 10;
-  const pct = Math.min(100, (sub / freeThreshold) * 100);
-  const fill = $('ed-free-fill'); if (fill) fill.style.width = pct + '%';
-  // Min bar
-  const minPct = Math.min(100, (sub / min) * 100);
-  const minFill = $('ed-min-fill'); if (minFill) minFill.style.width = minPct + '%';
-  const minVal = $('ed-min-val'); if (minVal) minVal.textContent = `R$ ${sub.toFixed(2)} / R$ ${min}`;
+    </li>
+  `).join('')}</ul>`;
+
+  if ($('ed2-drawer-footer')) $('ed2-drawer-footer').style.display = 'block';
+  if ($('ed2-sub')) $('ed2-sub').textContent = fmtR(cartTotal);
+  if ($('ed2-ttl')) $('ed2-ttl').textContent = fmtR(total);
 }
-window.edToggleCart = function () { $('ed-cdr').classList.toggle('on'); $('ed-cov').classList.toggle('on'); };
-window.edCheckout = function () {
-  const name = $('ed-cname').value.trim(); const addr = $('ed-caddr').value.trim();
-  if (!name || !addr) { showToast('⚠️ Informe nome e endereço', 'red'); return; }
-  const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
-  const min = store.minOrder ?? 30;
-  if (sub < min) { showToast(`⚠️ Mínimo R$${min}`, 'red'); return; }
-  const fee = store.fee ?? 5; const total = sub + fee;
-  const lines = cart.map((i) => `• ${i.name}${i.size ? ' (' + i.size + ')' : ''} — R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
-  const msg = encodeURIComponent(`🍕 *Novo Pedido*\n\n${lines}\n\n*Frete:* R$${fee}\n*Total:* R$${total.toFixed(2)}\n\n*Nome:* ${name}\n*Endereço:* ${addr}`);
-  const phone = (store.phone || '').replace(/\D/g, '');
+
+window.edToggleCart = function() {
+  cartOpen = !cartOpen;
+  $('ed2-cart-drawer')?.classList.toggle('open', cartOpen);
+  $('ed2-drawer-overlay')?.classList.toggle('on', cartOpen);
+  // hide/show sticky bar
+  const stickyCart = $('ed2-sticky-cart');
+  if (stickyCart) stickyCart.style.display = (!cartOpen && cart.reduce((s,i)=>s+i.qty,0) > 0) ? 'flex' : 'none';
+};
+
+window.edCheckout = function() {
+  const name = $('ed2-name')?.value.trim();
+  const addr = $('ed2-addr')?.value.trim();
+  if (!name || !addr) { showToastMsg('⚠️ Informe nome e endereço', 'red'); return; }
+  const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const fee       = cartTotal >= FREE_SHIP ? 0 : 8;
+  const total     = cartTotal + fee;
+  const lines     = cart.map(i => `• ${i.name} x${i.qty} — ${fmtR(i.price * i.qty)}`).join('\n');
+  const msg       = encodeURIComponent(`🍕 *Novo Pedido*\n\n${lines}\n\n*Entrega:* ${fee === 0 ? 'Grátis' : fmtR(fee)}\n*Total:* ${fmtR(total)}\n\n*Nome:* ${name}\n*Endereço:* ${addr}`);
+  const phone     = (store.phone || '').replace(/\D/g, '');
   window.open(`https://wa.me/55${phone}?text=${msg}`, '_blank');
 };
 
-// ── SEARCH ──
-function onSearch(val) {
-  searchQuery = val;
-  renderSections();
-  initScroll();
-}
-
-// ── SOCIAL ──
-function startSocial() {
-  const enabled = store.features?.social ?? true;
-  const sec = $('ed-social'); if (!enabled) { sec.style.display = 'none'; return; }
-  $('ed-social-txt').textContent = `${Math.floor(Math.random()*30+8)} pessoas vendo agora`;
-  $('ed-social-sub').textContent = `Última venda há ${Math.floor(Math.random()*15+1)} minutos`;
-}
-
-function startCountdown() {
-  const bar = $('ed-topbar');
-  const closeTime = store.closeTime || '23:00';
-  function tick() {
-    const now = new Date(); const [h, m] = closeTime.split(':').map(Number);
-    const close = new Date(); close.setHours(h, m, 0, 0);
-    const diff = close - now;
-    if (diff <= 0) { bar.style.display = 'none'; return; }
-    const hh = String(Math.floor(diff/3600000)).padStart(2,'0');
-    const mm = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-    const ss = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-    $('ed-countdown').textContent = `${hh}:${mm}:${ss}`;
-  }
-  tick(); setInterval(tick, 1000);
-}
-
-function initScroll() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('vis'), i * 80); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.ed-fi-anim').forEach((el) => obs.observe(el));
-}
-
-function showToast(msg, type = '') {
+function showToastMsg(msg, type = '') {
   const t = document.getElementById('toast');
   if (!t) return;
-  t.textContent = msg; t.className = 'toast' + (type ? ' ' + type : '');
-  t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 2600);
+  t.textContent = msg;
+  t.className   = 'toast' + (type ? ' ' + type : '');
+  t.classList.add('on');
+  setTimeout(() => t.classList.remove('on'), 2600);
 }
