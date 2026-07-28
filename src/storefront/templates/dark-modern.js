@@ -49,10 +49,10 @@ function buildHTML() {
       <h1 class="dk-title"><span class="dk-t1" id="dk-t1">La Bella</span><span class="dk-t2" id="dk-t2">Pizza</span></h1>
       <p class="dk-tagline" id="dk-tagline">Feita com amor, entregue com sabor</p>
       <div class="dk-stats">
-        <div class="dk-stat"><span class="dk-stat-icon">⏱</span><span class="dk-stat-label">Entrega</span><span class="dk-stat-val" id="dk-time">40–60 min</span></div>
+        <div class="dk-stat"><span class="dk-stat-icon">⚡</span><span class="dk-stat-label">Entrega</span><span class="dk-stat-val" id="dk-time">40–60 min</span></div>
         <div class="dk-stat"><span class="dk-stat-icon">🛵</span><span class="dk-stat-label">Frete</span><span class="dk-stat-val" id="dk-fee">R$5</span></div>
         <div class="dk-stat"><span class="dk-stat-icon">⭐</span><span class="dk-stat-label">Avaliação</span><span class="dk-stat-val" id="dk-rating">4.9</span></div>
-        <div class="dk-stat"><span class="dk-stat-icon">🕐</span><span class="dk-stat-label">Hoje</span><span class="dk-stat-val" id="dk-hours">18h–23h</span></div>
+        <div class="dk-stat"><span class="dk-stat-icon">⏰</span><span class="dk-stat-label">Hoje</span><span class="dk-stat-val" id="dk-hours">18h–23h</span></div>
       </div>
       <button class="dk-cta" onclick="document.getElementById('dk-nav').scrollIntoView({behavior:'smooth'})">🍕 Ver Cardápio</button>
     </div>

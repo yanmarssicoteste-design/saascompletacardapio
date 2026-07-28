@@ -59,10 +59,10 @@ function buildHTML() {
       <p class="mhtagline" id="mhTag">Feita com amor, entregue com sabor</p>
       <div class="mdiv"><span>✦</span></div>
       <div class="mstats">
-        <div class="mst"><span class="mi">⏱</span><span class="ml">Entrega</span><span class="mv" id="msTime">40–60 min</span></div>
+        <div class="mst"><span class="mi">⚡</span><span class="ml">Entrega</span><span class="mv" id="msTime">40–60 min</span></div>
         <div class="mst"><span class="mi">🛵</span><span class="ml">Frete</span><span class="mv" id="msFee">A partir R$5</span></div>
         <div class="mst"><span class="mi">⭐</span><span class="ml">Avaliação</span><span class="mv" id="msRating">4.9 (312)</span></div>
-        <div class="mst"><span class="mi">🕐</span><span class="ml">Hoje</span><span class="mv" id="msHours">18h–23h</span></div>
+        <div class="mst"><span class="mi">⏰</span><span class="ml">Hoje</span><span class="mv" id="msHours">18h–23h</span></div>
       </div>
       <button class="mcta" onclick="document.getElementById('mNav').scrollIntoView({behavior:'smooth'})">🍕 Ver Cardápio</button>
     </div>

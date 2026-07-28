@@ -47,10 +47,10 @@ function buildHTML() {
       <h1 class="ed-store-name" id="ed-store-name">La Bella Pizza</h1>
       <p class="ed-tagline" id="ed-tagline">Feita com amor, entregue com sabor</p>
       <div class="ed-stats">
-        <div class="ed-stat">⏱ <strong id="ed-time">40–60 min</strong></div>
+        <div class="ed-stat">⚡ <strong id="ed-time">40–60 min</strong></div>
         <div class="ed-stat">🛵 <strong id="ed-fee">Frete R$5</strong></div>
         <div class="ed-stat">⭐ <strong id="ed-rating">4.9</strong></div>
-        <div class="ed-stat">🕐 <strong id="ed-hours">18h–23h</strong></div>
+        <div class="ed-stat">⏰ <strong id="ed-hours">18h–23h</strong></div>
       </div>
       <div class="ed-free-bar" id="ed-free-bar">
         🎉 Frete grátis acima de R$ <span id="ed-free-threshold">50</span>
