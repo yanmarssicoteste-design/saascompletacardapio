@@ -1,10 +1,10 @@
-﻿/*
- * DARK FORNO TEMPLATE CSS ÔÇö Pizzaria SaaS v5
- * Est├®tica noturna premium. Gradiente ember, grain e glassmorphism.
+/*
+ * DARK FORNO TEMPLATE CSS — Pizzaria SaaS v5
+ * Estética noturna premium. Gradiente ember, grain e glassmorphism.
  * Inspirado no loja-dark.
  */
 
-/* ÔöÇÔöÇ Base dark ÔöÇÔöÇ */
+/* ── Base dark ── */
 #vMenu {
   --dk-bg: #0f0a08;
   --dk-bg2: #1a1210;
@@ -36,12 +36,12 @@ body::before {
 }
 #vMenu { position: relative; z-index: 1; }
 
-/* ÔöÇÔöÇ Topbar ÔöÇÔöÇ */
+/* ── Topbar ── */
 .dk-topbar { background: linear-gradient(90deg, #3a0800, var(--dk-ember), #3a0800); background-size: 200%; animation: dk-slide 4s linear infinite; padding: 8px 1rem; text-align: center; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
 @keyframes dk-slide { 0%{background-position:0%} 100%{background-position:200%} }
 #dk-countdown { color: var(--dk-gold); font-family: var(--font-serif); }
 
-/* ÔöÇÔöÇ Hero ÔöÇÔöÇ */
+/* ── Hero ── */
 .dk-hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; overflow: hidden; }
 .dk-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(255,90,31,.2), transparent 60%), var(--dk-bg); }
 .dk-orbit { position: absolute; font-size: clamp(10rem, 26vw, 22rem); opacity: .04; animation: dk-orbit 60s linear infinite; pointer-events: none; top: 50%; left: 50%; transform: translate(-50%,-50%); }
@@ -64,7 +64,7 @@ body::before {
 .dk-cta { display: inline-flex; align-items: center; gap: 9px; background: var(--dk-ember); color: #fff; border: none; padding: 14px 34px; border-radius: 6px; font-family: var(--font-sans); font-size: .9rem; font-weight: 700; cursor: pointer; transition: all .3s; box-shadow: 0 8px 28px rgba(255,90,31,.4); }
 .dk-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(255,90,31,.55); }
 
-/* ÔöÇÔöÇ Nav ÔöÇÔöÇ */
+/* ── Nav ── */
 .dk-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,10,8,.85); backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid var(--dk-border); }
 .dk-nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 58px; padding: 0 1.5rem; gap: 1rem; }
 .dk-nav-logo { font-family: var(--font-serif); font-size: .95rem; font-weight: 700; color: var(--dk-text); }
@@ -79,23 +79,23 @@ body::before {
 .dk-cart-badge { position: absolute; top: -6px; right: -6px; background: var(--dk-ember); color: #fff; width: 18px; height: 18px; border-radius: 50%; font-size: .6rem; font-weight: 800; display: none; align-items: center; justify-content: center; }
 .dk-cart-badge.on { display: flex; }
 
-/* ÔöÇÔöÇ Main ÔöÇÔöÇ */
+/* ── Main ── */
 .dk-main { max-width: 960px; margin: 0 auto; padding: 2.5rem 1.5rem; }
 
-/* ÔöÇÔöÇ Social proof ÔöÇÔöÇ */
+/* ── Social proof ── */
 .dk-social { display: flex; align-items: center; gap: .75rem; background: rgba(52,211,153,.06); border: 1px solid rgba(52,211,153,.18); border-radius: 10px; padding: .85rem 1.1rem; margin-bottom: 2rem; }
 .dk-social-dot { width: 7px; height: 7px; background: var(--dk-green); border-radius: 50%; animation: dk-pulse 1.5s infinite; flex-shrink: 0; }
 .dk-social-txt strong { display: block; font-size: .8rem; color: var(--dk-text); }
 .dk-social-txt span { font-size: .72rem; color: var(--dk-muted); }
 .dk-social-live { font-size: .7rem; color: var(--dk-green); font-weight: 700; white-space: nowrap; }
 
-/* ÔöÇÔöÇ Promo ÔöÇÔöÇ */
+/* ── Promo ── */
 .dk-promo { background: linear-gradient(135deg, #3a0800, rgba(255,90,31,.8)); border: 1px solid rgba(255,90,31,.3); border-radius: 12px; padding: 1.1rem 1.4rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
 .dk-promo strong { display: block; font-size: .88rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
 .dk-promo-sub { font-size: .72rem; color: rgba(255,255,255,.65); }
 .dk-promo-pill { background: #fff; color: var(--dk-ember); padding: 5px 13px; border-radius: 100px; font-size: .68rem; font-weight: 800; white-space: nowrap; flex-shrink: 0; }
 
-/* ÔöÇÔöÇ Min bar ÔöÇÔöÇ */
+/* ── Min bar ── */
 .dk-minbar { background: var(--dk-card); border: 1px solid var(--dk-border); border-radius: 10px; padding: .9rem 1.1rem; margin-bottom: 2rem; backdrop-filter: blur(8px); }
 .dk-minbar-top { display: flex; justify-content: space-between; font-size: .75rem; margin-bottom: .45rem; }
 .dk-minbar-top span:first-child { color: var(--dk-muted); }
@@ -103,7 +103,7 @@ body::before {
 .dk-minbar-track { height: 4px; background: rgba(255,255,255,.06); border-radius: 100px; overflow: hidden; }
 .dk-minbar-fill { height: 100%; background: linear-gradient(90deg, var(--dk-ember), #ffaa00); border-radius: 100px; transition: width .5s; }
 
-/* ÔöÇÔöÇ Combos ÔöÇÔöÇ */
+/* ── Combos ── */
 .dk-combos { margin-bottom: 3rem; }
 .dk-sec-head { display: flex; align-items: baseline; gap: .75rem; margin-bottom: 1.4rem; padding-bottom: .65rem; border-bottom: 1px solid var(--dk-border); }
 .dk-sec-title { font-family: var(--font-serif); font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; color: var(--dk-text); }
@@ -125,10 +125,10 @@ body::before {
 .dk-combo-add { background: var(--dk-ember); color: #fff; border: none; padding: 5px 12px; border-radius: 100px; font-size: .72rem; font-weight: 700; cursor: pointer; }
 .dk-combo-add:hover { opacity: .85; }
 
-/* ÔöÇÔöÇ Sections ÔöÇÔöÇ */
+/* ── Sections ── */
 .dk-sec { margin-bottom: 4rem; }
 
-/* ÔöÇÔöÇ Grid ÔöÇÔöÇ */
+/* ── Grid ── */
 .dk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 1rem; }
 .dk-card { background: var(--dk-card); border: 1px solid var(--dk-border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all .35s; backdrop-filter: blur(12px); }
 .dk-card:hover { border-color: rgba(255,90,31,.4); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.5), 0 0 20px rgba(255,90,31,.08); }
@@ -144,7 +144,7 @@ body::before {
 .dk-card-add { width: 33px; height: 33px; background: rgba(255,90,31,.15); border: 1px solid rgba(255,90,31,.35); color: var(--dk-ember); border-radius: 8px; font-size: 1.15rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
 .dk-card-add:hover { background: var(--dk-ember); color: #fff; transform: scale(1.1); }
 
-/* ÔöÇÔöÇ List ÔöÇÔöÇ */
+/* ── List ── */
 .dk-list { display: flex; flex-direction: column; gap: .65rem; }
 .dk-list-item { background: var(--dk-card); border: 1px solid var(--dk-border); border-radius: 10px; padding: .9rem 1.1rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; transition: all .2s; backdrop-filter: blur(8px); }
 .dk-list-item:hover { border-color: rgba(255,90,31,.35); }
@@ -156,7 +156,7 @@ body::before {
 .dk-list-add { width: 28px; height: 28px; background: transparent; border: 1px solid rgba(255,90,31,.35); color: var(--dk-ember); border-radius: 6px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
 .dk-list-add:hover { background: var(--dk-ember); color: #fff; }
 
-/* ÔöÇÔöÇ Reviews ÔöÇÔöÇ */
+/* ── Reviews ── */
 .dk-reviews { margin-bottom: 4rem; }
 .dk-reviews-avg { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
 .dk-score { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 900; color: var(--dk-gold); }
@@ -170,7 +170,7 @@ body::before {
 .dk-rc-text { font-size: .78rem; color: var(--dk-muted); line-height: 1.55; font-style: italic; }
 .dk-rc-product { margin-top: .5rem; font-size: .68rem; color: var(--dk-ember); font-weight: 600; }
 
-/* ÔöÇÔöÇ Item modal ÔöÇÔöÇ */
+/* ── Item modal ── */
 .dk-imbg { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 400; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; backdrop-filter: blur(8px); }
 .dk-imbg.on { opacity: 1; pointer-events: all; }
 @media(min-width:580px){.dk-imbg{align-items:center;}}
@@ -197,7 +197,7 @@ body::before {
 .dk-imadd { flex: 1; background: var(--dk-ember); color: #fff; border: none; padding: 12px 18px; border-radius: 10px; font-family: var(--font-sans); font-size: .9rem; font-weight: 700; cursor: pointer; transition: all .2s; box-shadow: 0 4px 18px rgba(255,90,31,.3); }
 .dk-imadd:hover { opacity: .9; transform: translateY(-1px); }
 
-/* ÔöÇÔöÇ Cart ÔöÇÔöÇ */
+/* ── Cart ── */
 .dk-cov { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 300; opacity: 0; pointer-events: none; transition: opacity .3s; backdrop-filter: blur(4px); }
 .dk-cov.on { opacity: 1; pointer-events: all; }
 .dk-cdr { position: fixed; right: 0; top: 0; bottom: 0; width: min(410px,100vw); background: var(--dk-bg2); border-left: 1px solid var(--dk-border); z-index: 301; transform: translateX(100%); transition: transform .4s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; }
@@ -228,13 +228,13 @@ body::before {
 .dk-obtn { width: 100%; background: var(--dk-ember); color: #fff; border: none; padding: 13px; border-radius: 8px; font-family: var(--font-sans); font-size: .92rem; font-weight: 700; cursor: pointer; transition: all .2s; box-shadow: 0 4px 18px rgba(255,90,31,.35); }
 .dk-obtn:hover { opacity: .9; transform: translateY(-1px); }
 
-/* ÔöÇÔöÇ Footer ÔöÇÔöÇ */
+/* ── Footer ── */
 .dk-footer { border-top: 1px solid var(--dk-border); padding: 2.5rem 1.5rem; text-align: center; }
 .dk-footer-name { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700; color: var(--dk-text); margin-bottom: .3rem; }
 .dk-footer-name em { color: var(--dk-ember); font-style: italic; }
 .dk-footer-info { font-size: .75rem; color: var(--dk-muted); margin-bottom: .2rem; }
 .dk-footer-pow { font-size: .6rem; color: var(--dk-muted); opacity: .35; margin-top: 1.5rem; letter-spacing: .08em; }
 
-/* ÔöÇÔöÇ Fade ÔöÇÔöÇ */
+/* ── Fade ── */
 .dk-fi-anim { opacity: 0; transform: translateY(16px); transition: opacity .55s, transform .55s; }
 .dk-fi-anim.vis { opacity: 1; transform: translateY(0); }

@@ -1,7 +1,7 @@
 /**
- * editorial.js ÔÇö Template Editorial
+ * editorial.js â€” Template Editorial
  * Layout claro e clean: hero persuasivo, busca integrada,
- * barra de frete gr+ítis, stepper de quantidade e carrinho drawer.
+ * barra de frete grÃ¡tis, stepper de quantidade e carrinho drawer.
  */
 
 import '../../styles/templates/editorial-modern.css';
@@ -15,7 +15,7 @@ let searchQuery = '';
 const fmtR = (v) => `R$ ${Number(v).toFixed(2).replace('.', ',')}`;
 const $ = (id) => document.getElementById(id);
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 export async function init(container, doc) {
   loadDoc(doc);
   container.innerHTML = buildHTML();
@@ -35,25 +35,25 @@ function loadDoc(doc) {
   store = s; categories = c || []; products = p || []; combos = co || []; reviews = r || [];
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // HTML SHELL
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function buildHTML() {
   return `
-  <div class="ed-topbar" id="ed-topbar">­ƒöÑ Pedidos abertos ÔÇó <span id="ed-countdown">--:--:--</span></div>
+  <div class="ed-topbar" id="ed-topbar">ğŸ”¥ Pedidos abertos â€¢ <span id="ed-countdown">--:--:--</span></div>
   <header class="ed-hero">
     <div class="ed-hero-inner">
       <img id="ed-logo" class="ed-logo" src="" alt="" style="display:none">
       <h1 class="ed-store-name" id="ed-store-name">La Bella Pizza</h1>
       <p class="ed-tagline" id="ed-tagline">Feita com amor, entregue com sabor</p>
       <div class="ed-stats">
-        <div class="ed-stat">ÔÅ¦ <strong id="ed-time">40ÔÇô60 min</strong></div>
-        <div class="ed-stat">­ƒøÁ <strong id="ed-fee">Frete R$5</strong></div>
-        <div class="ed-stat">Ô¡É <strong id="ed-rating">4.9</strong></div>
-        <div class="ed-stat">­ƒòÉ <strong id="ed-hours">18hÔÇô23h</strong></div>
+        <div class="ed-stat">â± <strong id="ed-time">40â€“60 min</strong></div>
+        <div class="ed-stat">ğŸ›µ <strong id="ed-fee">Frete R$5</strong></div>
+        <div class="ed-stat">â­ <strong id="ed-rating">4.9</strong></div>
+        <div class="ed-stat">ğŸ• <strong id="ed-hours">18hâ€“23h</strong></div>
       </div>
       <div class="ed-free-bar" id="ed-free-bar">
-        ­ƒÄë Frete gr+ítis acima de R$ <span id="ed-free-threshold">50</span>
+        ğŸ‰ Frete grÃ¡tis acima de R$ <span id="ed-free-threshold">50</span>
         <div class="ed-progress"><div class="ed-progress-fill" id="ed-free-fill" style="width:0%"></div></div>
       </div>
     </div>
@@ -63,26 +63,26 @@ function buildHTML() {
     <div class="ed-nav-inner">
       <div class="ed-nav-logo" id="ed-nav-logo">La Bella</div>
       <div class="ed-search">
-        <span class="ed-search-icon">­ƒöì</span>
-        <input class="ed-search-inp" id="ed-search" type="text" placeholder="Buscar no card+ípioÔÇª" oninput="onSearch(this.value)">
+        <span class="ed-search-icon">ğŸ”</span>
+        <input class="ed-search-inp" id="ed-search" type="text" placeholder="Buscar no cardÃ¡pioâ€¦" oninput="onSearch(this.value)">
       </div>
       <div class="ed-cats" id="ed-cats"></div>
-      <button class="ed-cart-btn" onclick="edToggleCart()">­ƒøÆ<span class="ed-cart-badge" id="ed-cart-badge">0</span></button>
+      <button class="ed-cart-btn" onclick="edToggleCart()">ğŸ›’<span class="ed-cart-badge" id="ed-cart-badge">0</span></button>
     </div>
   </nav>
 
   <main class="ed-main">
     <div id="ed-social" class="ed-social ed-fi-anim">
       <div class="ed-social-dot"></div>
-      <div class="ed-social-txt"><strong id="ed-social-txt">12 pessoas vendo agora</strong><span id="ed-social-sub">+Ültima venda h+í 8 min</span></div>
+      <div class="ed-social-txt"><strong id="ed-social-txt">12 pessoas vendo agora</strong><span id="ed-social-sub">Ãšltima venda hÃ¡ 8 min</span></div>
       <span class="ed-social-live">Ao vivo</span>
     </div>
     <div id="ed-promo" class="ed-promo ed-fi-anim" style="display:none">
-      <div class="ed-promo-text"><strong id="ed-promo-txt"></strong><span>Promo+º+úo por tempo limitado</span></div>
-      <div class="ed-promo-pill" id="ed-promo-tag">S+ô HOJE</div>
+      <div class="ed-promo-text"><strong id="ed-promo-txt"></strong><span>PromoÃ§Ã£o por tempo limitado</span></div>
+      <div class="ed-promo-pill" id="ed-promo-tag">SÃ“ HOJE</div>
     </div>
     <div id="ed-minbar" class="ed-minbar ed-fi-anim">
-      <div class="ed-minbar-top"><span id="ed-min-lbl">Pedido m+¡nimo: R$ 30</span><span id="ed-min-val">R$ 0 / R$ 30</span></div>
+      <div class="ed-minbar-top"><span id="ed-min-lbl">Pedido mÃ­nimo: R$ 30</span><span id="ed-min-val">R$ 0 / R$ 30</span></div>
       <div class="ed-minbar-track"><div class="ed-minbar-fill" id="ed-min-fill" style="width:0%"></div></div>
     </div>
     <div id="ed-combos" class="ed-combos ed-fi-anim"></div>
@@ -95,8 +95,8 @@ function buildHTML() {
     <div class="ed-imbox">
       <div class="ed-imimg" id="ed-imimg">
         <img id="ed-im-img" src="" alt="" style="display:none">
-        <div class="ed-imnoimg" id="ed-im-noimg">­ƒìò</div>
-        <button class="ed-imclose" onclick="document.getElementById('ed-imbg').classList.remove('on')">Ô£ò</button>
+        <div class="ed-imnoimg" id="ed-im-noimg">ğŸ•</div>
+        <button class="ed-imclose" onclick="document.getElementById('ed-imbg').classList.remove('on')">âœ•</button>
       </div>
       <div class="ed-imbody">
         <div class="ed-imcat" id="ed-imcat"></div>
@@ -106,7 +106,7 @@ function buildHTML() {
         <div class="ed-imsizes" id="ed-imsizes"></div>
         <div class="ed-imlbl">Quantidade</div>
         <div class="ed-qty-stepper">
-          <button class="ed-qty-btn" onclick="edChangeImQty(-1)">ÔêÆ</button>
+          <button class="ed-qty-btn" onclick="edChangeImQty(-1)">âˆ’</button>
           <span class="ed-qty-num" id="ed-qty-num">1</span>
           <button class="ed-qty-btn" onclick="edChangeImQty(1)">+</button>
         </div>
@@ -121,16 +121,16 @@ function buildHTML() {
   <!-- Cart drawer -->
   <div class="ed-cov" id="ed-cov" onclick="edToggleCart()"></div>
   <div class="ed-cdr" id="ed-cdr">
-    <div class="ed-chd"><div class="ed-chd-t">­ƒøÆ Seu Pedido</div><button class="ed-cx" onclick="edToggleCart()">Ô£ò</button></div>
-    <div class="ed-cbody" id="ed-cbody"><div class="ed-cempty">Carrinho vazio ­ƒìò</div></div>
+    <div class="ed-chd"><div class="ed-chd-t">ğŸ›’ Seu Pedido</div><button class="ed-cx" onclick="edToggleCart()">âœ•</button></div>
+    <div class="ed-cbody" id="ed-cbody"><div class="ed-cempty">Carrinho vazio ğŸ•</div></div>
     <div class="ed-cft" id="ed-cft" style="display:none">
       <div class="ed-crow"><span>Subtotal</span><span id="ed-csub">R$ 0,00</span></div>
       <div class="ed-crow"><span>Taxa de entrega</span><span id="ed-cfee">R$ 5,00</span></div>
       <div class="ed-cttl"><span>Total</span><span id="ed-cttl">R$ 0,00</span></div>
-      <div class="ed-cwarn" id="ed-cwarn" style="display:none">ÔÜá´©Å M+¡nimo R$<span id="ed-cwarn-min">30</span>. Faltam R$<span id="ed-cwarn-diff">30</span></div>
+      <div class="ed-cwarn" id="ed-cwarn" style="display:none">âš ï¸ MÃ­nimo R$<span id="ed-cwarn-min">30</span>. Faltam R$<span id="ed-cwarn-diff">30</span></div>
       <input class="ed-fi" id="ed-cname" placeholder="Seu nome">
-      <input class="ed-fi" id="ed-caddr" placeholder="Endere+ºo de entrega">
-      <button class="ed-obtn" onclick="edCheckout()">Fazer Pedido ­ƒìò</button>
+      <input class="ed-fi" id="ed-caddr" placeholder="EndereÃ§o de entrega">
+      <button class="ed-obtn" onclick="edCheckout()">Fazer Pedido ğŸ•</button>
     </div>
   </div>
 
@@ -138,14 +138,14 @@ function buildHTML() {
     <div class="ed-footer-name" id="ed-foot-name">La Bella Pizza</div>
     <div class="ed-footer-info" id="ed-foot-addr"></div>
     <div class="ed-footer-info" id="ed-foot-phone"></div>
-    <div class="ed-footer-pow">Powered by Pizzaria Cheia Ô£ª</div>
+    <div class="ed-footer-pow">Powered by Pizzaria Cheia âœ¦</div>
   </footer>
   `;
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // BOOT
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function boot() {
   populateHero();
   renderNav();
@@ -172,23 +172,23 @@ function boot() {
 function populateHero() {
   $('ed-store-name').textContent = store.name || '';
   $('ed-tagline').textContent    = store.tagline || '';
-  $('ed-time').textContent    = store.deliveryTime || '40ÔÇô60 min';
+  $('ed-time').textContent    = store.deliveryTime || '40â€“60 min';
   $('ed-fee').textContent     = store.fee ? `Frete R$${store.fee}` : 'Frete R$5';
-  $('ed-rating').textContent  = store.rating || '4.9 Ôÿà';
+  $('ed-rating').textContent  = store.rating || '4.9 â˜…';
   $('ed-hours').textContent   = store.hours || '';
   $('ed-foot-name').textContent  = store.name || '';
   $('ed-foot-addr').textContent  = store.addr || '';
-  $('ed-foot-phone').textContent = store.phone ? `­ƒô× ${store.phone}` : '';
+  $('ed-foot-phone').textContent = store.phone ? `ğŸ“ ${store.phone}` : '';
   $('ed-nav-logo').textContent   = store.name || '';
   const logo = $('ed-logo');
   if (store.logo) { logo.src = store.logo; logo.style.display = 'block'; }
   if (store.promoTxt) {
     $('ed-promo-txt').textContent = store.promoTxt;
-    $('ed-promo-tag').textContent = store.promoTag || 'S+ô HOJE';
+    $('ed-promo-tag').textContent = store.promoTag || 'SÃ“ HOJE';
     $('ed-promo').style.display   = 'flex';
   }
   const min = store.minOrder || 30;
-  $('ed-min-lbl').textContent = `Pedido m+¡nimo: R$ ${min}`;
+  $('ed-min-lbl').textContent = `Pedido mÃ­nimo: R$ ${min}`;
   $('ed-min-val').textContent = `R$ 0 / R$ ${min}`;
   const freeThreshold = (store.fee ?? 5) * 10;
   $('ed-free-threshold').textContent = freeThreshold;
@@ -230,7 +230,7 @@ function listSec(cat, items) {
 
 function edCard(p, cat) {
   return `<div class="ed-card" onclick="edOpenIM('${p.id}')">
-    <div class="ed-card-img">${p.img ? `<img src="${p.img}" alt="${p.name}">` : '­ƒìò'}</div>
+    <div class="ed-card-img">${p.img ? `<img src="${p.img}" alt="${p.name}">` : 'ğŸ•'}</div>
     <div class="ed-card-body">
       <div class="ed-card-cat">${cat.name}</div>
       <div class="ed-card-name">${p.name}</div>
@@ -245,7 +245,7 @@ function edCard(p, cat) {
 
 function edListItem(p) {
   return `<div class="ed-list-item" onclick="edOpenIM('${p.id}')">
-    <div class="ed-list-img">${p.img ? `<img src="${p.img}" alt="">` : '­ƒìò'}</div>
+    <div class="ed-list-img">${p.img ? `<img src="${p.img}" alt="">` : 'ğŸ•'}</div>
     <div class="ed-list-info"><div class="ed-list-name">${p.name}</div><div class="ed-list-desc">${p.desc}</div></div>
     <div class="ed-list-right">
       <div class="ed-list-price">R$ ${p.prices?.[0] ?? 0}</div>
@@ -257,10 +257,10 @@ function edListItem(p) {
 function renderCombos() {
   const sec = $('ed-combos');
   if (!combos.length) { sec.style.display = 'none'; return; }
-  sec.innerHTML = `<div class="ed-section-head"><h2 class="ed-section-title">­ƒÄü Combos Especiais</h2><span class="ed-section-count">${combos.length} op+º+Áes</span></div>
+  sec.innerHTML = `<div class="ed-section-head"><h2 class="ed-section-title">ğŸ Combos Especiais</h2><span class="ed-section-count">${combos.length} opÃ§Ãµes</span></div>
   <div class="ed-combos-scroll">${combos.filter((c) => c.active !== false).map((c) => `
     <div class="ed-combo-card" onclick="edAddCombo('${c.id}')">
-      <div class="ed-combo-img">${c.img ? `<img src="${c.img}" alt="">` : '­ƒÄü'}${c.saving ? `<div class="ed-combo-save">${c.saving}</div>` : ''}</div>
+      <div class="ed-combo-img">${c.img ? `<img src="${c.img}" alt="">` : 'ğŸ'}${c.saving ? `<div class="ed-combo-save">${c.saving}</div>` : ''}</div>
       <div class="ed-combo-body">
         <div class="ed-combo-name">${c.name}</div>
         <div class="ed-combo-items">${c.items}</div>
@@ -276,10 +276,10 @@ function renderCombos() {
 function renderReviews() {
   const sec = $('ed-reviews');
   if (!reviews.length) { sec.style.display = 'none'; return; }
-  sec.innerHTML = `<div class="ed-section-head"><h2 class="ed-section-title">Ô¡É Avalia+º+Áes</h2></div>
+  sec.innerHTML = `<div class="ed-section-head"><h2 class="ed-section-title">â­ AvaliaÃ§Ãµes</h2></div>
   <div class="ed-reviews-grid">${reviews.map((r) => `
     <div class="ed-review-card">
-      <div class="ed-review-stars">${'Ôÿà'.repeat(r.stars || 5)}</div>
+      <div class="ed-review-stars">${'â˜…'.repeat(r.stars || 5)}</div>
       <div class="ed-review-text">${r.text}</div>
       <div class="ed-review-author">${r.name}</div>
       <div class="ed-review-date">${r.date || ''}</div>
@@ -287,7 +287,7 @@ function renderReviews() {
   </div>`;
 }
 
-// ÔöÇÔöÇ ITEM MODAL ÔöÇÔöÇ
+// â”€â”€ ITEM MODAL â”€â”€
 window.edOpenIM = function edOpenIM(pid) {
   imCurrentPid = pid; imQty = 1;
   const p   = products.find((x) => x.id === pid);
@@ -299,7 +299,7 @@ window.edOpenIM = function edOpenIM(pid) {
   const imgEl = $('ed-im-img'); const noImg = $('ed-im-noimg');
   if (p.img) { imgEl.src = p.img; imgEl.style.display = 'block'; noImg.style.display = 'none'; }
   else { imgEl.style.display = 'none'; noImg.style.display = 'flex'; }
-  const labels = ['Pequeno', 'M+®dio', 'Grande'];
+  const labels = ['Pequeno', 'MÃ©dio', 'Grande'];
   $('ed-imsizes').innerHTML = (p.prices || []).map((price, i) =>
     `<div class="ed-imsz ${i === 0 ? 'sel' : ''}" onclick="edSelectSize(this,${price})">
       <span class="ed-imsz-l">${cat?.type === 'sizes' ? labels[i] : 'Tamanho'}</span>
@@ -336,20 +336,20 @@ window.edAddFromIM = function () {
   for (let i = 0; i < imQty; i++) cart.push({ id: Date.now() + i, name: p.name, size, price, img: p.img });
   $('ed-imbg').classList.remove('on');
   renderCart();
-  showToast('Ô£à Adicionado!');
+  showToast('âœ… Adicionado!');
 };
 
-// ÔöÇÔöÇ CART ÔöÇÔöÇ
+// â”€â”€ CART â”€â”€
 window.edAddToCart = function (pid, idx) {
   const p = products.find((x) => x.id === pid); if (!p) return;
   const cat = categories.find((c) => c.id === p.cat);
   cart.push({ id: Date.now(), name: p.name, size: cat?.type === 'sizes' ? ['P','M','G'][idx] : '', price: p.prices?.[idx] ?? p.prices?.[0] ?? 0, img: p.img });
-  renderCart(); showToast('Ô£à Adicionado!');
+  renderCart(); showToast('âœ… Adicionado!');
 };
 window.edAddCombo = function (cid) {
   const c = combos.find((x) => x.id === cid); if (!c) return;
   cart.push({ id: Date.now(), name: c.name, size: 'Combo', price: c.price, img: c.img });
-  renderCart(); showToast('Ô£à Combo adicionado!');
+  renderCart(); showToast('âœ… Combo adicionado!');
 };
 window.edChangeQty = function (cartId, delta) {
   const idx = cart.findIndex((x) => x.id === cartId); if (idx === -1) return;
@@ -361,19 +361,19 @@ function renderCart() {
   const count = cart.length;
   const badge = $('ed-cart-badge');
   badge.textContent = count; badge.classList.toggle('on', count > 0);
-  if (!count) { $('ed-cbody').innerHTML = '<div class="ed-cempty">Carrinho vazio ­ƒìò</div>'; $('ed-cft').style.display = 'none'; return; }
+  if (!count) { $('ed-cbody').innerHTML = '<div class="ed-cempty">Carrinho vazio ğŸ•</div>'; $('ed-cft').style.display = 'none'; return; }
   const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
   const fee = store.fee ?? 5; const total = sub + fee;
   const min = store.minOrder ?? 30;
   $('ed-cbody').innerHTML = cart.map((item) => `
     <div class="ed-ci">
-      <div class="ed-ci-img">${item.img ? `<img src="${item.img}" alt="">` : '­ƒìò'}</div>
+      <div class="ed-ci-img">${item.img ? `<img src="${item.img}" alt="">` : 'ğŸ•'}</div>
       <div class="ed-ci-info">
         <div class="ed-ci-nm">${item.name}</div>
         <div class="ed-ci-sz">${item.size}</div>
         <div class="ed-ci-pr">${fmtR(item.price)}</div>
         <div class="ed-ci-ctrl">
-          <button class="ed-qb" onclick="edChangeQty(${item.id},-1)">ÔêÆ</button>
+          <button class="ed-qb" onclick="edChangeQty(${item.id},-1)">âˆ’</button>
           <span class="ed-qn">${item.qty || 1}</span>
           <button class="ed-qb" onclick="edChangeQty(${item.id},+1)">+</button>
         </div>
@@ -398,30 +398,30 @@ function renderCart() {
 window.edToggleCart = function () { $('ed-cdr').classList.toggle('on'); $('ed-cov').classList.toggle('on'); };
 window.edCheckout = function () {
   const name = $('ed-cname').value.trim(); const addr = $('ed-caddr').value.trim();
-  if (!name || !addr) { showToast('ÔÜá´©Å Informe nome e endere+ºo', 'red'); return; }
+  if (!name || !addr) { showToast('âš ï¸ Informe nome e endereÃ§o', 'red'); return; }
   const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
   const min = store.minOrder ?? 30;
-  if (sub < min) { showToast(`ÔÜá´©Å M+¡nimo R$${min}`, 'red'); return; }
+  if (sub < min) { showToast(`âš ï¸ MÃ­nimo R$${min}`, 'red'); return; }
   const fee = store.fee ?? 5; const total = sub + fee;
-  const lines = cart.map((i) => `ÔÇó ${i.name}${i.size ? ' (' + i.size + ')' : ''} ÔÇö R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
-  const msg = encodeURIComponent(`­ƒìò *Novo Pedido*\n\n${lines}\n\n*Frete:* R$${fee}\n*Total:* R$${total.toFixed(2)}\n\n*Nome:* ${name}\n*Endere+ºo:* ${addr}`);
+  const lines = cart.map((i) => `â€¢ ${i.name}${i.size ? ' (' + i.size + ')' : ''} â€” R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
+  const msg = encodeURIComponent(`ğŸ• *Novo Pedido*\n\n${lines}\n\n*Frete:* R$${fee}\n*Total:* R$${total.toFixed(2)}\n\n*Nome:* ${name}\n*EndereÃ§o:* ${addr}`);
   const phone = (store.phone || '').replace(/\D/g, '');
   window.open(`https://wa.me/55${phone}?text=${msg}`, '_blank');
 };
 
-// ÔöÇÔöÇ SEARCH ÔöÇÔöÇ
+// â”€â”€ SEARCH â”€â”€
 function onSearch(val) {
   searchQuery = val;
   renderSections();
   initScroll();
 }
 
-// ÔöÇÔöÇ SOCIAL ÔöÇÔöÇ
+// â”€â”€ SOCIAL â”€â”€
 function startSocial() {
   const enabled = store.features?.social ?? true;
   const sec = $('ed-social'); if (!enabled) { sec.style.display = 'none'; return; }
   $('ed-social-txt').textContent = `${Math.floor(Math.random()*30+8)} pessoas vendo agora`;
-  $('ed-social-sub').textContent = `+Ültima venda h+í ${Math.floor(Math.random()*15+1)} minutos`;
+  $('ed-social-sub').textContent = `Ãšltima venda hÃ¡ ${Math.floor(Math.random()*15+1)} minutos`;
 }
 
 function startCountdown() {

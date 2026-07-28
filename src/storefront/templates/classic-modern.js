@@ -1,13 +1,13 @@
 /**
- * classic.js ÔÇö Template Cl+íssico
- * Tema escuro dram+ítico com hero animado, countdown de urg+¬ncia,
+ * classic.js â€” Template ClÃ¡ssico
+ * Tema escuro dramÃ¡tico com hero animado, countdown de urgÃªncia,
  * prova social em tempo real, combos e carrinho drawer.
  * Portado da storefront.js da v4.
  */
 
 import '../../styles/templates/classic-modern.css';
 
-// ÔöÇÔöÇ Estado ÔöÇÔöÇ
+// â”€â”€ Estado â”€â”€
 let store = {}, categories = [], products = [], combos = [], reviews = [];
 let cart = [];
 let selectedSizes = {};
@@ -15,9 +15,9 @@ let selectedSizes = {};
 const fmtR = (v) => `R$ ${Number(v).toFixed(2).replace('.', ',')}`;
 const $ = (id) => document.getElementById(id);
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-// INIT ÔÇö monta o HTML e inicializa a l+¦gica
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// INIT â€” monta o HTML e inicializa a lÃ³gica
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 export async function init(container, doc) {
   loadDoc(doc);
   container.innerHTML = buildHTML();
@@ -43,50 +43,50 @@ function loadDoc(doc) {
   reviews    = r  || [];
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // HTML SHELL
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function buildHTML() {
   return `
-  <div class="mu" id="muBar">­ƒöÑ Pedidos abertos por mais <span id="mcd">--:--:--</span> ­ƒöÑ</div>
+  <div class="mu" id="muBar">ğŸ”¥ Pedidos abertos por mais <span id="mcd">--:--:--</span> ğŸ”¥</div>
   <section class="mhero">
     <div class="mhero-bg"></div>
-    <div class="porbit" id="porbit">­ƒìò</div>
+    <div class="porbit" id="porbit">ğŸ•</div>
     <div class="mhc">
-      <div class="mbadge">Sem taxas -À Pedido direto</div>
+      <div class="mbadge">Sem taxas Â· Pedido direto</div>
       <img id="mhlogo" class="mhlogo" src="" alt="Logo">
       <h1 class="mhtitle"><span class="t1" id="mhN1">La Bella</span><span class="t2" id="mhN2">Pizza</span></h1>
       <p class="mhtagline" id="mhTag">Feita com amor, entregue com sabor</p>
-      <div class="mdiv"><span>Ô£ª</span></div>
+      <div class="mdiv"><span>âœ¦</span></div>
       <div class="mstats">
-        <div class="mst"><span class="mi">ÔÅ¦</span><span class="ml">Entrega</span><span class="mv" id="msTime">40ÔÇô60 min</span></div>
-        <div class="mst"><span class="mi">­ƒøÁ</span><span class="ml">Frete</span><span class="mv" id="msFee">A partir R$5</span></div>
-        <div class="mst"><span class="mi">Ô¡É</span><span class="ml">Avalia+º+úo</span><span class="mv" id="msRating">4.9 (312)</span></div>
-        <div class="mst"><span class="mi">­ƒòÉ</span><span class="ml">Hoje</span><span class="mv" id="msHours">18hÔÇô23h</span></div>
+        <div class="mst"><span class="mi">â±</span><span class="ml">Entrega</span><span class="mv" id="msTime">40â€“60 min</span></div>
+        <div class="mst"><span class="mi">ğŸ›µ</span><span class="ml">Frete</span><span class="mv" id="msFee">A partir R$5</span></div>
+        <div class="mst"><span class="mi">â­</span><span class="ml">AvaliaÃ§Ã£o</span><span class="mv" id="msRating">4.9 (312)</span></div>
+        <div class="mst"><span class="mi">ğŸ•</span><span class="ml">Hoje</span><span class="mv" id="msHours">18hâ€“23h</span></div>
       </div>
-      <button class="mcta" onclick="document.getElementById('mNav').scrollIntoView({behavior:'smooth'})">­ƒìò Ver Card+ípio</button>
+      <button class="mcta" onclick="document.getElementById('mNav').scrollIntoView({behavior:'smooth'})">ğŸ• Ver CardÃ¡pio</button>
     </div>
   </section>
   <nav class="mnav" id="mNav">
     <div class="mnav-inner">
       <div class="mnav-logo" id="mNavLogo">La <em>Bella</em></div>
       <div class="mnav-cats" id="mNavCats"></div>
-      <button class="ctrig" onclick="toggleCart()">­ƒøÆ<span class="cbadge" id="cbadge">0</span></button>
+      <button class="ctrig" onclick="toggleCart()">ğŸ›’<span class="cbadge" id="cbadge">0</span></button>
     </div>
   </nav>
   <main class="mmain">
     <div id="mSocial" class="sp-banner fi-anim">
       <div class="sp-avatars" id="spAvatars"></div>
-      <div class="sp-txt"><strong id="spTxt">12 pessoas viram esse card+ípio hoje</strong><span id="spSub">+Ültima venda h+í 8 minutos</span></div>
+      <div class="sp-txt"><strong id="spTxt">12 pessoas viram esse cardÃ¡pio hoje</strong><span id="spSub">Ãšltima venda hÃ¡ 8 minutos</span></div>
       <div class="sp-live"><div class="sp-dot"></div>Ao vivo</div>
     </div>
-    <div id="mPromo" class="mpromo fi-anim"><div class="mpt"><strong id="mPromoTxt">­ƒöÑ Promo+º+úo!</strong></div><div class="mppill" id="mPromoTag">S+ô HOJE</div></div>
+    <div id="mPromo" class="mpromo fi-anim"><div class="mpt"><strong id="mPromoTxt">ğŸ”¥ PromoÃ§Ã£o!</strong></div><div class="mppill" id="mPromoTag">SÃ“ HOJE</div></div>
     <div id="mCombosSection" class="combos-sec fi-anim">
-      <div class="msec-head"><h2 class="msec-title">­ƒÄü <em>Combos</em> Especiais</h2><span class="msec-count" id="combosCount"></span></div>
+      <div class="msec-head"><h2 class="msec-title">ğŸ <em>Combos</em> Especiais</h2><span class="msec-count" id="combosCount"></span></div>
       <div class="combos-scroll" id="combosScroll"></div>
     </div>
     <div id="mMinBar" class="mbar fi-anim">
-      <div class="mbar-top"><span id="minLbl">Pedido m+¡nimo: R$ 30</span><span id="minVal">R$ 0 / R$ 30</span></div>
+      <div class="mbar-top"><span id="minLbl">Pedido mÃ­nimo: R$ 30</span><span id="minVal">R$ 0 / R$ 30</span></div>
       <div class="pt"><div class="pf" id="pFill" style="width:0%"></div></div>
     </div>
     <div id="mSections"></div>
@@ -94,7 +94,7 @@ function buildHTML() {
       <div class="reviews-header">
         <div class="reviews-avg">
           <span class="reviews-score" id="rvScore">4.9</span>
-          <div><div class="reviews-stars-big">Ô¡ÉÔ¡ÉÔ¡ÉÔ¡ÉÔ¡É</div><div class="reviews-total" id="rvTotal">312 avalia+º+Áes</div></div>
+          <div><div class="reviews-stars-big">â­â­â­â­â­</div><div class="reviews-total" id="rvTotal">312 avaliaÃ§Ãµes</div></div>
         </div>
       </div>
       <div class="reviews-grid" id="rvGrid"></div>
@@ -106,9 +106,9 @@ function buildHTML() {
     <div class="imbox">
       <div class="imimg" id="imImgWrap">
         <img id="imImg" src="" alt="" style="display:none">
-        <div class="imnoimg" id="imNoImg">­ƒìò</div>
+        <div class="imnoimg" id="imNoImg">ğŸ•</div>
         <div class="imimg-ov"></div>
-        <button class="imclose" onclick="closeIMDirect()">Ô£ò</button>
+        <button class="imclose" onclick="closeIMDirect()">âœ•</button>
       </div>
       <div class="imbody">
         <div class="im-cat" id="imCat"></div>
@@ -128,32 +128,32 @@ function buildHTML() {
   <!-- CART -->
   <div class="cov" id="cov" onclick="toggleCart()"></div>
   <div class="cdr" id="cdr">
-    <div class="chd"><div class="chd-t">­ƒøÆ Seu Pedido</div><button class="cx" onclick="toggleCart()">Ô£ò</button></div>
-    <div class="cbody" id="cbody"><div class="cempty"><span>­ƒìò</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div></div>
+    <div class="chd"><div class="chd-t">ğŸ›’ Seu Pedido</div><button class="cx" onclick="toggleCart()">âœ•</button></div>
+    <div class="cbody" id="cbody"><div class="cempty"><span>ğŸ•</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div></div>
     <div class="cft" id="cft" style="display:none">
       <div id="upsellWrap"></div>
       <div class="crow2"><span>Subtotal</span><span id="cSub">R$ 0,00</span></div>
       <div class="crow2"><span>Taxa de entrega</span><span id="cFee">R$ 5,00</span></div>
       <div class="cttl"><span>Total</span><span id="cTtl">R$ 0,00</span></div>
-      <div class="mwarn" id="cWarn" style="display:none">ÔÜá´©Å Pedido m+¡nimo R$<span id="cWarnMin">30</span>. Faltam R$<span id="cWarnDiff">30</span></div>
+      <div class="mwarn" id="cWarn" style="display:none">âš ï¸ Pedido mÃ­nimo R$<span id="cWarnMin">30</span>. Faltam R$<span id="cWarnDiff">30</span></div>
       <input class="fi2" type="text" id="cName" placeholder="Seu nome">
-      <input class="fi2" type="text" id="cAddr" placeholder="Endere+ºo de entrega">
-      <button class="obtn" onclick="checkout()">Fazer Pedido ­ƒìò</button>
+      <input class="fi2" type="text" id="cAddr" placeholder="EndereÃ§o de entrega">
+      <button class="obtn" onclick="checkout()">Fazer Pedido ğŸ•</button>
     </div>
   </div>
 
   <footer class="mfoot">
     <div class="mfl" id="mFootName">La <em>Bella</em> Pizza</div>
-    <div class="mfi2" id="mFootAddr">Rua das Flores, 123 ÔÇö Centro</div>
-    <div class="mfi2" id="mFootPhone">­ƒô× (13) 99999-9999</div>
-    <div class="mpow">Powered by Pizzaria Cheia Ô£ª</div>
+    <div class="mfi2" id="mFootAddr">Rua das Flores, 123 â€” Centro</div>
+    <div class="mfi2" id="mFootPhone">ğŸ“ (13) 99999-9999</div>
+    <div class="mpow">Powered by Pizzaria Cheia âœ¦</div>
   </footer>
   `;
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-// BOOT ÔÇö bind events e render inicial
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// BOOT â€” bind events e render inicial
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function boot() {
   populateHero();
   renderNav();
@@ -178,33 +178,33 @@ function boot() {
   window.showToast     = showToast;
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // POPULATE
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function populateHero() {
   const n = store.name || 'La Bella';
   const [p1, ...rest] = n.trim().split(' ');
   $('mhN1').textContent = p1 || n;
   $('mhN2').textContent = rest.join(' ') || '';
   $('mhTag').textContent = store.tagline || '';
-  $('msTime').textContent   = store.deliveryTime || '40ÔÇô60 min';
+  $('msTime').textContent   = store.deliveryTime || '40â€“60 min';
   $('msFee').textContent    = store.fee ? `A partir R$${store.fee}` : 'A partir R$5';
-  $('msRating').textContent = store.rating || '4.9 Ôÿà';
+  $('msRating').textContent = store.rating || '4.9 â˜…';
   $('msHours').textContent  = store.hours || '';
   $('mFootName').innerHTML  = `${p1 || n} <em>${rest.join(' ')}</em>`;
   $('mFootAddr').textContent  = store.addr  || '';
-  $('mFootPhone').textContent = `­ƒô× ${store.phone || ''}`;
+  $('mFootPhone').textContent = `ğŸ“ ${store.phone || ''}`;
 
   const logo = $('mhlogo');
   if (store.logo) { logo.src = store.logo; logo.classList.add('show'); }
   else logo.classList.remove('show');
 
   $('mPromoTxt').textContent = store.promoTxt || '';
-  $('mPromoTag').textContent = store.promoTag || 'S+ô HOJE';
+  $('mPromoTag').textContent = store.promoTag || 'SÃ“ HOJE';
   if (!store.promoTxt) $('mPromo').style.display = 'none';
 
   const minVal = store.minOrder || 30;
-  $('minLbl').textContent = `Pedido m+¡nimo: R$ ${minVal}`;
+  $('minLbl').textContent = `Pedido mÃ­nimo: R$ ${minVal}`;
   $('minVal').textContent = `R$ 0 / R$ ${minVal}`;
 }
 
@@ -224,9 +224,9 @@ function renderNav() {
   };
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SECTIONS
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function renderSections() {
   $('mSections').innerHTML = categories.map((cat) => {
     const catProducts = products.filter((p) => p.cat === cat.id && p.active !== false);
@@ -264,7 +264,7 @@ function cardHTML(p, cat) {
   const price = p.prices?.[0] ?? 0;
   return `<div class="mcard" onclick="openIM('${p.id}')">
     <div class="mcard-img">
-      ${p.img ? `<img src="${p.img}" alt="${p.name}">` : `<div class="mcard-noimg">­ƒìò</div>`}
+      ${p.img ? `<img src="${p.img}" alt="${p.name}">` : `<div class="mcard-noimg">ğŸ•</div>`}
       <div class="mcard-ov"></div>
     </div>
     <div class="mcard-body">
@@ -284,7 +284,7 @@ function featCardHTML(p, cat) {
   const price = p.prices?.[0] ?? 0;
   return `<div class="mfeat" onclick="openIM('${p.id}')">
     <div class="mfi">
-      ${p.img ? `<img src="${p.img}" alt="${p.name}"><div class="mfi-tag">Destaque</div>` : `<div class="mcard-noimg" style="height:100%">­ƒìò</div>`}
+      ${p.img ? `<img src="${p.img}" alt="${p.name}"><div class="mfi-tag">Destaque</div>` : `<div class="mcard-noimg" style="height:100%">ğŸ•</div>`}
     </div>
     <div class="mfb">
       <div class="mfcat">${cat.name}</div>
@@ -302,7 +302,7 @@ function featCardHTML(p, cat) {
 function listItemHTML(p, cat) {
   const price = p.prices?.[0] ?? 0;
   return `<div class="mlist-item" onclick="openIM('${p.id}')">
-    <div class="mlist-img">${p.img ? `<img src="${p.img}" alt="${p.name}">` : '­ƒìò'}</div>
+    <div class="mlist-img">${p.img ? `<img src="${p.img}" alt="${p.name}">` : 'ğŸ•'}</div>
     <div class="mlist-info"><div class="mlist-name">${p.name}</div><div class="mlist-desc">${p.desc}</div></div>
     <div class="mlist-right">
       <div class="mlist-pr">R$ ${price}</div>
@@ -316,18 +316,18 @@ function sizeTagsHTML(p) {
   return `<div class="mcard-sizes">${(p.prices || []).map((pr, i) => `<span class="msz">${labels[i]}: R$${pr}</span>`).join('')}</div>`;
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // COMBOS
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function renderCombos() {
   const sec = $('mCombosSection');
   if (!combos.length) { sec.style.display = 'none'; return; }
   sec.style.display = 'block';
-  $('combosCount').textContent = `${combos.length} op+º+úo${combos.length > 1 ? '+Áes' : ''}`;
+  $('combosCount').textContent = `${combos.length} opÃ§Ã£o${combos.length > 1 ? 'Ãµes' : ''}`;
   $('combosScroll').innerHTML = combos.filter((c) => c.active !== false).map((c) => `
     <div class="combo-card" onclick="addComboToCart('${c.id}')">
       <div class="combo-card-img">
-        ${c.img ? `<img src="${c.img}" alt="${c.name}">` : `<div class="mcard-noimg" style="height:100%">­ƒÄü</div>`}
+        ${c.img ? `<img src="${c.img}" alt="${c.name}">` : `<div class="mcard-noimg" style="height:100%">ğŸ</div>`}
         ${c.saving ? `<div class="combo-save-badge">${c.saving}</div>` : ''}
       </div>
       <div class="combo-card-body">
@@ -342,35 +342,35 @@ function renderCombos() {
   `).join('');
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // REVIEWS
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function renderReviews() {
   const sec = $('mReviewsSec');
   if (!reviews.length) { sec.style.display = 'none'; return; }
   sec.style.display = 'block';
   const avg = (reviews.reduce((s, r) => s + (r.stars || 5), 0) / reviews.length).toFixed(1);
   $('rvScore').textContent = avg;
-  $('rvTotal').textContent = `${reviews.length} avalia+º+Áes`;
+  $('rvTotal').textContent = `${reviews.length} avaliaÃ§Ãµes`;
   $('rvGrid').innerHTML = reviews.map((r) => `
     <div class="review-card">
       <div class="rc-top">
-        <div class="rc-av">${r.avatar ? `<img src="${r.avatar}">` : '­ƒæñ'}</div>
+        <div class="rc-av">${r.avatar ? `<img src="${r.avatar}">` : 'ğŸ‘¤'}</div>
         <div>
           <div class="rc-name">${r.name}</div>
-          <div class="rc-stars">${'Ô¡É'.repeat(r.stars || 5)}</div>
+          <div class="rc-stars">${'â­'.repeat(r.stars || 5)}</div>
           <div class="rc-date">${r.date || ''}</div>
         </div>
       </div>
       <div class="rc-text">${r.text}</div>
-      ${r.product ? `<div class="rc-product">­ƒôª ${r.product}</div>` : ''}
+      ${r.product ? `<div class="rc-product">ğŸ“¦ ${r.product}</div>` : ''}
     </div>
   `).join('');
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ITEM MODAL
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 let imCurrentPid = null;
 
 window.openIM = function openIM(pid) {
@@ -389,11 +389,11 @@ window.openIM = function openIM(pid) {
   else { imgEl.style.display = 'none'; noImg.style.display = 'flex'; }
 
   const isSizes = cat?.type === 'sizes';
-  const labels  = ['Pequeno', 'M+®dio', 'Grande'];
+  const labels  = ['Pequeno', 'MÃ©dio', 'Grande'];
   $('imSizes').innerHTML = (p.prices || []).map((price, i) => `
     <div class="imsz ${i === 0 ? 'sel' : ''}" onclick="selectSize(this, ${price})">
       <span class="imsz-l">${isSizes ? labels[i] : 'Tamanho'}</span>
-      <span class="imsz-d">${isSizes ? ['P', 'M', 'G'][i] : 'ÔÇö'}</span>
+      <span class="imsz-d">${isSizes ? ['P', 'M', 'G'][i] : 'â€”'}</span>
       <span class="imsz-p">R$${price}</span>
     </div>
   `).join('');
@@ -422,12 +422,12 @@ window.addFromIM = function addFromIM() {
   cart.push({ id: Date.now(), name: p.name, size: sizeLabel, price, img: p.img });
   $('imbg').classList.remove('on');
   renderCart();
-  showToast('Ô£à Adicionado ao pedido!');
+  showToast('âœ… Adicionado ao pedido!');
 };
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CART
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 window.addToCart = function addToCart(pid, sizeIdx) {
   const p = products.find((x) => x.id === pid);
   if (!p) return;
@@ -437,7 +437,7 @@ window.addToCart = function addToCart(pid, sizeIdx) {
   const size  = cat?.type === 'sizes' ? labels[sizeIdx] : '';
   cart.push({ id: Date.now(), name: p.name, size, price, img: p.img });
   renderCart();
-  showToast('Ô£à Adicionado!');
+  showToast('âœ… Adicionado!');
 };
 
 window.addComboToCart = function addComboToCart(cid) {
@@ -445,7 +445,7 @@ window.addComboToCart = function addComboToCart(cid) {
   if (!c) return;
   cart.push({ id: Date.now(), name: c.name, size: 'Combo', price: c.price, img: c.img });
   renderCart();
-  showToast('Ô£à Combo adicionado!');
+  showToast('âœ… Combo adicionado!');
 };
 
 window.changeQty = function changeQty(cartId, delta) {
@@ -463,7 +463,7 @@ function renderCart() {
   badge.classList.toggle('on', count > 0);
 
   if (!count) {
-    $('cbody').innerHTML = `<div class="cempty"><span>­ƒìò</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div>`;
+    $('cbody').innerHTML = `<div class="cempty"><span>ğŸ•</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div>`;
     $('cft').style.display = 'none';
     return;
   }
@@ -475,13 +475,13 @@ function renderCart() {
 
   $('cbody').innerHTML = cart.map((item) => `
     <div class="ci">
-      <div class="ci-img">${item.img ? `<img src="${item.img}" alt="">` : '­ƒìò'}</div>
+      <div class="ci-img">${item.img ? `<img src="${item.img}" alt="">` : 'ğŸ•'}</div>
       <div class="ci-info">
         <div class="ci-nm">${item.name}</div>
         <div class="ci-sz">${item.size}</div>
         <div class="ci-pr">${fmtR(item.price)}</div>
         <div class="ci-ctrl">
-          <button class="qb" onclick="changeQty(${item.id}, -1)">ÔêÆ</button>
+          <button class="qb" onclick="changeQty(${item.id}, -1)">âˆ’</button>
           <span class="qn">${item.qty || 1}</span>
           <button class="qb" onclick="changeQty(${item.id}, +1)">+</button>
         </div>
@@ -523,10 +523,10 @@ function renderUpsell() {
   const suggestions = products.filter((p) => p.active !== false && !cartNames.includes(p.name)).slice(0, 2);
   if (!suggestions.length) { wrap.innerHTML = ''; return; }
   wrap.innerHTML = `<div class="upsell">
-    <div class="upsell-title">Ô£¿ Adicionar ao pedido</div>
+    <div class="upsell-title">âœ¨ Adicionar ao pedido</div>
     <div class="upsell-items">${suggestions.map((p) => `
       <div class="upsell-item">
-        <div class="upsell-item-img">${p.img ? `<img src="${p.img}" alt="">` : '­ƒìò'}</div>
+        <div class="upsell-item-img">${p.img ? `<img src="${p.img}" alt="">` : 'ğŸ•'}</div>
         <div class="upsell-item-info">
           <div class="upsell-item-name">${p.name}</div>
           <div class="upsell-item-price">R$ ${p.prices?.[0] ?? 0}</div>
@@ -545,21 +545,21 @@ window.toggleCart = function toggleCart() {
 window.checkout = function checkout() {
   const name = $('cName').value.trim();
   const addr = $('cAddr').value.trim();
-  if (!name || !addr) { showToast('ÔÜá´©Å Informe nome e endere+ºo', 'red'); return; }
+  if (!name || !addr) { showToast('âš ï¸ Informe nome e endereÃ§o', 'red'); return; }
   const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
   const min = store.minOrder ?? 30;
-  if (sub < min) { showToast(`ÔÜá´©Å M+¡nimo R$${min}`, 'red'); return; }
+  if (sub < min) { showToast(`âš ï¸ MÃ­nimo R$${min}`, 'red'); return; }
   const fee   = store.fee ?? 5;
   const total = sub + fee;
-  const lines = cart.map((i) => `ÔÇó ${item.name}${i.size ? ' (' + i.size + ')' : ''} ÔÇö R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
-  const msg   = encodeURIComponent(`­ƒìò *Novo Pedido*\n\n${lines}\n\n*Taxa:* R$${fee}\n*Total:* R$${total.toFixed(2)}\n\n*Nome:* ${name}\n*Endere+ºo:* ${addr}`);
+  const lines = cart.map((i) => `â€¢ ${item.name}${i.size ? ' (' + i.size + ')' : ''} â€” R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
+  const msg   = encodeURIComponent(`ğŸ• *Novo Pedido*\n\n${lines}\n\n*Taxa:* R$${fee}\n*Total:* R$${total.toFixed(2)}\n\n*Nome:* ${name}\n*EndereÃ§o:* ${addr}`);
   const phone = (store.phone || '').replace(/\D/g, '');
   window.open(`https://wa.me/55${phone}?text=${msg}`, '_blank');
 };
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // COUNTDOWN
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function startCountdown() {
   const urgencyEnabled = store.features?.urgency ?? true;
   const bar = $('muBar');
@@ -579,25 +579,25 @@ function startCountdown() {
   tick(); setInterval(tick, 1000);
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SOCIAL PROOF
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function startSocialProof() {
   const enabled = store.features?.social ?? true;
   const sec = $('mSocial');
   if (!enabled) { sec.style.display = 'none'; return; }
   const count = Math.floor(Math.random() * 30 + 10);
-  $('spTxt').textContent = `${count} pessoas viram esse card+ípio hoje`;
-  $('spSub').textContent = `+Ültima venda h+í ${Math.floor(Math.random()*20+1)} minutos`;
-  const avatarEmojis = ['­ƒæ®', '­ƒæ¿', '­ƒºö', '­ƒæ®ÔÇì­ƒª¦', '­ƒæ®ÔÇì­ƒª¦', '­ƒºæ', '­ƒºæÔÇì­ƒì¦'];
+  $('spTxt').textContent = `${count} pessoas viram esse cardÃ¡pio hoje`;
+  $('spSub').textContent = `Ãšltima venda hÃ¡ ${Math.floor(Math.random()*20+1)} minutos`;
+  const avatarEmojis = ['ğŸ‘©', 'ğŸ‘¨', 'ğŸ§”', 'ğŸ‘©â€ğŸ¦±', 'ğŸ‘©â€ğŸ¦°', 'ğŸ§‘', 'ğŸ§‘â€ğŸ³'];
   $('spAvatars').innerHTML = avatarEmojis.slice(0, 5).map((e) =>
     `<div class="sp-av">${e}</div>`
   ).join('');
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // FEATURES
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function hideDisabledFeatures() {
   const f = store.features || {};
   if (!(f.promo   ?? true)) $('mPromo').style.display   = 'none';
@@ -607,9 +607,9 @@ function hideDisabledFeatures() {
   if (!(f.orbit   ?? true)) $('porbit').style.display   = 'none';
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SCROLL OBSERVER (fade-in)
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function initScrollObserver() {
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
@@ -622,9 +622,9 @@ function initScrollObserver() {
   document.querySelectorAll('.fi-anim').forEach((el) => obs.observe(el));
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TOAST
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function showToast(msg, type = '') {
   const t = $('toast');
   t.textContent = msg;

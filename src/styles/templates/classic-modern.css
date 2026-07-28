@@ -1,9 +1,9 @@
-﻿/*
- * CLASSIC TEMPLATE CSS ÔÇö Pizzaria SaaS v5
+/*
+ * CLASSIC TEMPLATE CSS — Pizzaria SaaS v5
  * Portado do storefront.css da v4. Tema escuro premium com hero animado.
  */
 
-/* ÔöÇÔöÇ Base dark override ÔöÇÔöÇ */
+/* ── Base dark override ── */
 #vMenu { --black:#07050A;--deep:#0f0c14;--card:#171320;--card2:#1e1828;
   --red:var(--red,#c0392b);--red2:#e74c3c;--redglow:rgba(192,57,43,.3);
   --gold:#d4a043;--goldf:rgba(212,160,67,.13);--goldhi:rgba(212,160,67,.5);
@@ -64,7 +64,7 @@ body { background: #07050A; }
 .sp-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:sp-pulse 1.5s ease infinite;}
 @keyframes sp-pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
 .mpromo{background:linear-gradient(135deg,#5a0000,var(--red) 60%,#5a0000);border-radius:10px;padding:1.1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:2.25rem;position:relative;overflow:hidden;}
-.mpromo::after{content:'­ƒìò';position:absolute;right:-10px;top:-8px;font-size:4.5rem;opacity:.1;transform:rotate(20deg);}
+.mpromo::after{content:'🍕';position:absolute;right:-10px;top:-8px;font-size:4.5rem;opacity:.1;transform:rotate(20deg);}
 .mpt strong{display:block;font-size:.87rem;font-weight:700;color:white;margin-bottom:2px;}
 .mpt span{font-size:.72rem;color:rgba(255,255,255,.7);}
 .mppill{background:white;color:var(--red);padding:5px 13px;border-radius:100px;font-size:.68rem;font-weight:800;white-space:nowrap;flex-shrink:0;}

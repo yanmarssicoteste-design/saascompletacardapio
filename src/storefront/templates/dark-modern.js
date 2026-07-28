@@ -1,6 +1,6 @@
 /**
- * dark.js ÔÇö Template Dark Forno
- * Est+®tica noturna premium: grain, gradiente ember,
+ * dark.js â€” Template Dark Forno
+ * EstÃ©tica noturna premium: grain, gradiente ember,
  * glassmorphism e carrinho drawer com cores escuras.
  */
 
@@ -13,7 +13,7 @@ let imCurrentPid = null;
 const fmtR = (v) => `R$ ${Number(v).toFixed(2).replace('.', ',')}`;
 const $ = (id) => document.getElementById(id);
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 export async function init(container, doc) {
   loadDoc(doc);
   container.innerHTML = buildHTML();
@@ -33,28 +33,28 @@ function loadDoc(doc) {
   store = s; categories = c || []; products = p || []; combos = co || []; reviews = r || [];
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // HTML SHELL
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function buildHTML() {
   return `
-  <div class="dk-topbar">­ƒöÑ Pedidos abertos por mais <span id="dk-countdown">--:--:--</span> ­ƒöÑ</div>
+  <div class="dk-topbar">ğŸ”¥ Pedidos abertos por mais <span id="dk-countdown">--:--:--</span> ğŸ”¥</div>
 
   <section class="dk-hero">
     <div class="dk-hero-bg"></div>
-    <div class="dk-orbit">­ƒìò</div>
+    <div class="dk-orbit">ğŸ•</div>
     <div class="dk-hero-inner">
-      <div class="dk-badge"><span class="dk-badge-dot"></span>Sem taxas -À Pedido direto</div>
+      <div class="dk-badge"><span class="dk-badge-dot"></span>Sem taxas Â· Pedido direto</div>
       <img id="dk-logo" class="dk-logo" src="" alt="">
       <h1 class="dk-title"><span class="dk-t1" id="dk-t1">La Bella</span><span class="dk-t2" id="dk-t2">Pizza</span></h1>
       <p class="dk-tagline" id="dk-tagline">Feita com amor, entregue com sabor</p>
       <div class="dk-stats">
-        <div class="dk-stat"><span class="dk-stat-icon">ÔÅ¦</span><span class="dk-stat-label">Entrega</span><span class="dk-stat-val" id="dk-time">40ÔÇô60 min</span></div>
-        <div class="dk-stat"><span class="dk-stat-icon">­ƒøÁ</span><span class="dk-stat-label">Frete</span><span class="dk-stat-val" id="dk-fee">R$5</span></div>
-        <div class="dk-stat"><span class="dk-stat-icon">Ô¡É</span><span class="dk-stat-label">Avalia+º+úo</span><span class="dk-stat-val" id="dk-rating">4.9</span></div>
-        <div class="dk-stat"><span class="dk-stat-icon">­ƒòÉ</span><span class="dk-stat-label">Hoje</span><span class="dk-stat-val" id="dk-hours">18hÔÇô23h</span></div>
+        <div class="dk-stat"><span class="dk-stat-icon">â±</span><span class="dk-stat-label">Entrega</span><span class="dk-stat-val" id="dk-time">40â€“60 min</span></div>
+        <div class="dk-stat"><span class="dk-stat-icon">ğŸ›µ</span><span class="dk-stat-label">Frete</span><span class="dk-stat-val" id="dk-fee">R$5</span></div>
+        <div class="dk-stat"><span class="dk-stat-icon">â­</span><span class="dk-stat-label">AvaliaÃ§Ã£o</span><span class="dk-stat-val" id="dk-rating">4.9</span></div>
+        <div class="dk-stat"><span class="dk-stat-icon">ğŸ•</span><span class="dk-stat-label">Hoje</span><span class="dk-stat-val" id="dk-hours">18hâ€“23h</span></div>
       </div>
-      <button class="dk-cta" onclick="document.getElementById('dk-nav').scrollIntoView({behavior:'smooth'})">­ƒìò Ver Card+ípio</button>
+      <button class="dk-cta" onclick="document.getElementById('dk-nav').scrollIntoView({behavior:'smooth'})">ğŸ• Ver CardÃ¡pio</button>
     </div>
   </section>
 
@@ -62,22 +62,22 @@ function buildHTML() {
     <div class="dk-nav-inner">
       <div class="dk-nav-logo" id="dk-nav-logo">La <em>Bella</em></div>
       <div class="dk-nav-cats" id="dk-nav-cats"></div>
-      <button class="dk-cart-btn" onclick="dkToggleCart()">­ƒøÆ<span class="dk-cart-badge" id="dk-cart-badge">0</span></button>
+      <button class="dk-cart-btn" onclick="dkToggleCart()">ğŸ›’<span class="dk-cart-badge" id="dk-cart-badge">0</span></button>
     </div>
   </nav>
 
   <main class="dk-main">
     <div id="dk-social" class="dk-social dk-fi-anim">
       <div class="dk-social-dot"></div>
-      <div class="dk-social-txt"><strong id="dk-social-txt">12 pessoas vendo agora</strong><span id="dk-social-sub">+Ültima venda h+í 8 min</span></div>
-      <span class="dk-social-live">­ƒö¦ Ao vivo</span>
+      <div class="dk-social-txt"><strong id="dk-social-txt">12 pessoas vendo agora</strong><span id="dk-social-sub">Ãšltima venda hÃ¡ 8 min</span></div>
+      <span class="dk-social-live">ğŸ”´ Ao vivo</span>
     </div>
     <div id="dk-promo" class="dk-promo dk-fi-anim" style="display:none">
-      <div><strong id="dk-promo-txt"></strong><div class="dk-promo-sub">Promo+º+úo por tempo limitado</div></div>
-      <div class="dk-promo-pill" id="dk-promo-tag">S+ô HOJE</div>
+      <div><strong id="dk-promo-txt"></strong><div class="dk-promo-sub">PromoÃ§Ã£o por tempo limitado</div></div>
+      <div class="dk-promo-pill" id="dk-promo-tag">SÃ“ HOJE</div>
     </div>
     <div id="dk-minbar" class="dk-minbar dk-fi-anim">
-      <div class="dk-minbar-top"><span id="dk-min-lbl">Pedido m+¡nimo: R$ 30</span><span id="dk-min-val">R$ 0 / R$ 30</span></div>
+      <div class="dk-minbar-top"><span id="dk-min-lbl">Pedido mÃ­nimo: R$ 30</span><span id="dk-min-val">R$ 0 / R$ 30</span></div>
       <div class="dk-minbar-track"><div class="dk-minbar-fill" id="dk-min-fill" style="width:0%"></div></div>
     </div>
     <div id="dk-combos" class="dk-combos dk-fi-anim"></div>
@@ -90,8 +90,8 @@ function buildHTML() {
     <div class="dk-imbox">
       <div class="dk-imimg">
         <img id="dk-im-img" src="" alt="" style="display:none">
-        <div class="dk-imnoimg" id="dk-im-noimg">­ƒìò</div>
-        <button class="dk-imclose" onclick="document.getElementById('dk-imbg').classList.remove('on')">Ô£ò</button>
+        <div class="dk-imnoimg" id="dk-im-noimg">ğŸ•</div>
+        <button class="dk-imclose" onclick="document.getElementById('dk-imbg').classList.remove('on')">âœ•</button>
       </div>
       <div class="dk-imbody">
         <div class="dk-imcat" id="dk-imcat"></div>
@@ -110,16 +110,16 @@ function buildHTML() {
   <!-- CART DRAWER -->
   <div class="dk-cov" id="dk-cov" onclick="dkToggleCart()"></div>
   <div class="dk-cdr" id="dk-cdr">
-    <div class="dk-chd"><div class="dk-chd-t">­ƒøÆ Seu Pedido</div><button class="dk-cx" onclick="dkToggleCart()">Ô£ò</button></div>
-    <div class="dk-cbody" id="dk-cbody"><div class="dk-cempty">Carrinho vazio ­ƒìò</div></div>
+    <div class="dk-chd"><div class="dk-chd-t">ğŸ›’ Seu Pedido</div><button class="dk-cx" onclick="dkToggleCart()">âœ•</button></div>
+    <div class="dk-cbody" id="dk-cbody"><div class="dk-cempty">Carrinho vazio ğŸ•</div></div>
     <div class="dk-cft" id="dk-cft" style="display:none">
       <div class="dk-crow"><span>Subtotal</span><span id="dk-csub">R$ 0,00</span></div>
       <div class="dk-crow"><span>Taxa de entrega</span><span id="dk-cfee">R$ 5,00</span></div>
       <div class="dk-cttl"><span>Total</span><span id="dk-cttl">R$ 0,00</span></div>
-      <div class="dk-cwarn" id="dk-cwarn" style="display:none">ÔÜá´©Å M+¡nimo R$<span id="dk-cwarn-min">30</span>. Faltam R$<span id="dk-cwarn-diff">30</span></div>
+      <div class="dk-cwarn" id="dk-cwarn" style="display:none">âš ï¸ MÃ­nimo R$<span id="dk-cwarn-min">30</span>. Faltam R$<span id="dk-cwarn-diff">30</span></div>
       <input class="dk-fi" id="dk-cname" placeholder="Seu nome">
-      <input class="dk-fi" id="dk-caddr" placeholder="Endere+ºo de entrega">
-      <button class="dk-obtn" onclick="dkCheckout()">Fazer Pedido ­ƒìò</button>
+      <input class="dk-fi" id="dk-caddr" placeholder="EndereÃ§o de entrega">
+      <button class="dk-obtn" onclick="dkCheckout()">Fazer Pedido ğŸ•</button>
     </div>
   </div>
 
@@ -127,14 +127,14 @@ function buildHTML() {
     <div class="dk-footer-name" id="dk-foot-name">La <em>Bella</em> Pizza</div>
     <div class="dk-footer-info" id="dk-foot-addr"></div>
     <div class="dk-footer-info" id="dk-foot-phone"></div>
-    <div class="dk-footer-pow">Powered by Pizzaria Cheia Ô£ª</div>
+    <div class="dk-footer-pow">Powered by Pizzaria Cheia âœ¦</div>
   </footer>
   `;
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // BOOT
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function boot() {
   populateHero();
   renderNav();
@@ -156,32 +156,32 @@ function boot() {
   window.dkSelectSize = dkSelectSize;
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // POPULATE
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function populateHero() {
   const n = store.name || 'La Bella Pizza';
   const [p1, ...rest] = n.trim().split(' ');
   $('dk-t1').textContent = p1;
   $('dk-t2').textContent = rest.join(' ');
   $('dk-tagline').textContent = store.tagline || '';
-  $('dk-time').textContent    = store.deliveryTime || '40ÔÇô60 min';
+  $('dk-time').textContent    = store.deliveryTime || '40â€“60 min';
   $('dk-fee').textContent     = store.fee ? `R$${store.fee}` : 'R$5';
-  $('dk-rating').textContent  = store.rating || '4.9 Ôÿà';
+  $('dk-rating').textContent  = store.rating || '4.9 â˜…';
   $('dk-hours').textContent   = store.hours || '';
   $('dk-nav-logo').innerHTML  = `${p1} <em>${rest.join(' ')}</em>`;
   $('dk-foot-name').innerHTML = `${p1} <em>${rest.join(' ')}</em>`;
   $('dk-foot-addr').textContent  = store.addr  || '';
-  $('dk-foot-phone').textContent = store.phone ? `­ƒô× ${store.phone}` : '';
+  $('dk-foot-phone').textContent = store.phone ? `ğŸ“ ${store.phone}` : '';
   const logo = $('dk-logo');
   if (store.logo) { logo.src = store.logo; logo.classList.add('show'); }
   if (store.promoTxt) {
     $('dk-promo-txt').textContent = store.promoTxt;
-    $('dk-promo-tag').textContent = store.promoTag || 'S+ô HOJE';
+    $('dk-promo-tag').textContent = store.promoTag || 'SÃ“ HOJE';
     $('dk-promo').style.display   = 'flex';
   }
   const min = store.minOrder || 30;
-  $('dk-min-lbl').textContent = `Pedido m+¡nimo: R$ ${min}`;
+  $('dk-min-lbl').textContent = `Pedido mÃ­nimo: R$ ${min}`;
   $('dk-min-val').textContent = `R$ 0 / R$ ${min}`;
 }
 
@@ -191,9 +191,9 @@ function renderNav() {
   ).join('');
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SECTIONS
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function renderSections() {
   $('dk-sections').innerHTML = categories.map((cat) => {
     const items = products.filter((p) => p.cat === cat.id && p.active !== false);
@@ -219,7 +219,7 @@ function dkListSec(cat, items) {
 
 function dkCard(p, cat) {
   return `<div class="dk-card" onclick="dkOpenIM('${p.id}')">
-    <div class="dk-card-img">${p.img ? `<img src="${p.img}" alt="${p.name}">` : '­ƒìò'}</div>
+    <div class="dk-card-img">${p.img ? `<img src="${p.img}" alt="${p.name}">` : 'ğŸ•'}</div>
     <div class="dk-card-body">
       <div class="dk-card-cat">${cat.name}</div>
       <div class="dk-card-name">${p.name}</div>
@@ -234,7 +234,7 @@ function dkCard(p, cat) {
 
 function dkListItem(p) {
   return `<div class="dk-list-item" onclick="dkOpenIM('${p.id}')">
-    <div class="dk-list-img">${p.img ? `<img src="${p.img}" alt="">` : '­ƒìò'}</div>
+    <div class="dk-list-img">${p.img ? `<img src="${p.img}" alt="">` : 'ğŸ•'}</div>
     <div style="flex:1">
       <div class="dk-list-name">${p.name}</div>
       <div class="dk-list-desc">${p.desc}</div>
@@ -246,16 +246,16 @@ function dkListItem(p) {
   </div>`;
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // COMBOS
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function renderCombos() {
   const sec = $('dk-combos');
   if (!combos.length) { sec.style.display = 'none'; return; }
-  sec.innerHTML = `<div class="dk-sec-head"><h2 class="dk-sec-title">­ƒÄü <em>Combos</em> Especiais</h2><span class="dk-sec-count">${combos.length} op+º+Áes</span></div>
+  sec.innerHTML = `<div class="dk-sec-head"><h2 class="dk-sec-title">ğŸ <em>Combos</em> Especiais</h2><span class="dk-sec-count">${combos.length} opÃ§Ãµes</span></div>
   <div class="dk-combos-scroll">${combos.filter((c) => c.active !== false).map((c) => `
     <div class="dk-combo-card" onclick="dkAddCombo('${c.id}')">
-      <div class="dk-combo-img">${c.img ? `<img src="${c.img}" alt="">` : '­ƒÄü'}${c.saving ? `<div class="dk-combo-save">${c.saving}</div>` : ''}</div>
+      <div class="dk-combo-img">${c.img ? `<img src="${c.img}" alt="">` : 'ğŸ'}${c.saving ? `<div class="dk-combo-save">${c.saving}</div>` : ''}</div>
       <div class="dk-combo-body">
         <div class="dk-combo-name">${c.name}</div>
         <div class="dk-combo-items">${c.items}</div>
@@ -268,30 +268,30 @@ function renderCombos() {
   </div>`;
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // REVIEWS
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function renderReviews() {
   const sec = $('dk-reviews');
   if (!reviews.length) { sec.style.display = 'none'; return; }
   const avg = (reviews.reduce((s, r) => s + (r.stars || 5), 0) / reviews.length).toFixed(1);
-  sec.innerHTML = `<div class="dk-sec-head"><h2 class="dk-sec-title">Ô¡É <em>Avalia+º+Áes</em></h2></div>
-  <div class="dk-reviews-avg"><span class="dk-score">${avg}</span><div><div style="color:var(--dk-gold)">${'Ô¡É'.repeat(5)}</div><div style="font-size:.72rem;color:var(--dk-muted)">${reviews.length} avalia+º+Áes</div></div></div>
+  sec.innerHTML = `<div class="dk-sec-head"><h2 class="dk-sec-title">â­ <em>AvaliaÃ§Ãµes</em></h2></div>
+  <div class="dk-reviews-avg"><span class="dk-score">${avg}</span><div><div style="color:var(--dk-gold)">${'â­'.repeat(5)}</div><div style="font-size:.72rem;color:var(--dk-muted)">${reviews.length} avaliaÃ§Ãµes</div></div></div>
   <div class="dk-reviews-grid">${reviews.map((r) => `
     <div class="dk-review-card">
       <div class="dk-rc-top">
-        <div class="dk-rc-av">­ƒæñ</div>
-        <div><div class="dk-rc-name">${r.name}</div><div class="dk-rc-stars">${'Ô¡É'.repeat(r.stars || 5)}</div></div>
+        <div class="dk-rc-av">ğŸ‘¤</div>
+        <div><div class="dk-rc-name">${r.name}</div><div class="dk-rc-stars">${'â­'.repeat(r.stars || 5)}</div></div>
       </div>
       <div class="dk-rc-text">${r.text}</div>
-      ${r.product ? `<div class="dk-rc-product">­ƒôª ${r.product}</div>` : ''}
+      ${r.product ? `<div class="dk-rc-product">ğŸ“¦ ${r.product}</div>` : ''}
     </div>`).join('')}
   </div>`;
 }
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ITEM MODAL
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 window.dkOpenIM = function (pid) {
   imCurrentPid = pid;
   const p   = products.find((x) => x.id === pid);
@@ -303,7 +303,7 @@ window.dkOpenIM = function (pid) {
   const imgEl = $('dk-im-img'); const noImg = $('dk-im-noimg');
   if (p.img) { imgEl.src = p.img; imgEl.style.display = 'block'; noImg.style.display = 'none'; }
   else { imgEl.style.display = 'none'; noImg.style.display = 'flex'; }
-  const labels = ['Pequeno', 'M+®dio', 'Grande'];
+  const labels = ['Pequeno', 'MÃ©dio', 'Grande'];
   $('dk-imsizes').innerHTML = (p.prices || []).map((price, i) =>
     `<div class="dk-imsz ${i === 0 ? 'sel' : ''}" onclick="dkSelectSize(this,${price})">
       <span class="dk-imsz-l">${cat?.type === 'sizes' ? labels[i] : 'Tamanho'}</span>
@@ -326,22 +326,22 @@ window.dkAddFromIM = function () {
   const p = products.find((x) => x.id === imCurrentPid);
   cart.push({ id: Date.now(), name: p.name, size, price, img: p.img });
   $('dk-imbg').classList.remove('on');
-  renderCart(); showToast('Ô£à Adicionado!');
+  renderCart(); showToast('âœ… Adicionado!');
 };
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CART
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 window.dkAddToCart = function (pid, idx) {
   const p = products.find((x) => x.id === pid); if (!p) return;
   const cat = categories.find((c) => c.id === p.cat);
   cart.push({ id: Date.now(), name: p.name, size: cat?.type === 'sizes' ? ['P','M','G'][idx] : '', price: p.prices?.[idx] ?? p.prices?.[0] ?? 0, img: p.img });
-  renderCart(); showToast('Ô£à Adicionado!');
+  renderCart(); showToast('âœ… Adicionado!');
 };
 window.dkAddCombo = function (cid) {
   const c = combos.find((x) => x.id === cid); if (!c) return;
   cart.push({ id: Date.now(), name: c.name, size: 'Combo', price: c.price, img: c.img });
-  renderCart(); showToast('Ô£à Combo adicionado!');
+  renderCart(); showToast('âœ… Combo adicionado!');
 };
 window.dkChangeQty = function (cartId, delta) {
   const idx = cart.findIndex((x) => x.id === cartId); if (idx === -1) return;
@@ -353,19 +353,19 @@ function renderCart() {
   const count = cart.length;
   const badge = $('dk-cart-badge');
   badge.textContent = count; badge.classList.toggle('on', count > 0);
-  if (!count) { $('dk-cbody').innerHTML = '<div class="dk-cempty">Carrinho vazio ­ƒìò</div>'; $('dk-cft').style.display = 'none'; return; }
+  if (!count) { $('dk-cbody').innerHTML = '<div class="dk-cempty">Carrinho vazio ğŸ•</div>'; $('dk-cft').style.display = 'none'; return; }
   const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
   const fee = store.fee ?? 5; const total = sub + fee;
   const min = store.minOrder ?? 30;
   $('dk-cbody').innerHTML = cart.map((item) => `
     <div class="dk-ci">
-      <div class="dk-ci-img">${item.img ? `<img src="${item.img}" alt="">` : '­ƒìò'}</div>
+      <div class="dk-ci-img">${item.img ? `<img src="${item.img}" alt="">` : 'ğŸ•'}</div>
       <div style="flex:1">
         <div class="dk-ci-nm">${item.name}</div>
         <div class="dk-ci-sz">${item.size}</div>
         <div class="dk-ci-pr">${fmtR(item.price)}</div>
         <div class="dk-ci-ctrl">
-          <button class="dk-qb" onclick="dkChangeQty(${item.id},-1)">ÔêÆ</button>
+          <button class="dk-qb" onclick="dkChangeQty(${item.id},-1)">âˆ’</button>
           <span class="dk-qn">${item.qty || 1}</span>
           <button class="dk-qb" onclick="dkChangeQty(${item.id},+1)">+</button>
         </div>
@@ -385,25 +385,25 @@ function renderCart() {
 window.dkToggleCart = function () { $('dk-cdr').classList.toggle('on'); $('dk-cov').classList.toggle('on'); };
 window.dkCheckout = function () {
   const name = $('dk-cname').value.trim(); const addr = $('dk-caddr').value.trim();
-  if (!name || !addr) { showToast('ÔÜá´©Å Informe nome e endere+ºo', 'red'); return; }
+  if (!name || !addr) { showToast('âš ï¸ Informe nome e endereÃ§o', 'red'); return; }
   const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
   const min = store.minOrder ?? 30;
-  if (sub < min) { showToast(`ÔÜá´©Å M+¡nimo R$${min}`, 'red'); return; }
+  if (sub < min) { showToast(`âš ï¸ MÃ­nimo R$${min}`, 'red'); return; }
   const fee = store.fee ?? 5; const total = sub + fee;
-  const lines = cart.map((i) => `ÔÇó ${i.name}${i.size ? ' (' + i.size + ')' : ''} ÔÇö R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
-  const msg = encodeURIComponent(`­ƒìò *Novo Pedido*\n\n${lines}\n\n*Frete:* R$${fee}\n*Total:* R$${total.toFixed(2)}\n\n*Nome:* ${name}\n*Endere+ºo:* ${addr}`);
+  const lines = cart.map((i) => `â€¢ ${i.name}${i.size ? ' (' + i.size + ')' : ''} â€” R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
+  const msg = encodeURIComponent(`ğŸ• *Novo Pedido*\n\n${lines}\n\n*Frete:* R$${fee}\n*Total:* R$${total.toFixed(2)}\n\n*Nome:* ${name}\n*EndereÃ§o:* ${addr}`);
   const phone = (store.phone || '').replace(/\D/g, '');
   window.open(`https://wa.me/55${phone}?text=${msg}`, '_blank');
 };
 
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SOCIAL + COUNTDOWN
-// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function startSocial() {
   const sec = $('dk-social');
   if (!(store.features?.social ?? true)) { sec.style.display = 'none'; return; }
   $('dk-social-txt').textContent = `${Math.floor(Math.random()*30+8)} pessoas vendo agora`;
-  $('dk-social-sub').textContent = `+Ültima venda h+í ${Math.floor(Math.random()*15+1)} minutos`;
+  $('dk-social-sub').textContent = `Ãšltima venda hÃ¡ ${Math.floor(Math.random()*15+1)} minutos`;
 }
 
 function startCountdown() {
