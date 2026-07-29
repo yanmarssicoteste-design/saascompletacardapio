@@ -22,7 +22,8 @@
   color: var(--charcoal);
   font-family: var(--font-sans);
   min-height: 100vh;
-  padding-bottom: 8rem;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ── NAV ── sticky top-0 h-16 */

@@ -72,7 +72,7 @@ function buildHTML() {
   const logoHtml = s.logo ? `<img src="${s.logo}" alt="${s.name}" class="m-brand-letter" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : `<span class="m-brand-letter">M</span>`;
 
   return `
-<div class="m-root" style="padding-bottom:calc(88px + env(safe-area-inset-bottom))">
+<div class="m-root">
 
   <!-- HEADER -->
   <header class="m-header">

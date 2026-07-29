@@ -24,7 +24,8 @@
   color: var(--charcoal);
   font-family: var(--font-sans);
   min-height: 100vh;
-  padding-bottom: 8rem;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ── TOP BAR sticky ── */

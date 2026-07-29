@@ -20,6 +20,18 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Compensação do dock fixo no mobile — evita que o conteúdo fique escondido atrás do menu */
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+}
+@media(min-width: 640px) {
+  body { padding-bottom: 0; }
+}
+
+/* Container principal do template — flex vertical para footer sempre ao fundo */
+#vMenu {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {

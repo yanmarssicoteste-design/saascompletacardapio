@@ -30,7 +30,8 @@
     linear-gradient(180deg, var(--night) 0%, var(--night-soft) 100%);
   color: var(--cream);
   font-family: var(--font-sans);
-  padding-bottom: 8rem;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Camada 2: Grain/Noise SVG fixo em overlay */
