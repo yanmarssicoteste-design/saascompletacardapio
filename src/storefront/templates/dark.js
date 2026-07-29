@@ -10,6 +10,8 @@ import '../../styles/templates/dark.css';
 let store = {}, categories = [], products = [], combos = [], reviews = [];
 let cart = [];
 let activeCat = 'all';
+let imCurrentPid = null;
+let imQty = 1;
 
 const fmtR = (v) => `R$ ${Number(v).toFixed(2).replace('.', ',')}`;
 const $ = (id) => document.getElementById(id);
@@ -151,6 +153,34 @@ function buildHTML() {
       </div>
     </div>
 
+    <!-- ITEM MODAL -->
+    <div class="nt-imbg" id="nt-imbg" onclick="ntCloseIM(event)">
+      <div class="nt-imbox">
+        <div class="nt-imimg">
+          <img id="nt-im-img" src="" alt="" style="display:none">
+          <div class="nt-imnoimg" id="nt-im-noimg">🍕</div>
+          <button class="nt-imclose" onclick="document.getElementById('nt-imbg').classList.remove('on')">✕</button>
+        </div>
+        <div class="nt-imbody">
+          <div class="nt-imcat" id="nt-imcat"></div>
+          <div class="nt-imname" id="nt-imname"></div>
+          <div class="nt-imdesc" id="nt-imdesc"></div>
+          <div class="nt-imlbl" id="nt-imlbl">Escolha o tamanho</div>
+          <div class="nt-imsizes" id="nt-imsizes"></div>
+          <div class="nt-imlbl">Quantidade</div>
+          <div class="nt-qty-stepper">
+            <button class="nt-qty-btn" onclick="ntChangeImQty(-1)">−</button>
+            <span class="nt-qty-num" id="nt-qty-num">1</span>
+            <button class="nt-qty-btn" onclick="ntChangeImQty(1)">+</button>
+          </div>
+        </div>
+        <div class="nt-imft">
+          <div class="nt-imtotal" id="nt-imtotal">R$ 0,00</div>
+          <button class="nt-imadd" id="nt-imadd" onclick="ntAddFromIM()">+ Adicionar ao pedido</button>
+        </div>
+      </div>
+    </div>
+
     <!-- STICKY WHATSAPP CTA -->
     <div class="nt-wa-cta" id="nt-wa-cta" style="display:none" onclick="ntToggleCart()">
       <span class="nt-wa-icon">
@@ -171,12 +201,89 @@ function boot() {
   populateStore();
   renderCats();
   renderMain();
-  window.ntToggleCart = ntToggleCart;
-  window.ntSetCat     = ntSetCat;
-  window.ntCheckout   = ntCheckout;
-  window.ntAdd        = ntAdd;
-  window.ntAddCombo   = ntAddCombo;
-  window.ntChangeQty  = ntChangeQty;
+  window.ntToggleCart  = ntToggleCart;
+  window.ntSetCat      = ntSetCat;
+  window.ntCheckout    = ntCheckout;
+  window.ntAdd         = ntAdd;
+  window.ntAddCombo    = ntAddCombo;
+  window.ntChangeQty   = ntChangeQty;
+  window.ntOpenIM      = ntOpenIM;
+  window.ntCloseIM     = ntCloseIM;
+  window.ntSelectSize  = ntSelectSize;
+  window.ntChangeImQty = ntChangeImQty;
+  window.ntAddFromIM   = ntAddFromIM;
+}
+
+window.ntOpenIM = function(pid) {
+  const p = products.find(x => x.id === pid);
+  if (!p) return;
+  imCurrentPid = pid;
+  imQty = 1;
+  if (!p.prices || p.prices.length <= 1) { ntAdd(pid); return; }
+  const sizes = ['P', 'M', 'G', 'GG'];
+  const img   = document.getElementById('nt-im-img');
+  const noimg = document.getElementById('nt-im-noimg');
+  if (p.img || p.image) {
+    img.src = p.img || p.image; img.style.display = 'block'; noimg.style.display = 'none';
+  } else {
+    img.style.display = 'none'; noimg.style.display = 'flex';
+  }
+  const cat = categories.find(c => c.id === (p.cat || p.category));
+  document.getElementById('nt-imcat').textContent  = cat ? (cat.emoji ? cat.emoji + ' ' : '') + cat.name : '';
+  document.getElementById('nt-imname').textContent = p.name;
+  document.getElementById('nt-imdesc').textContent = p.desc || p.description || '';
+  document.getElementById('nt-imlbl').style.display = p.prices.length > 1 ? 'block' : 'none';
+  document.getElementById('nt-qty-num').textContent = 1;
+  const sizesEl = document.getElementById('nt-imsizes');
+  sizesEl.innerHTML = p.prices.map((price, i) => {
+    const label = p.sizeLabels?.[i] || sizes[i] || `Tam. ${i + 1}`;
+    return `<button class="nt-size-btn ${i === 0 ? 'active' : ''}" onclick="ntSelectSize(this, ${price})" data-price="${price}">${label}<br><small>${fmtR(price)}</small></button>`;
+  }).join('');
+  const firstPrice = p.prices[0];
+  document.getElementById('nt-imtotal').textContent    = fmtR(firstPrice);
+  document.getElementById('nt-imadd').dataset.price    = firstPrice;
+  document.getElementById('nt-imbg').classList.add('on');
+};
+
+window.ntCloseIM = function(e) {
+  if (e.target.id === 'nt-imbg') document.getElementById('nt-imbg').classList.remove('on');
+};
+
+window.ntSelectSize = function(btn, price) {
+  document.querySelectorAll('.nt-size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('nt-imadd').dataset.price    = price;
+  document.getElementById('nt-imtotal').textContent    = fmtR(price * imQty);
+};
+
+window.ntChangeImQty = function(delta) {
+  imQty = Math.max(1, imQty + delta);
+  document.getElementById('nt-qty-num').textContent = imQty;
+  const price = parseFloat(document.getElementById('nt-imadd').dataset.price || 0);
+  document.getElementById('nt-imtotal').textContent   = fmtR(price * imQty);
+};
+
+window.ntAddFromIM = function() {
+  const p = products.find(x => x.id === imCurrentPid);
+  if (!p) return;
+  const price    = parseFloat(document.getElementById('nt-imadd').dataset.price || p.prices?.[0] || 0);
+  const sizeBtn  = document.querySelector('.nt-size-btn.active');
+  const sizeLabel = sizeBtn ? sizeBtn.textContent.split('\n')[0] : '';
+  const name     = sizeLabel ? `${p.name} (${sizeLabel})` : p.name;
+  const key      = `${p.id}-${price}`;
+  const found    = cart.find(i => i.id === key);
+  if (found) { found.qty += imQty; } else { cart.push({ id: key, name, price, img: p.img || p.image, qty: imQty }); }
+  renderCart();
+  document.getElementById('nt-imbg').classList.remove('on');
+  showToastMsg(`✅ ${name} adicionado!`);
+  ntCartBounce();
+};
+
+function ntCartBounce() {
+  const btn = document.querySelector('.nt-cart-pill');
+  if (!btn) return;
+  btn.classList.add('nt-bounce');
+  setTimeout(() => btn.classList.remove('nt-bounce'), 600);
 }
 
 function populateStore() {
@@ -271,7 +378,7 @@ function renderProducts() {
         <span class="nt-product-price">${fmtR(price)}</span>
       </div>
       <p class="nt-product-desc">${p.desc || p.description || ''}</p>
-      <button class="nt-product-add" onclick="ntAdd('${p.id}')">+ Adicionar ao pedido</button>
+      <button class="nt-product-add" onclick="ntOpenIM('${p.id}')">+ Adicionar ao pedido</button>
     </article>`;
   }).join('');
 }
@@ -340,7 +447,7 @@ function renderCart() {
   }
 
   if (!count) {
-    $('nt-cart-body').innerHTML = `<div class="nt-cart-empty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div>`;
+    $('nt-cart-body').innerHTML = `<div class="nt-cart-empty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p><button class="nt-explore-btn" onclick="ntToggleCart()">🍕 Ver Cardápio</button></div>`;
     if ($('nt-cart-footer')) $('nt-cart-footer').style.display = 'none';
     return;
   }

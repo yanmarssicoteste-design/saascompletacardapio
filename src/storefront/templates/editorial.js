@@ -12,6 +12,8 @@ let cart       = [];
 let activeCat  = 'all';
 let searchQ    = '';
 let cartOpen   = false;
+let imCurrentPid = null;
+let imQty = 1;
 
 const fmtR = (v) => `R$ ${Number(v).toFixed(2).replace('.', ',')}`;
 const $ = (id) => document.getElementById(id);
@@ -246,6 +248,34 @@ function buildHTML() {
     </aside>
 
   </div>
+
+  <!-- ITEM MODAL -->
+  <div class="ed2-imbg" id="ed2-imbg" onclick="edCloseIM(event)">
+    <div class="ed2-imbox">
+      <div class="ed2-imimg">
+        <img id="ed2-im-img" src="" alt="" style="display:none">
+        <div class="ed2-imnoimg" id="ed2-im-noimg">🍕</div>
+        <button class="ed2-imclose" onclick="document.getElementById('ed2-imbg').classList.remove('on')">✕</button>
+      </div>
+      <div class="ed2-imbody">
+        <div class="ed2-imcat" id="ed2-imcat"></div>
+        <div class="ed2-imname" id="ed2-imname"></div>
+        <div class="ed2-imdesc" id="ed2-imdesc"></div>
+        <div class="ed2-imlbl" id="ed2-imlbl">Escolha o tamanho</div>
+        <div class="ed2-imsizes" id="ed2-imsizes"></div>
+        <div class="ed2-imlbl">Quantidade</div>
+        <div class="ed2-qty-stepper">
+          <button class="ed2-qty-btn" onclick="edChangeImQty(-1)">−</button>
+          <span class="ed2-qty-num" id="ed2-qty-num">1</span>
+          <button class="ed2-qty-btn" onclick="edChangeImQty(1)">+</button>
+        </div>
+      </div>
+      <div class="ed2-imft">
+        <div class="ed2-imtotal" id="ed2-imtotal">R$ 0,00</div>
+        <button class="ed2-imadd" id="ed2-imadd" onclick="edAddFromIM()">+ Adicionar ao pedido</button>
+      </div>
+    </div>
+  </div>
   `;
 }
 
@@ -257,13 +287,18 @@ function boot() {
   renderCats();
   renderProducts();
   renderCombos();
-  window.edToggleCart = edToggleCart;
-  window.edSetCat     = edSetCat;
-  window.edSearch     = edSearch;
-  window.edAdd        = edAdd;
-  window.edDec        = edDec;
-  window.edAddCombo   = edAddCombo;
-  window.edCheckout   = edCheckout;
+  window.edToggleCart  = edToggleCart;
+  window.edSetCat      = edSetCat;
+  window.edSearch      = edSearch;
+  window.edAdd         = edAdd;
+  window.edDec         = edDec;
+  window.edAddCombo    = edAddCombo;
+  window.edCheckout    = edCheckout;
+  window.edOpenIM      = edOpenIM;
+  window.edCloseIM     = edCloseIM;
+  window.edSelectSize  = edSelectSize;
+  window.edChangeImQty = edChangeImQty;
+  window.edAddFromIM   = edAddFromIM;
 }
 
 function populateStore() {
@@ -365,6 +400,7 @@ function renderProducts() {
   inner.innerHTML = `<div class="ed2-grid">${visible.map(p => {
     const price = p.prices?.[0] ?? p.price ?? 0;
     const qty   = qtyOf(p.id);
+    const hasMultipleSizes = p.prices && p.prices.length > 1;
     return `
     <article class="ed2-pcard">
       <div class="ed2-pcard-img-wrap">
@@ -376,11 +412,16 @@ function renderProducts() {
       <div class="ed2-pcard-body">
         <div class="ed2-pcard-head">
           <h3 class="ed2-pcard-name">${p.name}</h3>
-          <p class="ed2-pcard-price">${fmtR(price)}</p>
+          <p class="ed2-pcard-price">${hasMultipleSizes ? `A partir de ${fmtR(price)}` : fmtR(price)}</p>
         </div>
         <p class="ed2-pcard-desc">${p.desc || p.description || ''}</p>
         <div class="ed2-pcard-ctrl" id="ctrl-${p.id}">
-          ${qty === 0
+          ${hasMultipleSizes
+            ? `<button class="ed2-pcard-add" onclick="edOpenIM('${p.id}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                Escolher tamanho
+               </button>`
+            : qty === 0
             ? `<button class="ed2-pcard-add" onclick="edAdd('${p.id}')">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
                 Adicionar
@@ -463,7 +504,7 @@ function renderCart() {
   if ($('ed2-drawer-count')) $('ed2-drawer-count').textContent = `${count} ${count === 1 ? 'item' : 'itens'}`;
 
   if (!count) {
-    $('ed2-drawer-body').innerHTML = `<div class="ed2-drawer-empty"><p class="ed2-drawer-empty-title">Carrinho vazio</p><p class="ed2-drawer-empty-sub">Adicione uma pizza para começar.</p></div>`;
+    $('ed2-drawer-body').innerHTML = `<div class="ed2-drawer-empty"><p class="ed2-drawer-empty-title">Carrinho vazio</p><p class="ed2-drawer-empty-sub">Adicione uma pizza para começar.</p><button class="ed2-explore-btn" onclick="edToggleCart()">🍕 Ver Cardápio</button></div>`;
     if ($('ed2-drawer-footer')) $('ed2-drawer-footer').style.display = 'none';
     return;
   }
@@ -523,4 +564,75 @@ function showToastMsg(msg, type = '') {
   t.className   = 'toast' + (type ? ' ' + type : '');
   t.classList.add('on');
   setTimeout(() => t.classList.remove('on'), 2600);
+}
+
+// ── ITEM MODAL ──
+window.edOpenIM = function(pid) {
+  const p = products.find(x => x.id === pid);
+  if (!p) return;
+  imCurrentPid = pid;
+  imQty = 1;
+  if (!p.prices || p.prices.length <= 1) { edAdd(pid); return; }
+  const sizes = ['P', 'M', 'G', 'GG'];
+  const img = $('ed2-im-img');
+  const noimg = $('ed2-im-noimg');
+  if (p.img || p.image) { img.src = p.img || p.image; img.style.display = 'block'; noimg.style.display = 'none'; }
+  else { img.style.display = 'none'; noimg.style.display = 'flex'; }
+  const cat = categories.find(c => c.id === (p.cat || p.category));
+  $('ed2-imcat').textContent = cat ? (cat.emoji ? cat.emoji + ' ' : '') + cat.name : '';
+  $('ed2-imname').textContent = p.name;
+  $('ed2-imdesc').textContent = p.desc || p.description || '';
+  $('ed2-imlbl').style.display = p.prices.length > 1 ? 'block' : 'none';
+  $('ed2-qty-num').textContent = 1;
+  const sizesEl = $('ed2-imsizes');
+  sizesEl.innerHTML = p.prices.map((price, i) => {
+    const label = p.sizeLabels?.[i] || sizes[i] || `Tam. ${i+1}`;
+    return `<button class="ed2-size-btn ${i === 0 ? 'active' : ''}" onclick="edSelectSize(this, ${price})" data-price="${price}">${label}<br><small>${fmtR(price)}</small></button>`;
+  }).join('');
+  const firstPrice = p.prices[0];
+  $('ed2-imtotal').textContent = fmtR(firstPrice);
+  $('ed2-imadd').dataset.price = firstPrice;
+  $('ed2-imbg').classList.add('on');
+};
+
+window.edCloseIM = function(e) {
+  if (e.target.id === 'ed2-imbg') $('ed2-imbg').classList.remove('on');
+};
+
+window.edSelectSize = function(btn, price) {
+  document.querySelectorAll('.ed2-size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  $('ed2-imadd').dataset.price = price;
+  $('ed2-imtotal').textContent = fmtR(price * imQty);
+};
+
+window.edChangeImQty = function(delta) {
+  imQty = Math.max(1, imQty + delta);
+  $('ed2-qty-num').textContent = imQty;
+  const price = parseFloat($('ed2-imadd').dataset.price || 0);
+  $('ed2-imtotal').textContent = fmtR(price * imQty);
+};
+
+window.edAddFromIM = function() {
+  const p = products.find(x => x.id === imCurrentPid);
+  if (!p) return;
+  const price = parseFloat($('ed2-imadd').dataset.price || p.prices?.[0] || 0);
+  const sizeBtn = document.querySelector('.ed2-size-btn.active');
+  const sizeLabel = sizeBtn ? sizeBtn.textContent.split('\n')[0] : '';
+  const name = sizeLabel ? `${p.name} (${sizeLabel})` : p.name;
+  const key = `${p.id}-${price}`;
+  const found = cart.find(i => i.id === key);
+  if (found) { found.qty += imQty; } else { cart.push({ id: key, name, price, img: p.img || p.image, qty: imQty }); }
+  renderCart();
+  renderProducts();
+  $('ed2-imbg').classList.remove('on');
+  showToastMsg(`✅ ${name} adicionado!`);
+  edCartBounce();
+};
+
+function edCartBounce() {
+  const btn = $('ed2-cart-btn');
+  if (!btn) return;
+  btn.classList.add('ed2-bounce');
+  setTimeout(() => btn.classList.remove('ed2-bounce'), 600);
 }

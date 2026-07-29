@@ -9,6 +9,8 @@ import '../../styles/templates/classic.css';
 
 let store = {}, categories = [], products = [], combos = [], reviews = [];
 let cart = [];
+let imCurrentPid = null;
+let imQty = 1;
 let activeCat = 'all';
 let searchQuery = '';
 
@@ -130,6 +132,34 @@ function buildHTML() {
       <p class="ah-footer-copy" id="ah-footer-copy">© 2026 Fornace. Feito com carinho.</p>
     </footer>
 
+    <!-- ITEM MODAL -->
+    <div class="ah-imbg" id="ah-imbg" onclick="ahCloseIM(event)">
+      <div class="ah-imbox">
+        <div class="ah-imimg">
+          <img id="ah-im-img" src="" alt="" style="display:none">
+          <div class="ah-imnoimg" id="ah-im-noimg">🍕</div>
+          <button class="ah-imclose" onclick="document.getElementById('ah-imbg').classList.remove('on')">✕</button>
+        </div>
+        <div class="ah-imbody">
+          <div class="ah-imcat" id="ah-imcat"></div>
+          <div class="ah-imname" id="ah-imname"></div>
+          <div class="ah-imdesc" id="ah-imdesc"></div>
+          <div class="ah-imlbl" id="ah-imlbl">Escolha o tamanho</div>
+          <div class="ah-imsizes" id="ah-imsizes"></div>
+          <div class="ah-imlbl">Quantidade</div>
+          <div class="ah-qty-stepper">
+            <button class="ah-qty-btn" onclick="ahChangeImQty(-1)">−</button>
+            <span class="ah-qty-num" id="ah-qty-num">1</span>
+            <button class="ah-qty-btn" onclick="ahChangeImQty(1)">+</button>
+          </div>
+        </div>
+        <div class="ah-imft">
+          <div class="ah-imtotal" id="ah-imtotal">R$ 0,00</div>
+          <button class="ah-imadd" id="ah-imadd" onclick="ahAddFromIM()">+ Adicionar ao pedido</button>
+        </div>
+      </div>
+    </div>
+
     <!-- CART DRAWER -->
     <div class="ah-cart-overlay" id="ah-cart-overlay" onclick="ahToggleCart()"></div>
     <div class="ah-cart-drawer" id="ah-cart-drawer">
@@ -141,6 +171,7 @@ function buildHTML() {
         <div class="ah-cart-empty">
           <span>🍕</span>
           <p>Carrinho vazio.<br>Escolha uma pizza!</p>
+          <button class="ah-explore-btn" onclick="ahToggleCart()">🍕 Ver Cardápio</button>
         </div>
       </div>
       <div class="ah-cart-footer" id="ah-cart-footer" style="display:none">
@@ -176,12 +207,17 @@ function boot() {
   populateStore();
   renderCats();
   renderMain();
-  window.ahToggleCart  = ahToggleCart;
-  window.ahSetCat      = ahSetCat;
-  window.ahCheckout    = ahCheckout;
-  window.ahAdd         = ahAdd;
-  window.ahDec         = ahDec;
-  window.ahChangeQty   = ahChangeQty;
+  window.ahToggleCart    = ahToggleCart;
+  window.ahSetCat        = ahSetCat;
+  window.ahCheckout      = ahCheckout;
+  window.ahAdd           = ahAdd;
+  window.ahDec           = ahDec;
+  window.ahChangeQty     = ahChangeQty;
+  window.ahOpenIM        = ahOpenIM;
+  window.ahCloseIM       = ahCloseIM;
+  window.ahSelectSize    = ahSelectSize;
+  window.ahChangeImQty   = ahChangeImQty;
+  window.ahAddFromIM     = ahAddFromIM;
 }
 
 function populateStore() {
@@ -293,7 +329,7 @@ function renderProducts() {
         <span class="ah-product-price">${fmtR(price)}</span>
       </div>
       <p class="ah-product-desc">${p.desc || p.description || ''}</p>
-      <button class="ah-product-add" onclick="ahAdd('${p.id}')">+ Adicionar ao pedido</button>
+      <button class="ah-product-add" onclick="ahOpenIM('${p.id}')">+ Adicionar ao pedido</button>
     </article>`;
   }).join('');
 }
@@ -326,6 +362,7 @@ window.ahAdd = function(pid) {
   if (found) { found.qty++; } else { cart.push({ id: pid, name: p.name, price, img: p.img || p.image, qty: 1 }); }
   renderCart();
   showToastMsg('✅ Adicionado!');
+  ahCartBounce();
 };
 
 window.ahAddCombo = function(cid) {
@@ -374,7 +411,7 @@ function renderCart() {
   }
 
   if (!count) {
-    $('ah-cart-body').innerHTML = `<div class="ah-cart-empty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div>`;
+    $('ah-cart-body').innerHTML = `<div class="ah-cart-empty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p><button class="ah-explore-btn" onclick="ahToggleCart()">🍕 Ver Cardápio</button></div>`;
     if ($('ah-cart-footer')) $('ah-cart-footer').style.display = 'none';
     return;
   }
@@ -414,6 +451,92 @@ window.ahToggleCart = function() {
   $('ah-cart-drawer')?.classList.toggle('open');
   $('ah-cart-overlay')?.classList.toggle('on');
 };
+
+// ═══════════════════════════════════════════════
+// ITEM MODAL
+// ═══════════════════════════════════════════════
+function ahOpenIM(pid) {
+  const p = products.find(x => x.id === pid);
+  if (!p) return;
+  imCurrentPid = pid;
+  imQty = 1;
+
+  // Se não tem múltiplos preços, adicionar direto
+  if (!p.prices || p.prices.length <= 1) {
+    ahAdd(pid);
+    return;
+  }
+
+  const sizes = ['P', 'M', 'G', 'GG'];
+  const img   = document.getElementById('ah-im-img');
+  const noimg = document.getElementById('ah-im-noimg');
+  if (p.img || p.image) {
+    img.src = p.img || p.image; img.style.display = 'block'; noimg.style.display = 'none';
+  } else {
+    img.style.display = 'none'; noimg.style.display = 'flex';
+  }
+  const cat = categories.find(c => c.id === (p.cat || p.category));
+  document.getElementById('ah-imcat').textContent  = cat ? (cat.emoji ? cat.emoji + ' ' : '') + cat.name : '';
+  document.getElementById('ah-imname').textContent = p.name;
+  document.getElementById('ah-imdesc').textContent = p.desc || p.description || '';
+  document.getElementById('ah-imlbl').style.display = p.prices.length > 1 ? 'block' : 'none';
+  document.getElementById('ah-qty-num').textContent = 1;
+
+  // Seleção de tamanhos
+  const sizesEl = document.getElementById('ah-imsizes');
+  sizesEl.innerHTML = p.prices.map((price, i) => {
+    const label = p.sizeLabels?.[i] || sizes[i] || `Tam. ${i + 1}`;
+    return `<button class="ah-size-btn ${i === 0 ? 'active' : ''}" onclick="ahSelectSize(this, ${price})" data-price="${price}">${label}<br><small>${fmtR(price)}</small></button>`;
+  }).join('');
+
+  // Preço inicial
+  const firstPrice = p.prices[0];
+  document.getElementById('ah-imtotal').textContent  = fmtR(firstPrice * 1);
+  document.getElementById('ah-imadd').dataset.price  = firstPrice;
+
+  document.getElementById('ah-imbg').classList.add('on');
+}
+
+function ahCloseIM(e) {
+  if (e.target.id === 'ah-imbg') document.getElementById('ah-imbg').classList.remove('on');
+}
+
+function ahSelectSize(btn, price) {
+  document.querySelectorAll('.ah-size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ah-imadd').dataset.price = price;
+  document.getElementById('ah-imtotal').textContent = fmtR(price * imQty);
+}
+
+function ahChangeImQty(delta) {
+  imQty = Math.max(1, imQty + delta);
+  document.getElementById('ah-qty-num').textContent = imQty;
+  const price = parseFloat(document.getElementById('ah-imadd').dataset.price || 0);
+  document.getElementById('ah-imtotal').textContent = fmtR(price * imQty);
+}
+
+function ahAddFromIM() {
+  const p = products.find(x => x.id === imCurrentPid);
+  if (!p) return;
+  const price    = parseFloat(document.getElementById('ah-imadd').dataset.price || p.prices?.[0] || 0);
+  const sizeBtn  = document.querySelector('.ah-size-btn.active');
+  const sizeLabel = sizeBtn ? sizeBtn.textContent.split('\n')[0] : '';
+  const name     = sizeLabel ? `${p.name} (${sizeLabel})` : p.name;
+  const key      = `${p.id}-${price}`;
+  const found    = cart.find(i => i.id === key);
+  if (found) { found.qty += imQty; } else { cart.push({ id: key, name, price, img: p.img || p.image, qty: imQty }); }
+  renderCart();
+  document.getElementById('ah-imbg').classList.remove('on');
+  showToastMsg(`✅ ${name} adicionado!`);
+  ahCartBounce();
+}
+
+function ahCartBounce() {
+  const btn = document.querySelector('.ah-cart-pill');
+  if (!btn) return;
+  btn.classList.add('ah-bounce');
+  setTimeout(() => btn.classList.remove('ah-bounce'), 600);
+}
 
 window.ahCheckout = function() {
   const name = $('ah-name')?.value.trim();

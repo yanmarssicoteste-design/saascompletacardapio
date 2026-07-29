@@ -496,3 +496,82 @@
 .ed2-whatsapp-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; border-radius: 9999px; background: var(--whatsapp); color: white; border: none; padding: 1rem; font-family: var(--font-sans); font-size: 0.875rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(37,211,102,0.3); transition: filter 0.2s; }
 .ed2-whatsapp-btn:hover { filter: brightness(1.05); }
 .ed2-drawer-caption { text-align: center; font-size: 0.6875rem; color: var(--stone-500); margin: 0; }
+
+/* ── drawer-step touch targets ── */
+.ed2-drawer-step { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: white; border: 1.5px solid var(--stone-200); color: var(--charcoal); font-size: 1rem; cursor: pointer; transition: background 0.15s, border-color 0.15s; }
+.ed2-drawer-step:hover { background: var(--stone-200); border-color: var(--brand); }
+.ed2-drawer-step:active { transform: scale(0.93); }
+
+/* ── Explore empty state CTA ── */
+.ed2-explore-btn {
+  margin-top: 0.75rem;
+  background: transparent;
+  color: var(--brand);
+  border: 1.5px solid color-mix(in srgb, var(--brand) 45%, transparent);
+  border-radius: 9999px;
+  padding: 0.65rem 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  display: inline-block;
+}
+.ed2-explore-btn:hover {
+  background: color-mix(in srgb, var(--brand) 7%, transparent);
+  border-color: var(--brand);
+  transform: translateY(-1px);
+}
+
+/* ── Cart button bounce ── */
+@keyframes ed2-bounce { 0%,100%{transform:scale(1)} 30%{transform:scale(1.22)} 60%{transform:scale(.93)} 80%{transform:scale(1.08)} }
+.ed2-cart-btn.ed2-bounce { animation: ed2-bounce 0.55s cubic-bezier(.36,.07,.19,.97); }
+
+/* ── ITEM MODAL (Seleção de Tamanho) ── */
+.ed2-imbg { position: fixed; inset: 0; z-index: 80; background: rgba(28,25,23,0.55); backdrop-filter: blur(6px); display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.28s; }
+@media (min-width: 640px) { .ed2-imbg { align-items: center; } }
+.ed2-imbg.on { opacity: 1; pointer-events: all; }
+.ed2-imbox { background: #fff; border-radius: 1.5rem 1.5rem 0 0; width: 100%; max-width: 480px; max-height: 92vh; overflow-y: auto; display: flex; flex-direction: column; transform: translateY(20px); transition: transform 0.28s cubic-bezier(.4,0,.2,1); }
+@media (min-width: 640px) { .ed2-imbox { border-radius: 1.5rem; } }
+.ed2-imbg.on .ed2-imbox { transform: translateY(0); }
+.ed2-imimg { position: relative; height: 220px; overflow: hidden; border-radius: 1.5rem 1.5rem 0 0; background: var(--stone-100); display: flex; align-items: center; justify-content: center; }
+.ed2-imimg img { width: 100%; height: 100%; object-fit: cover; }
+.ed2-imnoimg { font-size: 4rem; }
+.ed2-imclose { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: rgba(255,255,255,.9); border: none; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.ed2-imbody { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.ed2-imcat { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--brand); }
+.ed2-imname { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700; color: var(--charcoal); line-height: 1.2; }
+.ed2-imdesc { font-size: 0.85rem; color: var(--stone-500); line-height: 1.5; }
+.ed2-imlbl { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--stone-600); margin-top: 0.5rem; }
+.ed2-imsizes { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.25rem; }
+.ed2-size-btn { flex: 1; min-width: 60px; padding: 0.5rem 0.25rem; border-radius: 0.75rem; border: 2px solid var(--stone-200); background: white; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; cursor: pointer; text-align: center; transition: border-color 0.15s, background 0.15s, color 0.15s; line-height: 1.4; }
+.ed2-size-btn small { font-size: 0.72rem; font-weight: 500; color: var(--stone-500); display: block; }
+.ed2-size-btn.active { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 8%, white); color: var(--brand); }
+.ed2-size-btn.active small { color: var(--brand); }
+.ed2-qty-stepper { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.25rem; }
+.ed2-qty-btn { width: 2.25rem; height: 2.25rem; border-radius: 50%; border: 1.5px solid var(--stone-200); background: white; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
+.ed2-qty-btn:hover { background: var(--stone-100); border-color: var(--brand); }
+.ed2-qty-num { font-size: 1rem; font-weight: 700; min-width: 1.5rem; text-align: center; }
+.ed2-imft { padding: 1rem 1.5rem 1.25rem; border-top: 1px solid var(--stone-100); display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.ed2-imtotal { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--charcoal); }
+.ed2-imadd {
+  flex: 1;
+  background: var(--brand);
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.875rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--brand) 28%, transparent);
+}
+.ed2-imadd:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--brand) 38%, transparent);
+}
+

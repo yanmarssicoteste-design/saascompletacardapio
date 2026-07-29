@@ -788,6 +788,11 @@ function AparenciaView({ store, onSave }: { store: StoreData; onSave: (p: Partia
     { name: 'Oro',         color: '#b8860b' },
   ];
 
+  // Grupo 0 — Premium dos Premiums
+  const templateMarssico = [
+    { id: 'marssico', name: '✨ Marssico Supreme', desc: 'O topo da plataforma. Design paper-warm Napoletana com hero cinématico, pizza disc animado, floating tags, combos horizontais e cart drawer com freeship progress. Design system próprio, sem poluir outros templates.' },
+  ];
+
   // Grupo 1 — Modernos & Premium (templates originais dramáticos restaurados do git)
   const templatesModern = [
     { id: 'classic-modern',   name: '🍕 Clássico',   desc: 'Tema escuro dramático com hero animado, emoji orbitando, countdown de urgência e prova social em tempo real.' },
@@ -854,6 +859,36 @@ function AparenciaView({ store, onSave }: { store: StoreData; onSave: (p: Partia
           {/* ── Template Picker em 2 Grupos ── */}
           <div className="space-y-8">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500">Template do Cardápio</p>
+
+          {/* ── GRUPO 0 — Premium dos Premiums (Marssico) ── */}
+            <div className="rounded-2xl border-2 border-amber-400/60 bg-gradient-to-br from-amber-50 to-orange-50 p-5">
+              <div className="mb-4 flex items-center gap-3">
+                <span className="rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white shadow-sm">✨ Premium dos Premiums</span>
+                <span className="text-[11px] text-amber-700">Design system próprio &mdash; o melhor da plataforma</span>
+              </div>
+              <div className="grid gap-4">
+                {templateMarssico.map(t => {
+                  const active = selectedTemplate === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => setSelectedTemplate(t.id)}
+                      className={`relative overflow-hidden rounded-2xl border-2 p-4 text-left transition ${active ? 'border-amber-500 bg-white shadow-lg' : 'border-amber-200 bg-white/70 hover:border-amber-400 hover:bg-white'}`}
+                    >
+                      <div className="mb-3 h-20 overflow-hidden rounded-xl bg-[#faf7f2] flex items-center justify-center">
+                        <div style={{display:'flex',alignItems:'center',gap:'8px',fontFamily:'Georgia,serif'}}>
+                          <div style={{width:'40px',height:'40px',borderRadius:'50%',background:'linear-gradient(135deg,#b8321f,#8a2214)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontSize:'18px',fontStyle:'italic'}}>M</div>
+                          <div style={{color:'#1a1512',fontWeight:500,fontSize:'14px'}}>Marssico <span style={{color:'#e8b667',fontSize:'10px',textTransform:'uppercase',letterSpacing:'0.15em'}}>Napoletana</span></div>
+                        </div>
+                      </div>
+                      <p className="text-sm font-semibold text-stone-800">{t.name}</p>
+                      <p className="mt-1 text-[11px] leading-relaxed text-stone-500">{t.desc}</p>
+                      {active && <span className="absolute right-3 top-3 rounded-full bg-amber-500 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">Ativo</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
             {/* GRUPO 1 — Modernos & Premium */}
             <div>

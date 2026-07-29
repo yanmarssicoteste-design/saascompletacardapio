@@ -36,6 +36,7 @@ export default defineConfig({
           if (id.includes('templates/classic'))   return 'tpl-classic';
           if (id.includes('templates/editorial')) return 'tpl-editorial';
           if (id.includes('templates/dark'))      return 'tpl-dark';
+          if (id.includes('templates/marssico')) return 'tpl-marssico';
         },
       },
     },

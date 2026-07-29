@@ -64,8 +64,11 @@ async function loadTemplate(templateId, doc) {
 
   try {
     let mod;
+    // ── Marssico Supreme (Premium dos Premiums) ──
+    if (templateId === 'marssico') {
+      mod = await import('./templates/marssico.js');
     // ── Grupo Modernos & Premium (templates originais dramáticos) ──
-    if (templateId === 'classic-modern') {
+    } else if (templateId === 'classic-modern') {
       mod = await import('./templates/classic-modern.js');
     } else if (templateId === 'dark-modern') {
       mod = await import('./templates/dark-modern.js');

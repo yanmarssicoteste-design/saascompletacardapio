@@ -384,9 +384,10 @@
 .nt-ci-name { font-size: 0.875rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--cream); }
 .nt-ci-price { font-size: 0.8125rem; color: var(--ash); margin-top: 0.125rem; }
 .nt-ci-ctrl { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.375rem; }
-.nt-qb { width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 0.875rem; cursor: pointer; transition: background 0.15s; }
+.nt-qb { width: 2.25rem; height: 2.25rem; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
 .nt-qb:hover { background: rgba(255,90,31,0.2); border-color: var(--ember); }
-.nt-qn { font-size: 0.875rem; font-weight: 600; min-width: 1rem; text-align: center; color: var(--cream); }
+.nt-qb:active { transform: scale(0.93); }
+.nt-qn { font-size: 0.9rem; font-weight: 700; min-width: 1.5rem; text-align: center; color: var(--cream); }
 
 /* ── WHATSAPP STICKY CTA ── */
 .nt-wa-cta {
@@ -416,3 +417,75 @@
 .nt-wa-icon { display: flex; align-items: center; }
 .nt-wa-txt { font-size: 0.875rem; }
 .nt-wa-total { background: rgba(0,0,0,0.15); border-radius: 9999px; padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+@keyframes nt-bounce { 0%,100%{transform:scale(1)} 30%{transform:scale(1.22)} 60%{transform:scale(.93)} 80%{transform:scale(1.08)} }
+.nt-cart-pill.nt-bounce { animation: nt-bounce 0.55s cubic-bezier(.36,.07,.19,.97); }
+
+/* — Explore empty state button — */
+.nt-explore-btn {
+  margin-top: 0.75rem;
+  background: rgba(255,90,31,0.1);
+  color: var(--ember);
+  border: 1px solid rgba(255,90,31,0.3);
+  border-radius: 9999px;
+  padding: 0.625rem 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  backdrop-filter: blur(4px);
+}
+.nt-explore-btn:hover {
+  background: rgba(255,90,31,0.18);
+  border-color: rgba(255,90,31,0.55);
+  transform: translateY(-1px);
+}
+
+/* ── ITEM MODAL (Seleção de Tamanho) ── */
+.nt-imbg { position: fixed; inset: 0; z-index: 80; background: rgba(7,5,10,0.75); backdrop-filter: blur(8px); display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.28s; }
+@media (min-width: 640px) { .nt-imbg { align-items: center; } }
+.nt-imbg.on { opacity: 1; pointer-events: all; }
+.nt-imbox { background: #1e1828; border-radius: 1.5rem 1.5rem 0 0; width: 100%; max-width: 480px; max-height: 92vh; overflow-y: auto; display: flex; flex-direction: column; transform: translateY(20px); transition: transform 0.28s cubic-bezier(.4,0,.2,1); border: 1px solid rgba(212,160,67,.18); }
+@media (min-width: 640px) { .nt-imbox { border-radius: 1.5rem; } }
+.nt-imbg.on .nt-imbox { transform: translateY(0); }
+.nt-imimg { position: relative; height: 220px; overflow: hidden; border-radius: 1.5rem 1.5rem 0 0; background: #171320; display: flex; align-items: center; justify-content: center; }
+.nt-imimg img { width: 100%; height: 100%; object-fit: cover; }
+.nt-imnoimg { font-size: 4rem; }
+.nt-imclose { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: rgba(30,24,40,.9); border: 1px solid rgba(255,255,255,.12); color: var(--cream); font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.nt-imbody { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.nt-imcat { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--ember); }
+.nt-imname { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700; color: var(--cream); line-height: 1.2; }
+.nt-imdesc { font-size: 0.85rem; color: var(--ash); line-height: 1.5; }
+.nt-imlbl { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--ash); margin-top: 0.5rem; }
+.nt-imsizes { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.25rem; }
+.nt-size-btn { flex: 1; min-width: 60px; padding: 0.5rem 0.25rem; border-radius: 0.75rem; border: 2px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); color: var(--cream); font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; cursor: pointer; text-align: center; transition: border-color 0.15s, background 0.15s; line-height: 1.4; }
+.nt-size-btn small { font-size: 0.72rem; font-weight: 400; color: var(--ash); display: block; }
+.nt-size-btn.active { border-color: var(--ember); background: rgba(255,90,31,.15); color: var(--ember); }
+.nt-size-btn.active small { color: var(--ember); }
+.nt-qty-stepper { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.25rem; }
+.nt-qty-btn { width: 2.25rem; height: 2.25rem; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.15); background: rgba(255,255,255,.06); color: var(--cream); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
+.nt-qty-btn:hover { background: rgba(255,90,31,.2); border-color: var(--ember); }
+.nt-qty-num { font-size: 1rem; font-weight: 700; min-width: 1.5rem; text-align: center; color: var(--cream); }
+.nt-imft { padding: 1rem 1.5rem 1.25rem; border-top: 1px solid rgba(255,255,255,.07); display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.nt-imtotal { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--cream); }
+.nt-imadd {
+  flex: 1;
+  background: rgba(255,90,31,0.12);
+  color: var(--ember);
+  border: 1px solid rgba(255,90,31,0.35);
+  border-radius: 9999px;
+  padding: 0.875rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  letter-spacing: 0.01em;
+}
+.nt-imadd:hover {
+  background: rgba(255,90,31,0.22);
+  border-color: rgba(255,90,31,0.6);
+  transform: translateY(-1px);
+}
