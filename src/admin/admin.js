@@ -76,13 +76,6 @@ function initUI() {
   $('liveMenuLink').href = liveUrl;
   $('liveMenuUrl').textContent = liveUrl;
 
-  // Auto-migração silenciosa: converte IDs legados para os novos no Firestore
-  const LEGACY = { 'classic-modern': 'classic', 'dark-modern': 'dark', 'editorial-modern': 'editorial' };
-  if (LEGACY[store.template]) {
-    store.template = LEGACY[store.template];
-    saveStoreData(ownerUid, buildDoc()).catch(() => {}); // silencioso
-  }
-
   fillStoreForm();
   applyColor(accentColor, { silent: true });
   document.querySelectorAll('.copt').forEach((el) => {
@@ -132,46 +125,90 @@ window.showTab = function (id, btn) {
 
 // ═══ TEMPLATE PICKER ═══
 const TEMPLATES = [
+  // ── Grupo Moderno & Premium ──
   {
-    id: 'classic',
-    name: '🍕 Clássico',
-    desc: 'Tema escuro dramático com hero animado, countdown de urgência e prova social em tempo real.',
-    previewClass: 'tpl-preview-classic',
+    id: 'classic-modern',
+    name: '🍕 Clássico Moderno',
+    desc: 'Design escuro e dramático com hero animado, countdown de urgência e prova social em tempo real.',
+    previewClass: 'tpl-preview-classic-modern',
+    group: 'Moderno & Premium',
   },
   {
-    id: 'editorial',
-    name: '📰 Editorial',
-    desc: 'Layout claro e clean focado em conversão. Hero persuasivo, barra de frete grátis e busca integrada.',
-    previewClass: 'tpl-preview-editorial',
+    id: 'dark-modern',
+    name: '🌙 Notturno',
+    desc: 'Estética noturna intensa com neon, glassmorphism e animações sofisticadas.',
+    previewClass: 'tpl-preview-dark-modern',
+    group: 'Moderno & Premium',
+  },
+  {
+    id: 'editorial-modern',
+    name: '🎯 Editorial Conversão',
+    desc: 'Layout persuasivo com barra de oferta, busca integrada e gatilhos de urgência.',
+    previewClass: 'tpl-preview-editorial-modern',
+    group: 'Moderno & Premium',
+  },
+  // ── Grupo Clean & Artesanal ──
+  {
+    id: 'classic',
+    name: '🌾 Artisan Heritage',
+    desc: 'Visual claro e artesanal com tons bege e creme. Elegante e aconchegante.',
+    previewClass: 'tpl-preview-classic',
+    group: 'Clean & Artesanal',
   },
   {
     id: 'dark',
     name: '🔥 Dark Forno',
-    desc: 'Estética noturna premium com efeito grain, gradiente ember e glassmorphism. Para pizzarias que querem se destacar.',
+    desc: 'Estética noturna com efeito grain, gradiente ember e glassmorphism.',
     previewClass: 'tpl-preview-dark',
+    group: 'Clean & Artesanal',
+  },
+  {
+    id: 'editorial',
+    name: '📰 Editorial Clean',
+    desc: 'Layout claro e limpo focado em conversão com hero persuasivo e frete grátis progressivo.',
+    previewClass: 'tpl-preview-editorial',
+    group: 'Clean & Artesanal',
+  },
+  // ── Topo de Linha ──
+  {
+    id: 'marssico',
+    name: '💎 Marssico Supreme',
+    desc: 'Experiência premium completa: animações cinematográficas, modal de tamanhos, dock fixo e combos exclusivos.',
+    previewClass: 'tpl-preview-marssico',
+    group: 'Topo de Linha',
   },
 ];
 
 function renderTemplatePicker() {
-  const ALIASES = { 'classic-modern': 'classic', 'dark-modern': 'dark', 'editorial-modern': 'editorial' };
-  const raw = store.template || 'classic';
-  const current = ALIASES[raw] || raw;
+  const current = store.template || 'classic';
   const grid = $('templatePickerGrid');
   if (!grid) return;
-  grid.innerHTML = TEMPLATES.map((t) => `
-    <div class="tpl-card ${t.id === current ? 'tpl-active' : ''}" id="tpl-card-${t.id}">
-      <div class="tpl-preview ${t.previewClass}">
-        <div style="width:80px;height:80px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:2rem">${t.name.split(' ')[0]}</div>
-      </div>
-      <div class="tpl-body">
-        <div class="tpl-name">
-          ${t.name}
-          ${t.id === current ? '<span class="tpl-active-badge">Em uso</span>' : ''}
-        </div>
-        <p class="tpl-desc">${t.desc}</p>
-        <button class="tpl-btn" onclick="selectTemplate('${t.id}')" ${t.id === current ? 'disabled' : ''}>
-          ${t.id === current ? '✓ Ativo' : 'Usar este template'}
-        </button>
+
+  // Agrupar por grupo
+  const groups = {};
+  TEMPLATES.forEach(t => { if (!groups[t.group]) groups[t.group] = []; groups[t.group].push(t); });
+
+  grid.innerHTML = Object.entries(groups).map(([groupName, templates]) => `
+    <div class="tpl-group">
+      <p class="tpl-group-label">${groupName}</p>
+      <div class="tpl-group-grid">
+        ${templates.map(t => `
+          <div class="tpl-card ${t.id === current ? 'tpl-active' : ''}" id="tpl-card-${t.id}">
+            <div class="tpl-preview ${t.previewClass}">
+              <div style="font-size:2rem;line-height:1">${t.name.split(' ')[0]}</div>
+            </div>
+            <div class="tpl-body">
+              <div class="tpl-name">
+                ${t.name.split(' ').slice(1).join(' ')}
+                ${t.id === current ? '<span class="tpl-active-badge">Em uso</span>' : ''}
+              </div>
+              <p class="tpl-desc">${t.desc}</p>
+              <button class="tpl-btn" onclick="selectTemplate('${t.id}')" ${t.id === current ? 'disabled' : ''}>
+                ${t.id === current ? '✓ Ativo' : 'Usar este template'}
+              </button>
+            </div>
+          </div>
+        `).join('')}
       </div>
     </div>
   `).join('');

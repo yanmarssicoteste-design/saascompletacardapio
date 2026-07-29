@@ -1045,9 +1045,27 @@ body {
    TEMPLATE PICKER
 ════════════════════════════════════════════ */
 .template-picker-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.tpl-group {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+.tpl-group-label {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0 .25rem;
+}
+.tpl-group-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: .75rem;
 }
 .tpl-card {
   border: 1.5px solid var(--border);
@@ -1086,6 +1104,30 @@ body {
     radial-gradient(ellipse at 80% -20%, rgba(255,90,31,.3), transparent 60%),
     radial-gradient(ellipse at -10% 50%, rgba(192,57,43,.2), transparent 65%),
     linear-gradient(180deg, #0f0a08, #1a1210);
+}
+/* ── Previews dos templates modernos ── */
+.tpl-preview-classic-modern {
+  background:
+    radial-gradient(ellipse at 60% 0%, rgba(220,38,38,.35), transparent 55%),
+    radial-gradient(ellipse at 10% 80%, rgba(124,45,18,.3), transparent 55%),
+    linear-gradient(160deg, #0c0c0e, #1a0a0a, #120808);
+}
+.tpl-preview-dark-modern {
+  background:
+    radial-gradient(ellipse at 70% 20%, rgba(99,102,241,.4), transparent 55%),
+    radial-gradient(ellipse at 20% 80%, rgba(139,92,246,.3), transparent 55%),
+    linear-gradient(160deg, #07070f, #0e0e1a, #0a0a14);
+}
+.tpl-preview-editorial-modern {
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(249,115,22,.3), transparent 55%),
+    linear-gradient(155deg, #fff7ed, #ffedd5, #fed7aa);
+}
+.tpl-preview-marssico {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212,175,55,.35), transparent 60%),
+    radial-gradient(ellipse at 10% 90%, rgba(180,83,9,.2), transparent 55%),
+    linear-gradient(160deg, #0a0806, #160f06, #1c1206);
 }
 .tpl-body {
   padding: .9rem;
