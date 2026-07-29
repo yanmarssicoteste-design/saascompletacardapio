@@ -22,7 +22,9 @@
     radial-gradient(ellipse 60% 60% at -10% 60%, rgba(192,57,43,.12), transparent 60%);
   min-height: 100vh;
   position: relative;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
+@media(min-width:640px) { #vMenu { padding-bottom: 0; } }
 
 /* Grain overlay — escopado ao template */
 #vMenu::before {

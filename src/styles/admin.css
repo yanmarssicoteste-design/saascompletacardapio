@@ -1075,7 +1075,11 @@ body {
   position: relative;
   overflow: hidden;
 }
-.tpl-preview-classic { background: linear-gradient(135deg, #1a0e08, #2d1510, #3d1e14); }
+.tpl-preview-classic {
+  background:
+    radial-gradient(ellipse at 30% 0%, rgba(184,134,11,.18), transparent 55%),
+    linear-gradient(155deg, #fdfbfa, #f0e8dc, #e8ddd0);
+}
 .tpl-preview-editorial { background: linear-gradient(135deg, #f7f4ef, #efeae2); }
 .tpl-preview-dark {
   background:

@@ -11,7 +11,9 @@
   --border:rgba(212,160,67,.16);--bordehi:rgba(212,160,67,.45);
   --green:#27ae60;--greenf:rgba(39,174,96,.15); }
 /* Fundo escuro aplicado no contêiner do template, não no body global */
-#vMenu { background: #07050A; min-height: 100vh; }
+#vMenu { background: #07050A; min-height: 100vh;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+@media(min-width:640px) { #vMenu { padding-bottom: 0; } }
 
 .mu{background:linear-gradient(90deg,#5a0000,var(--red),#5a0000);background-size:200%;animation:bgs 4s linear infinite;padding:9px 1rem;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:white;}
 @keyframes bgs{0%{background-position:0%}100%{background-position:200%}}
