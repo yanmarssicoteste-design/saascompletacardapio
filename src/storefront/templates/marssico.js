@@ -152,9 +152,9 @@ function buildHTML() {
     </div>
     <!-- Trust strip -->
     <div class="m-trust-strip">
-      ${cfg.showRating ? `<div class="m-trust-card"><div class="m-trust-icon">${SVG.star}</div><div><p class="m-trust-lbl">Avaliação</p><p class="m-trust-val">${cfg.ratingValue}</p><p class="m-trust-hint">${cfg.ratingCount}</p></div></div>` : ''}
-      ${cfg.showDelivery ? `<div class="m-trust-card"><div class="m-trust-icon">${SVG.flame}</div><div><p class="m-trust-lbl">Entrega</p><p class="m-trust-val">${cfg.deliveryTime}</p><p class="m-trust-hint">média hoje</p></div></div>` : ''}
-      ${cfg.showFreeShip ? `<div class="m-trust-card"><div class="m-trust-icon">${SVG.tag}</div><div><p class="m-trust-lbl">Frete grátis</p><p class="m-trust-val">${cfg.freeShipFrom}</p><p class="m-trust-hint">acima de</p></div></div>` : ''}
+      ${cfg.showRating ? `<div class="m-trust-card"><div class="m-trust-icon">${SVG.star}</div><div class="m-trust-text"><p class="m-trust-lbl">Avaliação</p><p class="m-trust-val">${cfg.ratingValue}</p><p class="m-trust-hint">${cfg.ratingCount}</p></div></div>` : ''}
+      ${cfg.showDelivery ? `<div class="m-trust-card"><div class="m-trust-icon">${SVG.flame}</div><div class="m-trust-text"><p class="m-trust-lbl">Entrega</p><p class="m-trust-val">${cfg.deliveryTime}</p><p class="m-trust-hint">média hoje</p></div></div>` : ''}
+      ${cfg.showFreeShip ? `<div class="m-trust-card"><div class="m-trust-icon">${SVG.tag}</div><div class="m-trust-text"><p class="m-trust-lbl">Frete grátis</p><p class="m-trust-val">${cfg.freeShipFrom}</p><p class="m-trust-hint">acima de</p></div></div>` : ''}
     </div>
   </section>
 
