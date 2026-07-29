@@ -45,7 +45,7 @@ async function startSubscription(slug) {
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute('content', `Peça sua ${doc.name.toLowerCase()} online direto pelo WhatsApp. ${doc.tagline || ''}`);
 
-    const template = doc.template || 'classic-modern';
+    const template = doc.template || 'classic';
 
     // Load template module if changed
     if (!templateModule || currentTemplateId !== template) {
