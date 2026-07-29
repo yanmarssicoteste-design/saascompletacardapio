@@ -76,6 +76,13 @@ function initUI() {
   $('liveMenuLink').href = liveUrl;
   $('liveMenuUrl').textContent = liveUrl;
 
+  // Auto-migração silenciosa: converte IDs legados para os novos no Firestore
+  const LEGACY = { 'classic-modern': 'classic', 'dark-modern': 'dark', 'editorial-modern': 'editorial' };
+  if (LEGACY[store.template]) {
+    store.template = LEGACY[store.template];
+    saveStoreData(ownerUid, buildDoc()).catch(() => {}); // silencioso
+  }
+
   fillStoreForm();
   applyColor(accentColor, { silent: true });
   document.querySelectorAll('.copt').forEach((el) => {
@@ -146,7 +153,9 @@ const TEMPLATES = [
 ];
 
 function renderTemplatePicker() {
-  const current = store.template || 'classic';
+  const ALIASES = { 'classic-modern': 'classic', 'dark-modern': 'dark', 'editorial-modern': 'editorial' };
+  const raw = store.template || 'classic';
+  const current = ALIASES[raw] || raw;
   const grid = $('templatePickerGrid');
   if (!grid) return;
   grid.innerHTML = TEMPLATES.map((t) => `

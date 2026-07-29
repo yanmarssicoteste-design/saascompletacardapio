@@ -58,6 +58,10 @@ async function startSubscription(slug) {
 }
 
 async function loadTemplate(templateId, doc) {
+  // ── Normalização de aliases legados (Firestore pode ter IDs antigos) ──
+  const ALIASES = { 'classic-modern': 'classic', 'dark-modern': 'dark', 'editorial-modern': 'editorial' };
+  templateId = ALIASES[templateId] || templateId;
+
   // Show loading, hide menu while switching
   $loading.style.display = 'flex';
   $vMenu.style.display   = 'none';
@@ -67,13 +71,6 @@ async function loadTemplate(templateId, doc) {
     // ── Marssico Supreme (Premium dos Premiums) ──
     if (templateId === 'marssico') {
       mod = await import('./templates/marssico.js');
-    // ── Grupo Modernos & Premium (templates originais dramáticos) ──
-    } else if (templateId === 'classic-modern') {
-      mod = await import('./templates/classic-modern.js');
-    } else if (templateId === 'dark-modern') {
-      mod = await import('./templates/dark-modern.js');
-    } else if (templateId === 'editorial-modern') {
-      mod = await import('./templates/editorial-modern.js');
     // ── Grupo Simples & Clean (baseados nos ZIPs) ──
     } else if (templateId === 'editorial') {
       mod = await import('./templates/editorial.js');
