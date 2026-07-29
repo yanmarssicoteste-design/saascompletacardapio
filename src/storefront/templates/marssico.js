@@ -13,11 +13,27 @@ function fmtR(v) {
   return 'R$\u00a0' + Number(v).toFixed(2).replace('.', ',');
 }
 
+let cfg = {}; // templateConfig com defaults
+
 function loadDoc(doc) {
   store = doc;
   categories = doc.categories || [];
   products = doc.products || [];
   combos = doc.combos || [];
+  // Configurações dinâmicas do template (o lojista pode personalizar no admin)
+  cfg = Object.assign({
+    showRating:     true,
+    ratingValue:    doc.rating     || '4.9',
+    ratingCount:    doc.ratingCount|| '2.140 pedidos',
+    showDelivery:   true,
+    deliveryTime:   doc.deliveryTime || '35min',
+    showFreeShip:   true,
+    freeShipFrom:   doc.freeShipFrom  || 'R$90',
+    heroTitle:      doc.heroTitle     || null,
+    heroSubtitle:   doc.heroSubtitle  || null,
+    heroPill1:      doc.heroPill1     || 'Forno aceso agora',
+    heroPill2:      doc.heroPill2     || 'Napoletana D.O.P.',
+  }, doc.templateConfig || {});
 }
 
 /* ── Helpers ── */
@@ -136,9 +152,9 @@ function buildHTML() {
     </div>
     <!-- Trust strip -->
     <div class="m-trust-strip">
-      <div class="m-trust-card"><div class="m-trust-icon">${SVG.star}</div><div><p class="m-trust-lbl">Avaliação</p><p class="m-trust-val">4.9</p><p class="m-trust-hint">2.140 pedidos</p></div></div>
-      <div class="m-trust-card"><div class="m-trust-icon">${SVG.flame}</div><div><p class="m-trust-lbl">Entrega</p><p class="m-trust-val">35min</p><p class="m-trust-hint">média hoje</p></div></div>
-      <div class="m-trust-card"><div class="m-trust-icon">${SVG.tag}</div><div><p class="m-trust-lbl">Frete grátis</p><p class="m-trust-val">R$90</p><p class="m-trust-hint">acima de</p></div></div>
+      ${cfg.showRating ? `<div class="m-trust-card"><div class="m-trust-icon">${SVG.star}</div><div><p class="m-trust-lbl">Avaliação</p><p class="m-trust-val">${cfg.ratingValue}</p><p class="m-trust-hint">${cfg.ratingCount}</p></div></div>` : ''}
+      ${cfg.showDelivery ? `<div class="m-trust-card"><div class="m-trust-icon">${SVG.flame}</div><div><p class="m-trust-lbl">Entrega</p><p class="m-trust-val">${cfg.deliveryTime}</p><p class="m-trust-hint">média hoje</p></div></div>` : ''}
+      ${cfg.showFreeShip ? `<div class="m-trust-card"><div class="m-trust-icon">${SVG.tag}</div><div><p class="m-trust-lbl">Frete grátis</p><p class="m-trust-val">${cfg.freeShipFrom}</p><p class="m-trust-hint">acima de</p></div></div>` : ''}
     </div>
   </section>
 
