@@ -72,16 +72,16 @@ function buildHTML() {
     <header class="ah-hero">
       <div class="ah-hero-inner">
         <div class="ah-hero-text">
-          <span class="ah-eyebrow">Forno a lenha · Massa 48h</span>
+          <span class="ah-eyebrow" id="ah-eyebrow">Pizzaria Artesanal</span>
           <h1 class="ah-h1">
-            <span id="ah-name-line1">A alma de</span><br>
-            <em id="ah-name-line2">Nápoles antiga.</em>
+            <span id="ah-name-line1"></span><br>
+            <em id="ah-name-line2"></em>
           </h1>
-          <p class="ah-tagline" id="ah-tagline">Massa 48h de fermentação natural, forno a lenha a 485°C.</p>
+          <p class="ah-tagline" id="ah-tagline">Pizzas artesanais preparadas com os melhores ingredientes.</p>
           <div class="ah-hero-meta">
             <a href="tel:" class="ah-phone" id="ah-phone">(11) 4002-8922</a>
             <span class="ah-sep">|</span>
-            <span class="ah-delivery-info">Entrega grátis acima de R$ 90</span>
+            <span class="ah-delivery-info" id="ah-delivery-info">Entrega rápida e segura</span>
           </div>
         </div>
         <div class="ah-hero-img-wrap">
@@ -113,13 +113,13 @@ function buildHTML() {
 
       <!-- PRODUTOS -->
       <section class="ah-products-sec" id="ah-products-sec">
-        <h2 class="ah-sec-title" id="ah-products-title">Le Pizze</h2>
+        <h2 class="ah-sec-title" id="ah-products-title">Cardápio</h2>
         <div class="ah-products-grid" id="ah-products-grid"></div>
       </section>
 
       <!-- REVIEWS faixa stone-100 -->
       <section class="ah-reviews-sec" id="ah-reviews-sec">
-        <h2 class="ah-sec-title ah-reviews-title">O que dizem nossos vizinhos</h2>
+        <h2 class="ah-sec-title ah-reviews-title">O que dizem nossos clientes</h2>
         <div class="ah-reviews-grid" id="ah-reviews-grid"></div>
       </section>
 
@@ -223,12 +223,19 @@ function boot() {
 function populateStore() {
   const n = store.name || 'Fornace';
   if ($('ah-nav-logo'))      $('ah-nav-logo').textContent      = n;
-  if ($('ah-name-line1'))    $('ah-name-line1').textContent    = 'A alma de';
-  if ($('ah-name-line2'))    $('ah-name-line2').textContent    = n;
-  if ($('ah-tagline'))       $('ah-tagline').textContent       = store.tagline || '';
+  const parts = n.split(' ');
+  if (parts.length > 1) {
+    if ($('ah-name-line1')) $('ah-name-line1').textContent = parts[0];
+    if ($('ah-name-line2')) $('ah-name-line2').textContent = parts.slice(1).join(' ');
+  } else {
+    if ($('ah-name-line1')) $('ah-name-line1').textContent = '';
+    if ($('ah-name-line2')) $('ah-name-line2').textContent = n;
+  }
+  if ($('ah-tagline'))       $('ah-tagline').textContent       = store.tagline || 'Pizzas artesanais preparadas com os melhores ingredientes.';
   if ($('ah-hours'))         $('ah-hours').textContent         = store.hours   || '';
   if ($('ah-phone'))         $('ah-phone').textContent         = store.phone   || '';
   if ($('ah-phone'))         $('ah-phone').href                = `tel:${store.phone || ''}`;
+  if ($('ah-delivery-info')) $('ah-delivery-info').textContent = store.freeDeliveryThreshold ? `Entrega grátis acima de R$ ${store.freeDeliveryThreshold}` : 'Entrega rápida e segura';
   if ($('ah-footer-logo'))   $('ah-footer-logo').textContent   = n;
   if ($('ah-footer-addr'))   $('ah-footer-addr').textContent   = store.address || store.addr || '';
   if ($('ah-footer-copy'))   $('ah-footer-copy').textContent   = `© 2026 ${n}. Feito com carinho.`;

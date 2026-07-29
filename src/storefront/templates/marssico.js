@@ -80,7 +80,7 @@ function buildHTML() {
       <a href="#m-top" class="m-brand">
         <div class="m-brand-av">${logoHtml}<span class="m-brand-dot"></span></div>
         <div class="m-brand-info">
-          <span class="m-brand-name">${s.name || 'Marssico'} <span class="m-brand-badge">Napoletana</span></span>
+          <span class="m-brand-name">${s.name || 'Pizzaria'} <span class="m-brand-badge">Artesanal</span></span>
           <div class="m-brand-status">
             <span class="m-live-wrap"><span class="m-live-ping"></span><span class="m-live-dot"></span></span>
             <span>Aberto &middot; ${s.hours || 'entrega em 35&ndash;45min'}</span>
@@ -109,10 +109,10 @@ function buildHTML() {
         <div class="m-hero-copy">
           <div class="m-hero-pills">
             <span class="m-pill-glass"><span class="m-live-wrap"><span class="m-live-ping"></span><span class="m-live-dot"></span></span> Forno aceso agora</span>
-            <span class="m-pill-gold">${SVG.flame} Napoletana D.O.P.</span>
+            <span class="m-pill-gold">${SVG.flame} ${s.tagline || 'Pizza Artesanal'}</span>
           </div>
           <h1 class="m-hero-h1">A pizza que<br>vira <span class="m-h1-highlight">momento<svg viewBox="0 0 220 12" class="m-h1-uline" preserveAspectRatio="none"><path d="M2 8 Q 60 2, 118 6 T 218 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>.</h1>
-          <p class="m-hero-sub">Massa de fermentação lenta <strong>48h</strong>, mussarela fior di latte, tomate San Marzano e manjericão fresco &mdash; assadas a <strong>450°C</strong> em forno a lenha.</p>
+          <p class="m-hero-sub">Massa fresca, queijos selecionados e ingredientes de primeira linha &mdash; a combinação perfeita para uma pizza inesquecível.</p>
           <div class="m-hero-meta">
             <div class="m-star-row">
               <div class="m-stars">${SVG.star.repeat(5)}</div>
@@ -129,10 +129,10 @@ function buildHTML() {
             <a href="#m-combos" class="m-cta-secondary">${SVG.tag} Combos <span class="m-cta-discount">&minus;25%</span></a>
           </div>
           <div class="m-ingredient-chips">
-            <span class="m-chip">Massa 48h</span>
-            <span class="m-chip">Forno a lenha 450°</span>
-            <span class="m-chip">Tomate San Marzano</span>
-            <span class="m-chip">Mussarela fior di latte</span>
+            <span class="m-chip">Massa Fresca</span>
+            <span class="m-chip">Muito Sabor</span>
+            <span class="m-chip">Qualidade Garantida</span>
+            <span class="m-chip">Ingredientes Premium</span>
           </div>
         </div>
         <div class="m-hero-img-col">

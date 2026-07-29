@@ -77,11 +77,11 @@ function buildHTML() {
             Frete grátis acima de R$ 90
           </p>
           <h1 class="ed2-h1">
-            Pizza napolitana,<br>
-            <span class="ed2-h1-brand" id="ed2-h1-brand">no seu endereço</span> em 40min.
+            Pizza Artesanal,<br>
+            <span class="ed2-h1-brand" id="ed2-h1-brand">no seu endereço</span>.
           </h1>
           <p class="ed2-hero-sub" id="ed2-hero-sub">
-            Massa de fermentação natural 48h, forno a lenha 485°C. Peça agora e receba quentinha.
+            Massa fresca e ingredientes selecionados. Peça agora e receba quentinha na sua casa.
           </p>
           <div class="ed2-hero-ctas">
             <a href="#ed2-menu" class="ed2-cta-primary">
@@ -92,8 +92,8 @@ function buildHTML() {
           </div>
           <div class="ed2-trust-badges">
             <span class="ed2-trust"><span>⭐</span> 4.9 · 2.140 avaliações</span>
-            <span class="ed2-trust"><span>🔥</span> Forno a lenha</span>
-            <span class="ed2-trust"><span>🛵</span> Entrega até 45min</span>
+            <span class="ed2-trust"><span>🔥</span> Preparo na hora</span>
+            <span class="ed2-trust"><span>🛵</span> Entrega rápida</span>
           </div>
         </div>
         <div class="ed2-hero-img-side">
@@ -157,13 +157,13 @@ function buildHTML() {
       <div class="ed2-trust-inner">
         <div class="ed2-trust-block">
           <span class="ed2-trust-icon">🔥</span>
-          <p class="ed2-trust-title">Forno a lenha 485°C</p>
-          <p class="ed2-trust-desc">Assamos em 90 segundos, direto na sua caixa.</p>
+          <p class="ed2-trust-title">Preparo Artesanal</p>
+          <p class="ed2-trust-desc">Rapidez e qualidade, direto do forno para a sua mesa.</p>
         </div>
         <div class="ed2-trust-block">
           <span class="ed2-trust-icon">🌿</span>
-          <p class="ed2-trust-title">Ingredientes D.O.P.</p>
-          <p class="ed2-trust-desc">Tomate San Marzano, mozzarella fresca todos os dias.</p>
+          <p class="ed2-trust-title">Ingredientes Selecionados</p>
+          <p class="ed2-trust-desc">Produtos frescos e selecionados todos os dias.</p>
         </div>
         <div class="ed2-trust-block">
           <span class="ed2-trust-icon">🛵</span>

@@ -69,16 +69,16 @@ function buildHTML() {
     <header class="nt-hero">
       <div class="nt-hero-inner">
         <div class="nt-hero-text">
-          <span class="nt-eyebrow">Forno a lenha · 485°C</span>
+          <span class="nt-eyebrow" id="nt-eyebrow">Qualidade Premium</span>
           <h1 class="nt-h1">
-            A alma de <br>
-            <em class="nt-h1-grad" id="nt-name">Nápoles antiga.</em>
+            <span id="nt-name-line1"></span><br>
+            <em class="nt-h1-grad" id="nt-name-line2"></em>
           </h1>
-          <p class="nt-tagline" id="nt-tagline">Massa 48h de fermentação natural, forno a lenha a 485°C.</p>
+          <p class="nt-tagline" id="nt-tagline">Ingredientes selecionados e preparo cuidadoso para a melhor experiência.</p>
           <div class="nt-hero-meta">
             <a href="tel:" class="nt-phone" id="nt-phone">(11) 4002-8922</a>
             <span class="nt-sep">|</span>
-            <span class="nt-delivery-info">Entrega grátis acima de R$ 90</span>
+            <span class="nt-delivery-info" id="nt-delivery-info">Entrega rápida e segura</span>
           </div>
         </div>
         <!-- IMAGEM com halo de fogo — camada 3 -->
@@ -112,13 +112,13 @@ function buildHTML() {
 
       <!-- PRODUTOS grid 3 colunas com foto quadrada + gradiente na base -->
       <section class="nt-products-sec">
-        <h2 class="nt-sec-title" id="nt-products-title">Le Pizze</h2>
+        <h2 class="nt-sec-title" id="nt-products-title">Cardápio</h2>
         <div class="nt-products-grid" id="nt-products-grid"></div>
       </section>
 
       <!-- REVIEWS glassmorphism escuro -->
       <section class="nt-reviews-sec" id="nt-reviews-sec">
-        <h2 class="nt-sec-title nt-reviews-title">O que dizem nossos vizinhos</h2>
+        <h2 class="nt-sec-title nt-reviews-title">O que dizem nossos clientes</h2>
         <div class="nt-reviews-grid" id="nt-reviews-grid"></div>
       </section>
 
@@ -289,13 +289,21 @@ function ntCartBounce() {
 function populateStore() {
   const n = store.name || 'Fornace';
   if ($('nt-nav-logo'))    $('nt-nav-logo').textContent    = n;
-  if ($('nt-name'))        $('nt-name').textContent        = n;
-  if ($('nt-tagline'))     $('nt-tagline').textContent     = store.tagline || '';
+  const parts = n.split(' ');
+  if (parts.length > 1) {
+    if ($('nt-name-line1')) $('nt-name-line1').textContent = parts[0];
+    if ($('nt-name-line2')) $('nt-name-line2').textContent = parts.slice(1).join(' ');
+  } else {
+    if ($('nt-name-line1')) $('nt-name-line1').textContent = '';
+    if ($('nt-name-line2')) $('nt-name-line2').textContent = n;
+  }
+  if ($('nt-tagline'))     $('nt-tagline').textContent     = store.tagline || 'Ingredientes selecionados e preparo cuidadoso para a melhor experiência.';
   if ($('nt-hours'))       $('nt-hours').textContent       = store.hours   || '';
   if ($('nt-phone'))       { $('nt-phone').textContent = store.phone || ''; $('nt-phone').href = `tel:${store.phone || ''}`; }
+  if ($('nt-delivery-info')) $('nt-delivery-info').textContent = store.freeDeliveryThreshold ? `Entrega grátis acima de R$ ${store.freeDeliveryThreshold}` : 'Entrega rápida e segura';
   if ($('nt-footer-logo')) $('nt-footer-logo').textContent = n;
   if ($('nt-footer-addr')) $('nt-footer-addr').textContent = store.address || store.addr || '';
-  if ($('nt-footer-copy')) $('nt-footer-copy').textContent = `© 2026 ${n}. Feito com fogo e carinho.`;
+  if ($('nt-footer-copy')) $('nt-footer-copy').textContent = `© 2026 ${n}. Feito com carinho.`;
 }
 
 // ═══════════════════════════════════════════════
