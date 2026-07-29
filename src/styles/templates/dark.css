@@ -32,7 +32,10 @@
   font-family: var(--font-sans);
   display: flex;
   flex-direction: column;
+  /* Respiro do dock — cor do template, sem vazamento */
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
+@media(min-width: 640px) { .nt-root { padding-bottom: 0; } }
 
 /* Camada 2: Grain/Noise SVG fixo em overlay */
 .nt-grain {

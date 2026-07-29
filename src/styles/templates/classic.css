@@ -24,7 +24,10 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* Respiro do dock — cor do template, sem vazamento */
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
+@media(min-width: 640px) { .ah-root { padding-bottom: 0; } }
 
 /* ── NAV ── sticky top-0 h-16 */
 .ah-nav {

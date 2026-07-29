@@ -26,7 +26,10 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* Respiro do dock — cor do template, sem vazamento */
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
+@media(min-width: 640px) { .ed2-root { padding-bottom: 0; } }
 
 /* ── TOP BAR sticky ── */
 .ed2-topbar {

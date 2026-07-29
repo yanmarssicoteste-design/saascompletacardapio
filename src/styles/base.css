@@ -20,11 +20,6 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Compensação do dock fixo no mobile — evita que o conteúdo fique escondido atrás do menu */
-  padding-bottom: calc(72px + env(safe-area-inset-bottom));
-}
-@media(min-width: 640px) {
-  body { padding-bottom: 0; }
 }
 
 /* Container principal do template — flex vertical para footer sempre ao fundo */
