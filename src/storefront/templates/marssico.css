@@ -1,4 +1,4 @@
-﻿/* MARSSICO SUPREME - Redesign Lovable */
+/* MARSSICO SUPREME - Redesign Lovable */
 /* Namespace: #vMenu */
 
 #vMenu {
@@ -214,10 +214,11 @@
 .m-review-av-sm{width:2.25rem;height:2.25rem;background:var(--m-line);color:var(--m-ink);font-size:.6875rem;}
 .m-review-info{min-width:0;}
 .m-review-name{display:block;font-size:.875rem;font-weight:600;}
-.m-review-meta{display:block;font-size:.6875rem;color:rgba(255,255,255,.65);margin-top:.125rem;}
-.m-social-cards{display:flex;gap:.75rem;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -1rem;padding:0 1rem .25rem;scrollbar-width:none;}
+.m-review-meta{display:block;font-size:.6875rem;color:var(--m-muted);margin-top:.125rem;}
+.m-featured-review .m-review-meta{color:rgba(255,255,255,.65);}
+.m-social-cards{display:flex;gap:.75rem;overflow-x:auto;scroll-snap-type:x mandatory;margin:.75rem -1rem 0;padding:0 1rem .25rem;scrollbar-width:none;}
 .m-social-cards::-webkit-scrollbar{display:none;}
-@media(min-width:640px){.m-social-cards{display:grid;grid-template-columns:repeat(3,1fr);overflow-x:visible;margin:0;padding:0;}}
+@media(min-width:640px){.m-social-cards{display:grid;grid-template-columns:repeat(3,1fr);overflow-x:visible;margin:.75rem 0 0;padding:0;}}
 .m-review-card{width:80%;flex-shrink:0;scroll-snap-align:start;display:flex;flex-direction:column;border-radius:1.5rem;background:white;border:1px solid var(--m-line);padding:1.25rem;transition:box-shadow .3s;margin:0;}
 @media(min-width:640px){.m-review-card{width:auto;}}
 .m-review-card:hover{box-shadow:0 16px 40px -12px rgba(0,0,0,.12);}

@@ -67,12 +67,17 @@ const SVG = {
 
 const DEFAULT_REVIEWS = [
   { name: 'Marina R.', neighborhood: 'Pinheiros', rating: 5, date: 'h\u00e1 3 dias', text: 'A massa faz toda a diferen\u00e7a. Chegou quente e perfeita!', item: 'Pizza Especial' },
-  { name: 'Rodrigo P.', neighborhood: 'Vila Madalena', rating: 5, date: 'h\u00e1 1 semana', text: 'Pedi num s\u00e1bado lotado e chegou antes do previsto. Recomendo demais!', item: 'Pizza da Casa' },
-  { name: 'Camila S.', neighborhood: 'Perdizes', rating: 4, date: 'h\u00e1 2 semanas', text: 'Embalagem impec\u00e1vel. Com certeza voltarei mais vezes.', item: 'Pizza Premium' },
-  { name: 'Eduardo L.', neighborhood: 'Sumar\u00e9', rating: 5, date: 'h\u00e1 3 semanas', text: 'Qualidade premium a um pre\u00e7o justo. Todo mundo amou!', item: 'Combo Fam\u00edlia' },
+  { name: 'Rodrigo P.', neighborhood: 'Vila Madalena', rating: 5, date: 'h\u00e1 1 semana', text: 'Pedi num s\u00e1bado lotado e chegou antes do previsto. A Diavola com mel \u00e9 absurda.', item: 'Pizza da Casa' },
+  { name: 'Camila S.', neighborhood: 'Perdizes', rating: 4, date: 'h\u00e1 2 semanas', text: 'Embalagem impec\u00e1vel. Cada detalhe mostra que eles se importam com a qualidade. Voltarei.', item: 'Pizza Premium' },
+  { name: 'Eduardo L.', neighborhood: 'Sumar\u00e9', rating: 5, date: 'h\u00e1 3 semanas', text: 'Qualidade premium a um pre\u00e7o justo. Todo mundo amou na mesa!', item: 'Combo Fam\u00edlia' },
 ];
+const MIN_REVIEWS = 4;
 function getReviews() {
-  return (cfg.reviews && cfg.reviews.length > 0) ? cfg.reviews : DEFAULT_REVIEWS;
+  const real = (cfg.reviews && cfg.reviews.length > 0) ? cfg.reviews : [];
+  if (real.length >= MIN_REVIEWS) return real;
+  // Preenche com reviews de demonstração para sempre ter o carrossel completo
+  const fill = DEFAULT_REVIEWS.filter(d => !real.find(r => r.name === d.name));
+  return [...real, ...fill].slice(0, Math.max(real.length, MIN_REVIEWS));
 }
 
 /* -- HTML Shell -- */
