@@ -97,6 +97,7 @@ function fillStoreForm() {
   $('sHours').value = store.hours || '';
   $('sClose').value = store.closeTime || '23:00';
   $('sFee').value = store.fee ?? 5;
+  $('sMinFreeShip') && ($('sMinFreeShip').value = store.minFreeShip ?? 90);
   $('sMin').value = store.minOrder ?? 30;
   $('sTime').value = store.deliveryTime || '';
   $('sRating').value = store.rating || '';
@@ -368,15 +369,36 @@ window.openProdModal = function (id = null) {
   $('prodModal').classList.add('on');
 };
 window.closeProdModal = function () { $('prodModal').classList.remove('on'); };
-window.uploadPI = function (input) {
+// ═══ COMPRESSOR DE IMAGEM (Canvas API — client-side, gratuito e ilimitado) ═══
+// Reduz imagens pesadas (~5MB) para ~40KB antes de salvar no Firestore.
+// Evita estouro do limite de 1MB por documento do banco de dados.
+function compressImage(file, maxPx = 700, quality = 0.78) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let w = img.width, h = img.height;
+        if (w > maxPx || h > maxPx) {
+          if (w > h) { h = Math.round(h * maxPx / w); w = maxPx; }
+          else { w = Math.round(w * maxPx / h); h = maxPx; }
+        }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+window.uploadPI = async function (input) {
   const f = input.files[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = (e) => {
-    piData = e.target.result;
-    $('piPrev').src = piData; $('piPrev').style.display = 'block';
-    $('piInner').style.display = 'none';
-  };
-  r.readAsDataURL(f);
+  piData = await compressImage(f);
+  $('piPrev').src = piData; $('piPrev').style.display = 'block';
+  $('piInner').style.display = 'none';
 };
 window.saveProd = function () {
   const name = $('piName').value.trim();
@@ -475,15 +497,11 @@ window.openComboModal = function (id = null) {
   }
   $('comboModal').classList.add('on');
 };
-window.uploadCoI = function (input) {
+window.uploadCoI = async function (input) {
   const f = input.files[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = (e) => {
-    coiData = e.target.result;
-    $('coiPrev').src = coiData; $('coiPrev').style.display = 'block';
-    $('coiInner').style.display = 'none';
-  };
-  r.readAsDataURL(f);
+  coiData = await compressImage(f);
+  $('coiPrev').src = coiData; $('coiPrev').style.display = 'block';
+  $('coiInner').style.display = 'none';
 };
 window.saveCombo = function () {
   const name = $('coName').value.trim();
@@ -530,16 +548,12 @@ window.delReview = function (id) {
 };
 
 // ═══ STORE ═══
-window.uploadLogo = function (input) {
+window.uploadLogo = async function (input) {
   const f = input.files[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = (e) => {
-    store.logo = e.target.result;
-    $('logoPrev').src = store.logo; $('logoPrev').style.display = 'block';
-    $('logoPh').style.display = 'none';
-    persist();
-  };
-  r.readAsDataURL(f);
+  store.logo = await compressImage(f, 400, 0.85);
+  $('logoPrev').src = store.logo; $('logoPrev').style.display = 'block';
+  $('logoPh').style.display = 'none';
+  persist();
 };
 window.saveStore = function () {
   store.name = $('sName').value || store.name;
@@ -548,8 +562,9 @@ window.saveStore = function () {
   store.addr = $('sAddr').value || store.addr;
   store.hours = $('sHours').value || store.hours;
   store.closeTime = $('sClose').value || store.closeTime;
-  store.fee = parseFloat($('sFee').value) || store.fee;
-  store.minOrder = parseFloat($('sMin').value) || store.minOrder;
+  store.fee = parseFloat($('sFee').value) ?? store.fee;
+  store.minOrder = parseFloat($('sMin').value) ?? store.minOrder;
+  store.minFreeShip = parseFloat($('sMinFreeShip')?.value) ?? store.minFreeShip ?? 90;
   store.deliveryTime = $('sTime').value || store.deliveryTime;
   store.rating = $('sRating').value || store.rating;
   store.promoTxt = $('sPromoTxt').value || store.promoTxt;

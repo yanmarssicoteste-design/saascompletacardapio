@@ -7,7 +7,7 @@ let activeCat = 'all';
 let searchQ = '';
 let imCurrentPid = null;
 let imQty = 1;
-const FREE_SHIP = 90;
+// free_ship e fee são lidos dinamicamente do store — sem valores hardcoded
 
 function fmtR(v) {
   return 'R$\u00a0' + Number(v).toFixed(2).replace('.', ',');
@@ -33,11 +33,13 @@ function loadDoc(doc) {
 
 /* -- Helpers -- */
 function $(id) { return document.getElementById(id); }
+function freeShipMin() { return Number(store.minFreeShip ?? 90); }
+function storeFee()    { return Number(store.fee ?? 8); }
 function cartTotal() { return cart.reduce((s, i) => s + i.price * i.qty, 0); }
 function cartCount() { return cart.reduce((s, i) => s + i.qty, 0); }
-function remaining() { return Math.max(0, FREE_SHIP - cartTotal()); }
-function isFree() { return cartTotal() >= FREE_SHIP && cartTotal() > 0; }
-function deliveryFee() { return isFree() ? 0 : 8; }
+function remaining() { return Math.max(0, freeShipMin() - cartTotal()); }
+function isFree()    { return cartTotal() >= freeShipMin() && cartTotal() > 0; }
+function deliveryFee() { return isFree() ? 0 : storeFee(); }
 function initials(name) {
   return (name || 'C').split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
 }
@@ -644,12 +646,108 @@ function boot(container, doc) {
   };
   window.mCheckout = () => {
     if (cart.length === 0) return;
-    const name = ($('m-client-name')?.value || '').trim();
-    const lines = cart.map(i => `\u2022 ${i.qty}x ${i.name} \u2014 ${fmtR(i.price * i.qty)}`).join('\n');
-    const fee = deliveryFee(); const tot = cartTotal() + fee;
-    const msg = `Ol\u00e1 ${store.name || ''}!\n\n*Pedido${name ? ` de ${name}` : ''}:*\n${lines}\n\nSubtotal: ${fmtR(cartTotal())}\nEntrega: ${isFree() ? 'Gr\u00e1tis' : fmtR(fee)}\n*Total: ${fmtR(tot)}*`;
+    // Fechar drawer
+    const drw = $('m-drawer');
+    if (drw) drw.classList.remove('m-drawer-open');
+
+    // Criar/exibir modal de checkout
+    let modal = $('m-checkout-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'm-checkout-modal';
+      modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.65);display:flex;align-items:flex-end;justify-content:center;';
+      modal.innerHTML = `
+        <div id="m-co-box" style="background:#1a1a1a;width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:24px 20px 32px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <span style="font-size:1.1rem;font-weight:700;color:#fff;">🛵 Finalizar Pedido</span>
+            <button onclick="document.getElementById('m-checkout-modal').remove()" style="background:none;border:none;color:#aaa;font-size:1.4rem;cursor:pointer;">✕</button>
+          </div>
+
+          <!-- Nome -->
+          <label style="color:#bbb;font-size:.8rem;display:block;margin-bottom:4px;">Seu nome</label>
+          <input id="m-co-name" placeholder="Ex: João Silva" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:.95rem;margin-bottom:14px;box-sizing:border-box;">
+
+          <!-- Modalidade -->
+          <label style="color:#bbb;font-size:.8rem;display:block;margin-bottom:8px;">Como deseja receber?</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+            <button id="m-co-delivery-btn" onclick="mCoSetMode('delivery')" style="padding:10px;border-radius:10px;border:2px solid var(--brand-color,#c0392b);background:rgba(192,57,43,.15);color:#fff;font-weight:600;cursor:pointer;">🛵 Entrega</button>
+            <button id="m-co-pickup-btn" onclick="mCoSetMode('pickup')" style="padding:10px;border-radius:10px;border:2px solid #333;background:#111;color:#aaa;font-weight:600;cursor:pointer;">🏃 Retirada</button>
+          </div>
+
+          <!-- Endereço (só para entrega) -->
+          <div id="m-co-addr-wrap">
+            <label style="color:#bbb;font-size:.8rem;display:block;margin-bottom:4px;">Endereço de entrega</label>
+            <input id="m-co-addr" placeholder="Rua, Número, Bairro" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:.95rem;margin-bottom:10px;box-sizing:border-box;">
+            <label style="color:#bbb;font-size:.8rem;display:block;margin-bottom:4px;">Precisa de troco? (opcional)</label>
+            <input id="m-co-troco" placeholder="Ex: troco para R$ 100,00" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;font-size:.95rem;margin-bottom:14px;box-sizing:border-box;">
+          </div>
+
+          <!-- Resumo -->
+          <div style="border-top:1px solid #2a2a2a;padding-top:12px;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;color:#bbb;font-size:.85rem;margin-bottom:4px;"><span>Subtotal</span><span id="m-co-sub"></span></div>
+            <div style="display:flex;justify-content:space-between;color:#bbb;font-size:.85rem;margin-bottom:4px;"><span>Entrega</span><span id="m-co-fee"></span></div>
+            <div style="display:flex;justify-content:space-between;color:#fff;font-weight:700;font-size:1rem;"><span>Total</span><span id="m-co-total"></span></div>
+          </div>
+
+          <button onclick="mCoConfirm()" style="width:100%;padding:14px;border-radius:12px;border:none;background:var(--brand-color,#c0392b);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;">📲 Enviar pedido no WhatsApp</button>
+        </div>`;
+      document.body.appendChild(modal);
+      // click fora fecha
+      modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+    }
+
+    // Estado padrão: Entrega selecionada
+    window._mCoMode = 'delivery';
+    mCoSetMode('delivery');
+    mCoUpdateSummary();
+    modal.style.display = 'flex';
+  };
+
+  window.mCoSetMode = (mode) => {
+    window._mCoMode = mode;
+    const dBtn = $('m-co-delivery-btn'), pBtn = $('m-co-pickup-btn');
+    const addrWrap = $('m-co-addr-wrap');
+    const bc = getComputedStyle(document.documentElement).getPropertyValue('--brand-color') || '#c0392b';
+    if (mode === 'delivery') {
+      dBtn.style.border = `2px solid ${bc}`; dBtn.style.background = `rgba(192,57,43,.15)`; dBtn.style.color = '#fff';
+      pBtn.style.border = '2px solid #333'; pBtn.style.background = '#111'; pBtn.style.color = '#aaa';
+      if (addrWrap) addrWrap.style.display = 'block';
+    } else {
+      pBtn.style.border = `2px solid ${bc}`; pBtn.style.background = `rgba(192,57,43,.15)`; pBtn.style.color = '#fff';
+      dBtn.style.border = '2px solid #333'; dBtn.style.background = '#111'; dBtn.style.color = '#aaa';
+      if (addrWrap) addrWrap.style.display = 'none';
+    }
+    mCoUpdateSummary();
+  };
+
+  window.mCoUpdateSummary = () => {
+    const isPickup = window._mCoMode === 'pickup';
+    const fee = isPickup ? 0 : deliveryFee();
+    const sub = cartTotal();
+    const el = (id) => document.getElementById(id);
+    if (el('m-co-sub')) el('m-co-sub').textContent = fmtR(sub);
+    if (el('m-co-fee')) el('m-co-fee').textContent = (isPickup ? 'Grátis (retirada)' : (isFree() ? 'Grátis 🎉' : fmtR(fee)));
+    if (el('m-co-total')) el('m-co-total').textContent = fmtR(sub + fee);
+  };
+
+  window.mCoConfirm = () => {
+    const isPickup = window._mCoMode === 'pickup';
+    const name = ($('m-co-name')?.value || '').trim();
+    const addr = ($('m-co-addr')?.value || '').trim();
+    const troco = ($('m-co-troco')?.value || '').trim();
     const phone = (store.phone || store.whatsapp || '').replace(/\D/g, '');
-    if (!phone) { alert('WhatsApp n\u00e3o configurado.'); return; }
+    if (!phone) { alert('WhatsApp não configurado.'); return; }
+    if (!isPickup && !addr) { $('m-co-addr').style.border = '1.5px solid red'; $('m-co-addr').focus(); return; }
+    const fee = isPickup ? 0 : deliveryFee();
+    const sub = cartTotal();
+    const tot = sub + fee;
+    const lines = cart.map(i => `• ${i.qty}x ${i.name} — ${fmtR(i.price * i.qty)}`).join('\n');
+    let msg = `Olá ${store.name || ''}!\n\n*Pedido${name ? ` de ${name}` : ''}:*\n${lines}\n\nSubtotal: ${fmtR(sub)}`;
+    msg += `\nEntrega: ${isPickup ? 'Retirada no local' : (isFree() ? 'Grátis 🎉' : fmtR(fee))}`;
+    if (!isPickup && addr) msg += `\nEndereço: ${addr}`;
+    if (!isPickup && troco) msg += `\nTroco: ${troco}`;
+    msg += `\n*Total: ${fmtR(tot)}*`;
+    $('m-checkout-modal')?.remove();
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
   };
   window.addEventListener('scroll', () => {
