@@ -100,14 +100,14 @@ function buildHTML() {
           <span class="m-brand-name">${s.name || 'Pizzaria'}</span>
           <div class="m-brand-status">
             <span class="m-live-wrap"><span class="m-live-ping"></span><span class="m-live-dot"></span></span>
-            <span>Aberto &middot; ${s.hours || '18h\u201323h'}</span>
+            <span>Aberto &middot; fecha ${s.hours || '23h'} &middot; entrega ${cfg.deliveryTime || '40-50 min'}</span>
           </div>
         </div>
       </a>
       <div class="m-header-actions">
-        <button class="m-icon-btn" onclick="mSetTab('search')" aria-label="Buscar">${SVG.search}</button>
-        <a href="tel:${(s.phone||'').replace(/\D/g,'')}" class="m-icon-btn" aria-label="Ligar">${SVG.phone}</a>
-        <button class="m-cart-btn" id="m-cart-btn-hd" onclick="mToggleCart()" aria-label="Ver carrinho">
+        <button class="m-icon-btn m-icon-btn--mobile" onclick="mOpenSearch()" aria-label="Buscar no cardápio">${SVG.search}</button>
+        <a href="tel:${(s.phone||'').replace(/\D/g,'')}" class="m-icon-btn" aria-label="Ligar para a pizzaria">${SVG.phone}</a>
+        <button class="m-cart-btn m-cart-btn--desktop" id="m-cart-btn-hd" onclick="mToggleCart()" aria-label="Ver carrinho">
           ${SVG.cart}
           <span class="m-cart-txt-full" id="m-cart-txt">Carrinho</span>
           <span class="m-cart-badge" id="m-cart-badge-hd"></span>
@@ -163,11 +163,25 @@ function buildHTML() {
   <!-- CATEGORY NAV -->
   <div class="m-cat-nav">
     <div class="m-cat-nav-inner">
-      <div class="m-srch-wrap">
+      <div class="m-srch-wrap m-srch-wrap--desktop">
         <span class="m-srch-icon">${SVG.search}</span>
         <input id="m-search" class="m-search" type="search" placeholder="Buscar pizza..." oninput="mOnSearch(this.value)" value="">
       </div>
       <div class="m-cat-chips" id="m-chips"></div>
+    </div>
+  </div>
+
+  <!-- SEARCH OVERLAY (mobile tela cheia) -->
+  <div class="m-search-overlay" id="m-search-overlay" role="dialog" aria-modal="true" aria-label="Buscar no cardápio">
+    <div class="m-search-overlay-head">
+      <label class="m-search-overlay-label">
+        <span class="m-search-overlay-icon">${SVG.search}</span>
+        <input id="m-search-overlay-input" class="m-search-overlay-input" type="search" placeholder="Buscar pizza, ingrediente..." oninput="mOnSearch(this.value);mUpdateSearchOverlay()" autocomplete="off">
+      </label>
+      <button class="m-search-overlay-cancel" onclick="mCloseSearch()">Cancelar</button>
+    </div>
+    <div class="m-search-overlay-body" id="m-search-overlay-body">
+      <p class="m-search-overlay-hint">Digite para buscar no cardápio...</p>
     </div>
   </div>
 
@@ -584,10 +598,45 @@ function boot(container, doc) {
     document.querySelectorAll('.m-dock-btn').forEach(b => b.classList.remove('active'));
     if (tab === 'menu') { $('m-dk-menu')?.classList.add('active'); mScrollToCat(null); }
     else if (tab === 'combos') { $('m-dk-combos')?.classList.add('active'); document.getElementById('m-combos')?.scrollIntoView({behavior:'smooth'}); }
-    else if (tab === 'search') { $('m-dk-search')?.classList.add('active'); $('m-search')?.focus(); $('m-search')?.scrollIntoView({behavior:'smooth'}); }
+    else if (tab === 'search') { $('m-dk-search')?.classList.add('active'); window.mOpenSearch?.(); }
     else if (tab === 'cart') { $('m-dk-cart')?.classList.add('active'); window.mToggleCart(); }
   };
   window.mOnSearch = (val) => { searchQ = val; renderProducts(); };
+  window.mOpenSearch = () => {
+    const ov = $('m-search-overlay');
+    if (!ov) return;
+    ov.classList.add('on');
+    document.body.classList.add('m-no-scroll');
+    window.setTimeout(() => {
+      const inp = $('m-search-overlay-input');
+      if (inp) { inp.value = ''; inp.focus(); }
+      mUpdateSearchOverlay();
+    }, 60);
+  };
+  window.mCloseSearch = () => {
+    const ov = $('m-search-overlay');
+    if (!ov) return;
+    ov.classList.remove('on');
+    document.body.classList.remove('m-no-scroll');
+    const inp = $('m-search-overlay-input');
+    if (inp) inp.value = '';
+    searchQ = ''; renderProducts();
+  };
+  window.mUpdateSearchOverlay = () => {
+    const inp = $('m-search-overlay-input');
+    const body = $('m-search-overlay-body');
+    if (!inp || !body) return;
+    const q = (inp.value || '').trim().toLowerCase();
+    if (!q) { body.innerHTML = '<p class="m-search-overlay-hint">Digite para buscar no card\u00e1pio...</p>'; return; }
+    const hits = products.filter(p => p.name?.toLowerCase().includes(q) || (p.desc||p.description||'').toLowerCase().includes(q));
+    if (!hits.length) { body.innerHTML = `<p class="m-search-overlay-hint">Nada encontrado para \u201c${inp.value}\u201d.</p>`; return; }
+    body.innerHTML = `<ul class="m-search-overlay-list">${hits.map(p => {
+      const img = p.img || p.image || '';
+      const price = p.price || p.prices?.[0] || 0;
+      const imgHtml = img ? `<img src="${img}" alt="" loading="lazy" class="m-search-ov-img">` : `<div class="m-search-ov-noimg">\uD83C\uDF55</div>`;
+      return `<li><button class="m-search-ov-item" onclick="mCloseSearch();window.setTimeout(()=>{const el=document.getElementById('mcat-${p.cat||p.category}');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},80)">${imgHtml}<span class="m-search-ov-info"><span class="m-search-ov-name">${p.name}</span><span class="m-search-ov-desc">${p.desc||p.description||''}</span></span><span class="m-search-ov-price">${fmtR(price)}</span></button></li>`;
+    }).join('')}</ul>`;
+  };
   window.mCheckout = () => {
     if (cart.length === 0) return;
     const name = ($('m-client-name')?.value || '').trim();
