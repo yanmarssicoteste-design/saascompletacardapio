@@ -206,8 +206,10 @@
 .cx{background:none;border:none;color:var(--muted);font-size:1.35rem;cursor:pointer;transition:color .2s;line-height:1;}
 .cx:hover{color:var(--cream);}
 .cbody{flex:1;overflow-y:auto;padding:1.1rem;}
-.cempty{text-align:center;padding:2.5rem 1rem;color:var(--muted);}
-.cempty span{font-size:2.75rem;display:block;margin-bottom:.65rem;}
+.cempty{text-align:center;padding:2.5rem 1rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:.65rem;}
+.cempty span{font-size:2.75rem;display:block;}
+.cempty-btn{margin-top:.35rem;padding:10px 22px;background:var(--red);color:white;border:none;border-radius:6px;font-family:var(--font-sans);font-size:.85rem;font-weight:700;cursor:pointer;transition:all .3s;}
+.cempty-btn:hover{background:var(--red2);transform:translateY(-1px);}
 .ci{display:flex;gap:.75rem;align-items:flex-start;padding-bottom:.75rem;border-bottom:1px solid var(--border);margin-bottom:.75rem;}
 .ci-img{width:52px;height:52px;border-radius:6px;overflow:hidden;flex-shrink:0;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
 .ci-img img{width:100%;height:100%;object-fit:cover;}

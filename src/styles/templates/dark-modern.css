@@ -260,7 +260,11 @@
 .dk-chd-t { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700; color: var(--dk-text); }
 .dk-cx { background: none; border: none; color: var(--dk-muted); font-size: 1.3rem; cursor: pointer; }
 .dk-cbody { flex: 1; overflow-y: auto; padding: 1rem; }
-.dk-cempty { text-align: center; padding: 3rem 1rem; color: var(--dk-muted); }
+.dk-cempty { text-align: center; padding: 3rem 1rem; color: var(--dk-muted); display: flex; flex-direction: column; align-items: center; gap: .75rem; }
+.dk-cempty span { font-size: 2.5rem; }
+.dk-cempty p { font-size: .88rem; line-height: 1.5; }
+.dk-cempty-btn { margin-top: .5rem; padding: 10px 20px; background: var(--dk-ember); color: #fff; border: none; border-radius: 8px; font-family: var(--font-sans); font-size: .85rem; font-weight: 700; cursor: pointer; transition: opacity .2s; }
+.dk-cempty-btn:hover { opacity: .85; }
 .dk-ci { display: flex; gap: .75rem; align-items: flex-start; padding-bottom: .75rem; border-bottom: 1px solid var(--dk-border); margin-bottom: .75rem; }
 .dk-ci-img { width: 50px; height: 50px; border-radius: 8px; flex-shrink: 0; overflow: hidden; background: rgba(255,255,255,.06); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
 .dk-ci-img img { width: 100%; height: 100%; object-fit: cover; }

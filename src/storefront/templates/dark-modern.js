@@ -160,7 +160,7 @@ function boot() {
 // POPULATE
 // ═══════════════════════════════════════════════
 function populateHero() {
-  const n = store.name || 'La Bella Pizza';
+  const n = store.name || '';
   const [p1, ...rest] = n.trim().split(' ');
   $('dk-t1').textContent = p1;
   $('dk-t2').textContent = rest.join(' ');
@@ -353,7 +353,7 @@ function renderCart() {
   const count = cart.length;
   const badge = $('dk-cart-badge');
   badge.textContent = count; badge.classList.toggle('on', count > 0);
-  if (!count) { $('dk-cbody').innerHTML = '<div class="dk-cempty">Carrinho vazio 🍕</div>'; $('dk-cft').style.display = 'none'; return; }
+  if (!count) { $('dk-cbody').innerHTML = '<div class="dk-cempty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p><button class="dk-cempty-btn" onclick="dkToggleCart()">🍕 Ver Cardápio</button></div>'; $('dk-cft').style.display = 'none'; return; }
   const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
   const fee = store.fee ?? 5; const total = sub + fee;
   const min = store.minOrder ?? 30;

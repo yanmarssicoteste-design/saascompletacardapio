@@ -143,9 +143,9 @@ function buildHTML() {
   </div>
 
   <footer class="mfoot">
-    <div class="mfl" id="mFootName">La <em>Bella</em> Pizza</div>
-    <div class="mfi2" id="mFootAddr">Rua das Flores, 123 — Centro</div>
-    <div class="mfi2" id="mFootPhone">📞 (13) 99999-9999</div>
+    <div class="mfl" id="mFootName"></div>
+    <div class="mfi2" id="mFootAddr"></div>
+    <div class="mfi2" id="mFootPhone"></div>
     <div class="mpow">Powered by Pizzaria Cheia ✦</div>
   </footer>
   `;
@@ -463,7 +463,7 @@ function renderCart() {
   badge.classList.toggle('on', count > 0);
 
   if (!count) {
-    $('cbody').innerHTML = `<div class="cempty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div>`;
+    $('cbody').innerHTML = `<div class="cempty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p><button class="cempty-btn" onclick="toggleCart()">🍕 Ver Cardápio</button></div>`;
     $('cft').style.display = 'none';
     return;
   }
@@ -551,7 +551,7 @@ window.checkout = function checkout() {
   if (sub < min) { showToast(`⚠️ Mínimo R$${min}`, 'red'); return; }
   const fee   = store.fee ?? 5;
   const total = sub + fee;
-  const lines = cart.map((i) => `• ${item.name}${i.size ? ' (' + i.size + ')' : ''} — R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
+  const lines = cart.map((i) => `• ${i.name}${i.size ? ' (' + i.size + ')' : ''} — R$${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
   const msg   = encodeURIComponent(`🍕 *Novo Pedido*\n\n${lines}\n\n*Taxa:* R$${fee}\n*Total:* R$${total.toFixed(2)}\n\n*Nome:* ${name}\n*Endereço:* ${addr}`);
   const phone = (store.phone || '').replace(/\D/g, '');
   window.open(`https://wa.me/55${phone}?text=${msg}`, '_blank');

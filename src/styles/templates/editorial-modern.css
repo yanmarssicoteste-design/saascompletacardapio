@@ -192,7 +192,11 @@
 .ed-chd-t { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700; color: var(--ed-text); }
 .ed-cx { background: none; border: none; color: var(--ed-muted); font-size: 1.3rem; cursor: pointer; }
 .ed-cbody { flex: 1; overflow-y: auto; padding: 1rem; }
-.ed-cempty { text-align: center; padding: 3rem 1rem; color: var(--ed-muted); }
+.ed-cempty { text-align: center; padding: 3rem 1rem; color: var(--ed-muted); display: flex; flex-direction: column; align-items: center; gap: .75rem; }
+.ed-cempty span { font-size: 2.5rem; }
+.ed-cempty p { font-size: .88rem; line-height: 1.5; }
+.ed-cempty-btn { margin-top: .5rem; padding: 10px 20px; background: var(--ed-red); color: #fff; border: none; border-radius: 8px; font-family: var(--font-sans); font-size: .85rem; font-weight: 700; cursor: pointer; transition: opacity .2s; }
+.ed-cempty-btn:hover { opacity: .85; }
 .ed-ci { display: flex; gap: .75rem; align-items: flex-start; padding-bottom: .75rem; border-bottom: 1px solid var(--ed-border); margin-bottom: .75rem; }
 .ed-ci-img { width: 52px; height: 52px; border-radius: 8px; flex-shrink: 0; overflow: hidden; background: var(--ed-bg2); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
 .ed-ci-img img { width: 100%; height: 100%; object-fit: cover; }

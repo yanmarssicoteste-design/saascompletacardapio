@@ -44,7 +44,7 @@ function buildHTML() {
   <header class="ed-hero">
     <div class="ed-hero-inner">
       <img id="ed-logo" class="ed-logo" src="" alt="" style="display:none">
-      <h1 class="ed-store-name" id="ed-store-name">La Bella Pizza</h1>
+      <h1 class="ed-store-name" id="ed-store-name"></h1>
       <p class="ed-tagline" id="ed-tagline">Feita com amor, entregue com sabor</p>
       <div class="ed-stats">
         <div class="ed-stat">⚡ <strong id="ed-time">40–60 min</strong></div>
@@ -61,7 +61,7 @@ function buildHTML() {
 
   <nav class="ed-nav">
     <div class="ed-nav-inner">
-      <div class="ed-nav-logo" id="ed-nav-logo">La Bella</div>
+      <div class="ed-nav-logo" id="ed-nav-logo"></div>
       <div class="ed-search">
         <span class="ed-search-icon">🔍</span>
         <input class="ed-search-inp" id="ed-search" type="text" placeholder="Buscar no cardápio…" oninput="onSearch(this.value)">
@@ -135,7 +135,7 @@ function buildHTML() {
   </div>
 
   <footer class="ed-footer">
-    <div class="ed-footer-name" id="ed-foot-name">La Bella Pizza</div>
+    <div class="ed-footer-name" id="ed-foot-name"></div>
     <div class="ed-footer-info" id="ed-foot-addr"></div>
     <div class="ed-footer-info" id="ed-foot-phone"></div>
     <div class="ed-footer-pow">Powered by Pizzaria Cheia ✦</div>
@@ -361,7 +361,7 @@ function renderCart() {
   const count = cart.length;
   const badge = $('ed-cart-badge');
   badge.textContent = count; badge.classList.toggle('on', count > 0);
-  if (!count) { $('ed-cbody').innerHTML = '<div class="ed-cempty">Carrinho vazio 🍕</div>'; $('ed-cft').style.display = 'none'; return; }
+  if (!count) { $('ed-cbody').innerHTML = '<div class="ed-cempty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p><button class="ed-cempty-btn" onclick="edToggleCart()">🍕 Ver Cardápio</button></div>'; $('ed-cft').style.display = 'none'; return; }
   const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
   const fee = store.fee ?? 5; const total = sub + fee;
   const min = store.minOrder ?? 30;
