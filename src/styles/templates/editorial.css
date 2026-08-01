@@ -1,4 +1,4 @@
-/*
+﻿/*
  * EDITORIAL TEMPLATE CSS — Conversão
  * Fundo #f7f4ef quente, trust badges, stepper no card,
  * busca sticky, progresso frete grátis, drawer lateral.
@@ -229,7 +229,7 @@
 .ed2-combo-card:hover { box-shadow: 0 16px 40px rgba(28,25,23,0.1); }
 .ed2-combo-img-wrap { position: relative; overflow: hidden; }
 .ed2-combo-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; transition: transform 0.7s; display: block; }
-@media (max-width: 639px) { .ed2-combo-img { max-height: 200px; } }
+@media (max-width: 639px) { .ed2-combo-img { height: 180px; aspect-ratio: unset; width: 100%; } }
 @media (min-width: 640px) { .ed2-combo-img { height: 100%; aspect-ratio: unset; } }
 .ed2-combo-card:hover .ed2-combo-img { transform: scale(1.05); }
 .ed2-combo-placeholder { width: 100%; height: 11rem; background: var(--stone-100); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
@@ -342,7 +342,7 @@
 .ed2-pcard:hover { box-shadow: 0 16px 40px rgba(28,25,23,0.1); outline-color: var(--stone-400); }
 .ed2-pcard-img-wrap { position: relative; overflow: hidden; }
 .ed2-pcard-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; transition: transform 0.7s; display: block; }
-@media (max-width: 639px) { .ed2-pcard-img { max-height: 180px; } }
+@media (max-width: 639px) { .ed2-pcard-img { height: 160px; aspect-ratio: unset; width: 100%; } }
 .ed2-pcard:hover .ed2-pcard-img { transform: scale(1.05); }
 .ed2-pcard-placeholder { width: 100%; aspect-ratio: 4/3; background: var(--stone-100); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
 .ed2-pcard-badge { position: absolute; top: 0.75rem; left: 0.75rem; border-radius: 9999px; background: rgba(255,255,255,0.95); color: var(--brand); padding: 0.25rem 0.625rem; font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; box-shadow: 0 2px 8px rgba(28,25,23,0.1); }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * DARK TEMPLATE CSS — Notturno Forno
  * Fundo carvão #0f0a08, 3 camadas: radiais ember/brand, grain SVG, halo blur hero.
  * Gradiente âmbar no título, dots pulsantes, glassmorphism, ember glow.
@@ -299,9 +299,9 @@
 .nt-combo-card:hover { border-color: rgba(255,90,31,0.4); box-shadow: 0 0 60px -20px var(--ember); }
 .nt-combo-img-wrap { margin-bottom: 1.5rem; }
 .nt-combo-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 1rem; outline: 1px solid rgba(255,255,255,0.05); }
-@media (max-width: 639px) { .nt-combo-img { max-height: 200px; } }
+@media (max-width: 639px) { .nt-combo-img { height: 180px; aspect-ratio: unset; width: 100%; } }
 .nt-combo-placeholder { width: 100%; aspect-ratio: 16/9; border-radius: 1rem; background: var(--night-elev); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
-@media (max-width: 639px) { .nt-combo-placeholder { max-height: 200px; } }
+@media (max-width: 639px) { .nt-combo-placeholder { height: 180px; aspect-ratio: unset; width: 100%; } }
 .nt-combo-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem; }
 .nt-combo-name { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400; color: var(--cream); margin: 0; }
 .nt-combo-price-wrap { text-align: right; flex-shrink: 0; }
@@ -334,7 +334,7 @@
 .nt-product-card:active { transform: scale(0.97); }
 .nt-product-img-wrap { position: relative; overflow: hidden; border-radius: 1rem; outline: 1px solid rgba(255,255,255,0.1); }
 .nt-product-img { width: 100%; aspect-ratio: 3/2; object-fit: cover; transition: transform 0.5s; display: block; }
-@media (max-width: 639px) { .nt-product-img { max-height: 180px; } }
+@media (max-width: 639px) { .nt-product-img { height: 160px; aspect-ratio: unset; width: 100%; } }
 .nt-product-card:hover .nt-product-img { transform: scale(1.05); }
 .nt-product-grad {
   position: absolute;
@@ -343,7 +343,7 @@
   pointer-events: none;
 }
 .nt-product-placeholder { width: 100%; aspect-ratio: 3/2; border-radius: 1rem; background: var(--night-elev); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
-@media (max-width: 639px) { .nt-product-placeholder { max-height: 180px; } }
+@media (max-width: 639px) { .nt-product-placeholder { height: 160px; aspect-ratio: unset; width: 100%; } }
 .nt-product-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
 .nt-product-name { font-size: 1.125rem; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; min-width: 0; color: var(--cream); }
 .nt-product-price { font-weight: 700; font-size: 1rem; white-space: nowrap; flex-shrink: 0; color: var(--ember); }

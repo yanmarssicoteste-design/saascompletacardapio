@@ -89,8 +89,8 @@
 .ed-combo-card { flex-shrink: 0; width: 240px; background: #fff; border: 1.5px solid var(--ed-border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all .25s; }
 .ed-combo-card:hover { border-color: var(--ed-red); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
 .ed-combo-card:active { transform: scale(0.97); }
-.ed-combo-img { aspect-ratio: 16/9; overflow: hidden; background: var(--ed-bg2); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; }
-@media (max-width: 639px) { .ed-combo-img { max-height: 200px; } }
+.ed-combo-img { aspect-ratio: 16/9; width: 100%; overflow: hidden; background: var(--ed-bg2); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; }
+@media (max-width: 639px) { .ed-combo-img { height: 180px; aspect-ratio: unset; width: 100%; } }
 .ed-combo-img img { width: 100%; height: 100%; object-fit: cover; }
 .ed-combo-save { position: absolute; top: 8px; left: 8px; background: var(--ed-success); color: #fff; font-size: .62rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; }
 .ed-combo-body { padding: .85rem; }
@@ -112,8 +112,8 @@
 .ed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
 .ed-card { background: #fff; border: 1.5px solid var(--ed-border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all .25s; }
 .ed-card:hover { border-color: var(--ed-red); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
-.ed-card-img { aspect-ratio: 3/2; overflow: hidden; background: var(--ed-bg2); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
-@media (max-width: 639px) { .ed-card-img { max-height: 180px; } }
+.ed-card-img { aspect-ratio: 3/2; width: 100%; overflow: hidden; background: var(--ed-bg2); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+@media (max-width: 639px) { .ed-card-img { height: 160px; aspect-ratio: unset; width: 100%; } }
 .ed-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
 .ed-card:hover .ed-card-img img { transform: scale(1.06); }
 .ed-card-body { padding: .9rem; }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CLASSIC TEMPLATE CSS — Artisan Heritage
  * Fundo cream quente, tipografia Playfair Display,
  * layout limpo com borda sutil, fiel ao ZIP "Templates ideias/loja.zip".
@@ -294,7 +294,7 @@
   object-fit: cover;
   border-radius: 1rem;
 }
-@media (max-width: 639px) { .ah-combo-img { max-height: 200px; } }
+@media (max-width: 639px) { .ah-combo-img { height: 180px; aspect-ratio: unset; width: 100%; } }
 .ah-combo-img-placeholder {
   width: 100%;
   aspect-ratio: 16/9;
@@ -305,7 +305,7 @@
   justify-content: center;
   font-size: 3rem;
 }
-@media (max-width: 639px) { .ah-combo-img-placeholder { max-height: 200px; } }
+@media (max-width: 639px) { .ah-combo-img-placeholder { height: 180px; aspect-ratio: unset; width: 100%; } }
 .ah-combo-head {
   display: flex;
   align-items: flex-start;
@@ -383,7 +383,7 @@
   object-fit: cover;
   border-radius: 1rem;
 }
-@media (max-width: 639px) { .ah-product-img { max-height: 180px; } }
+@media (max-width: 639px) { .ah-product-img { height: 160px; aspect-ratio: unset; width: 100%; } }
 .ah-product-img-placeholder {
   width: 100%;
   aspect-ratio: 3/2;
@@ -394,7 +394,7 @@
   justify-content: center;
   font-size: 3rem;
 }
-@media (max-width: 639px) { .ah-product-img-placeholder { max-height: 180px; } }
+@media (max-width: 639px) { .ah-product-img-placeholder { height: 160px; aspect-ratio: unset; width: 100%; } }
 .ah-product-meta {
   display: flex;
   align-items: center;
