@@ -38,6 +38,7 @@ function loadDoc(doc) {
 // ═══════════════════════════════════════════════
 function buildHTML() {
   return `
+  <div class="dk-root">
   <div class="dk-topbar" id="dk-topbar">🔥 PEDIDOS ABERTOS ATÉ <span id="dk-countdown">23h00</span> • ENTREGA RÁPIDA 🔥</div>
 
   <section class="dk-hero">
@@ -129,6 +130,7 @@ function buildHTML() {
     <div class="dk-footer-info" id="dk-foot-phone"></div>
     <div class="dk-footer-pow">Powered by Pizzaria Cheia ✦</div>
   </footer>
+  </div>
   `;
 }
 

@@ -1,11 +1,11 @@
-/*
+﻿/*
  * EDITORIAL TEMPLATE CSS — Pizzaria SaaS v5
  * Layout claro e clean focado em conversão.
  * Inspirado no loja-editorial-v2.
  */
 
 /* ── Base: tema claro ── */
-#vMenu {
+.ed-root {
   --ed-bg: #f7f4ef;
   --ed-bg2: #efeae2;
   --ed-text: #1c1917;
@@ -21,7 +21,7 @@
   font-family: var(--font-sans);
   padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
-@media(min-width:640px) { #vMenu { padding-bottom: 0; } }
+@media(min-width:640px) { .ed-root { padding-bottom: 0; } }
 
 /* ── Topbar de urgência ── */
 .ed-topbar { background: #b52a1f; color: #ffffff; padding: 8px 1rem; text-align: center; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }

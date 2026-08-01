@@ -40,6 +40,7 @@ function loadDoc(doc) {
 // ═══════════════════════════════════════════════
 function buildHTML() {
   return `
+  <div class="ed-root">
   <div class="ed-topbar" id="ed-topbar">🔥 PEDIDOS ABERTOS ATÉ <span id="ed-countdown">23h00</span> • PEÇA ONLINE 🔥</div>
   <header class="ed-hero">
     <div class="ed-hero-inner">
@@ -140,6 +141,7 @@ function buildHTML() {
     <div class="ed-footer-info" id="ed-foot-phone"></div>
     <div class="ed-footer-pow">Powered by Pizzaria Cheia ✦</div>
   </footer>
+  </div>
   `;
 }
 

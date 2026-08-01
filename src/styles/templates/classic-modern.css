@@ -1,19 +1,19 @@
-/*
+﻿/*
  * CLASSIC TEMPLATE CSS — Pizzaria SaaS v5
  * Portado do storefront.css da v4. Tema escuro premium com hero animado.
  */
 
 /* ── Base dark override ── */
-#vMenu { --black:#07050A;--deep:#0f0c14;--card:#171320;--card2:#1e1828;
+.cm-root { --black:#07050A;--deep:#0f0c14;--card:#171320;--card2:#1e1828;
   --red:#c0392b;--red2:#e74c3c;--redglow:rgba(192,57,43,.3);
   --gold:#d4a043;--goldf:rgba(212,160,67,.13);--goldhi:rgba(212,160,67,.5);
   --cream:#f2e8d8;--text:#ddd0c8;--muted:#7a6a78;
   --border:rgba(212,160,67,.16);--bordehi:rgba(212,160,67,.45);
   --green:#27ae60;--greenf:rgba(39,174,96,.15); }
 /* Fundo escuro aplicado no contêiner do template, não no body global */
-#vMenu { background: #07050A; min-height: 100vh;
+.cm-root { background: #07050A; min-height: 100vh;
   padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
-@media(min-width:640px) { #vMenu { padding-bottom: 0; } }
+@media(min-width:640px) { .cm-root { padding-bottom: 0; } }
 
 .mu{background:linear-gradient(90deg,#5a0000,var(--red),#5a0000);background-size:200%;animation:bgs 4s linear infinite;padding:9px 1rem;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:white;}
 @keyframes bgs{0%{background-position:0%}100%{background-position:200%}}

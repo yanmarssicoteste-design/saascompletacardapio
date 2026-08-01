@@ -1,11 +1,11 @@
-/*
+﻿/*
  * DARK FORNO TEMPLATE CSS — Pizzaria SaaS v5
  * Estética noturna premium. Gradiente ember, grain e glassmorphism.
  * Inspirado no loja-dark.
  */
 
 /* ── Base dark ── */
-#vMenu {
+.dk-root {
   --dk-bg: #0f0a08;
   --dk-bg2: #1a1210;
   --dk-card: rgba(255,255,255,.05);
@@ -24,19 +24,19 @@
   position: relative;
   padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
-@media(min-width:640px) { #vMenu { padding-bottom: 0; } }
+@media(min-width:640px) { .dk-root { padding-bottom: 0; } }
 /* Mobile: True Black OLED */
 @media(max-width:639px) {
-  #vMenu {
+  .dk-root {
     --dk-bg: #000000;
     --dk-bg2: #0a0808;
   }
 }
 /* Mobile: Grain reduzido para performance */
-@media(max-width:639px) { #vMenu::before { opacity: .015; } }
+@media(max-width:639px) { .dk-root::before { opacity: .015; } }
 
 /* Grain overlay — escopado ao template */
-#vMenu::before {
+.dk-root::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -45,7 +45,7 @@
   pointer-events: none;
   z-index: 0;
 }
-#vMenu { z-index: 1; }
+.dk-root { z-index: 1; }
 
 /* ── Topbar ── */
 .dk-topbar { background: linear-gradient(90deg, #3a0800, var(--dk-ember), #3a0800); background-size: 200%; animation: dk-slide 4s linear infinite; padding: 8px 1rem; text-align: center; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #fff; }
