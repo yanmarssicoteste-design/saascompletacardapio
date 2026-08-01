@@ -1,4 +1,4 @@
-﻿/*
+/*
  * EDITORIAL TEMPLATE CSS — Conversão
  * Fundo #f7f4ef quente, trust badges, stepper no card,
  * busca sticky, progresso frete grátis, drawer lateral.
@@ -328,7 +328,7 @@
 .ed2-empty-title { font-family: var(--font-serif); font-size: 1.5rem; color: var(--charcoal); margin: 0 0 0.5rem; }
 .ed2-empty-sub { font-size: 0.875rem; margin: 0; }
 
-/* PRODUCT CARD — rounded-3xl bg-white ring shadow */
+/* PRODUCT CARD — grid desktop / lista horizontal mobile */
 .ed2-pcard {
   display: flex;
   flex-direction: column;
@@ -340,9 +340,8 @@
   transition: box-shadow 0.3s, outline-color 0.3s;
 }
 .ed2-pcard:hover { box-shadow: 0 16px 40px rgba(28,25,23,0.1); outline-color: var(--stone-400); }
-.ed2-pcard-img-wrap { position: relative; overflow: hidden; }
+.ed2-pcard-img-wrap { position: relative; overflow: hidden; flex-shrink: 0; }
 .ed2-pcard-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; transition: transform 0.7s; display: block; }
-@media (max-width: 639px) { .ed2-pcard-img { height: 160px; aspect-ratio: unset; width: 100%; } }
 .ed2-pcard:hover .ed2-pcard-img { transform: scale(1.05); }
 .ed2-pcard-placeholder { width: 100%; aspect-ratio: 4/3; background: var(--stone-100); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
 .ed2-pcard-badge { position: absolute; top: 0.75rem; left: 0.75rem; border-radius: 9999px; background: rgba(255,255,255,0.95); color: var(--brand); padding: 0.25rem 0.625rem; font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; box-shadow: 0 2px 8px rgba(28,25,23,0.1); }
@@ -369,6 +368,44 @@
   transition: background 0.2s;
 }
 .ed2-pcard-add:hover { background: var(--brand); }
+
+/* Mobile ≤639px: Lista Horizontal */
+@media (max-width: 639px) {
+  .ed2-grid { gap: 0.65rem; }
+  .ed2-pcard {
+    flex-direction: row;
+    align-items: stretch;
+    border-radius: 1rem;
+    min-height: 110px;
+  }
+  .ed2-pcard-img-wrap {
+    width: 110px;
+    flex-shrink: 0;
+  }
+  .ed2-pcard-img {
+    width: 110px;
+    height: 100%;
+    min-height: 110px;
+    aspect-ratio: unset;
+  }
+  .ed2-pcard-placeholder {
+    width: 110px;
+    height: 100%;
+    min-height: 110px;
+    aspect-ratio: unset;
+    font-size: 2rem;
+  }
+  .ed2-pcard-body { padding: 0.75rem; }
+  .ed2-pcard-name { font-size: 0.9rem; }
+  .ed2-pcard-price { font-size: 0.9rem; }
+  .ed2-pcard-ctrl { margin-top: 0.5rem; }
+  .ed2-pcard-add {
+    width: auto;
+    padding: 0.45rem 0.875rem;
+    font-size: 0.75rem;
+    align-self: flex-start;
+  }
+}
 
 /* STEPPER — inline no card, fundo brand */
 .ed2-stepper {

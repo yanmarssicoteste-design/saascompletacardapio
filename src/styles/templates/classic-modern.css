@@ -1,4 +1,4 @@
-﻿/*
+/*
  * CLASSIC TEMPLATE CSS — Pizzaria SaaS v5
  * Portado do storefront.css da v4. Tema escuro premium com hero animado.
  */
@@ -119,25 +119,53 @@
 .madd-btn{background:var(--red);color:white;border:none;padding:10px 20px;border-radius:4px;font-family:var(--font-sans);font-size:.8rem;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:7px;}
 .madd-btn:hover{background:var(--red2);transform:scale(1.04);box-shadow:0 4px 18px rgba(192,57,43,.45);}
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.1rem;}
-.mcard{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .35s;position:relative;}
+.mcard{
+  display:flex;
+  flex-direction:column;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:all .35s;
+  position:relative;
+}
 .mcard:hover{border-color:var(--bordehi);transform:translateY(-5px);box-shadow:0 16px 44px rgba(0,0,0,.4),0 0 24px rgba(192,57,43,.1);}
 .mcard:active{transform:scale(0.97);}
-.mcard-img{position:relative;height:140px;overflow:hidden;background:var(--card2);}
+/* Imagem — desktop: altura fixa, sem aspect-ratio conflict */
+.mcard-img{position:relative;height:140px;overflow:hidden;background:var(--card2);flex-shrink:0;}
 .mcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
 .mcard:hover .mcard-img img{transform:scale(1.09);}
 .mcard-ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(7,5,10,.85) 100%);}
 .mcard-noimg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
-.mcard-body{padding:1rem;}
+/* Body */
+.mcard-body{padding:1rem;display:flex;flex-direction:column;flex:1;}
 .mcard-cat{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:.22rem;font-weight:700;}
-.mcard-name{font-family:var(--font-serif);font-size:.97rem;font-weight:700;color:var(--cream);margin-bottom:.28rem;}
-.mcard-desc{font-size:.72rem;color:var(--muted);line-height:1.5;margin-bottom:.8rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.mcard-sizes{display:flex;gap:.3rem;margin-bottom:.8rem;flex-wrap:wrap;}
+.mcard-name{font-family:var(--font-serif);font-size:.97rem;font-weight:700;color:var(--cream);margin-bottom:.28rem;line-height:1.3;}
+.mcard-desc{font-size:.72rem;color:var(--muted);line-height:1.5;margin-bottom:.6rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.mcard-sizes{display:flex;gap:.3rem;margin-bottom:.6rem;flex-wrap:wrap;}
 .msz{padding:3px 7px;border:1px solid var(--border);border-radius:3px;font-size:.64rem;color:var(--muted);cursor:pointer;transition:all .15s;}
 .msz:hover,.msz.sel{border-color:var(--gold);color:var(--gold);background:var(--goldf);}
-.mcard-foot{display:flex;align-items:center;justify-content:space-between;}
+.mcard-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
 .mcard-pr{font-family:var(--font-serif);font-size:1.15rem;font-weight:700;color:var(--gold);}
-.miadd{width:33px;height:33px;background:var(--red);color:white;border:none;border-radius:4px;font-size:1.15rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
-.miadd:hover{background:var(--red2);transform:scale(1.1);}
+.miadd{
+  display:flex;align-items:center;justify-content:center;gap:0.35rem;
+  width:100%;background:var(--red);color:white;border:none;
+  border-radius:9999px;padding:0.6rem 0.75rem;
+  font-family:var(--font-sans);font-size:0.78rem;font-weight:700;
+  cursor:pointer;transition:opacity .2s,transform .15s;
+  margin-top:0.5rem;
+}
+.miadd:hover{opacity:0.85;transform:translateY(-1px);}
+/* Mobile ≤639px: Lista Horizontal */
+@media(max-width:639px){
+  .mgrid{grid-template-columns:1fr;gap:0.65rem;}
+  .mcard{flex-direction:row;align-items:stretch;border-radius:8px;min-height:110px;}
+  .mcard-img{width:110px;height:auto;min-height:110px;flex-shrink:0;}
+  .mcard-body{padding:0.75rem;}
+  .mcard-name{font-size:0.875rem;}
+  .miadd{width:auto;align-self:flex-start;padding:0.4rem 0.75rem;font-size:0.72rem;margin-top:0.3rem;}
+}
 .mlist{display:flex;flex-direction:column;gap:.65rem;}
 .mlist-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.9rem 1.1rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s;}
 .mlist-item:hover{border-color:var(--bordehi);background:var(--card2);}

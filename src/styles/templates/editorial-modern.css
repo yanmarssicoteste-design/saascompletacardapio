@@ -1,4 +1,4 @@
-﻿/*
+/*
  * EDITORIAL TEMPLATE CSS — Pizzaria SaaS v5
  * Layout claro e clean focado em conversão.
  * Inspirado no loja-editorial-v2.
@@ -110,23 +110,59 @@
 
 /* ── Grid ── */
 .ed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
-.ed-card { background: #fff; border: 1.5px solid var(--ed-border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all .25s; }
+.ed-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1.5px solid var(--ed-border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .25s;
+}
 .ed-card:hover { border-color: var(--ed-red); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
-.ed-card-img { aspect-ratio: 3/2; width: 100%; overflow: hidden; background: var(--ed-bg2); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
-@media (max-width: 639px) { .ed-card-img { height: 160px; aspect-ratio: unset; width: 100%; } }
+/* Imagem — desktop */
+.ed-card-img { aspect-ratio: 3/2; width: 100%; overflow: hidden; background: var(--ed-bg2); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; flex-shrink: 0; }
 .ed-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
 .ed-card:hover .ed-card-img img { transform: scale(1.06); }
-.ed-card-body { padding: .9rem; }
+/* Body */
+.ed-card-body { padding: .9rem; display: flex; flex-direction: column; flex: 1; gap: 0.35rem; }
 .ed-card-cat { font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ed-muted); margin-bottom: .2rem; font-weight: 600; }
-.ed-card-name { font-family: var(--font-serif); font-size: .95rem; font-weight: 700; color: var(--ed-text); margin-bottom: .2rem; }
-.ed-card-desc { font-size: .72rem; color: var(--ed-muted); line-height: 1.5; margin-bottom: .75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.ed-card-sizes { display: flex; gap: .3rem; margin-bottom: .75rem; flex-wrap: wrap; }
+.ed-card-name { font-family: var(--font-serif); font-size: .95rem; font-weight: 700; color: var(--ed-text); margin-bottom: .2rem; line-height: 1.3; }
+.ed-card-desc { font-size: .72rem; color: var(--ed-muted); line-height: 1.5; margin-bottom: .5rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ed-card-sizes { display: flex; gap: .3rem; margin-bottom: .5rem; flex-wrap: wrap; }
 .ed-sz { padding: 2px 7px; border: 1px solid var(--ed-border); border-radius: 4px; font-size: .62rem; color: var(--ed-muted); cursor: pointer; transition: all .15s; }
 .ed-sz:hover, .ed-sz.sel { border-color: var(--ed-red); color: var(--ed-red); background: rgba(192,57,43,.06); }
-.ed-card-foot { display: flex; align-items: center; justify-content: space-between; }
+.ed-card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
 .ed-card-price { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700; color: var(--ed-red); }
-.ed-card-add { width: 32px; height: 32px; background: var(--ed-red); color: #fff; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
-.ed-card-add:hover { transform: scale(1.1); }
+.ed-card-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  background: var(--ed-red);
+  color: #fff;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.6rem 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .2s, transform .15s;
+  margin-top: 0.5rem;
+}
+.ed-card-add:hover { opacity: 0.85; transform: translateY(-1px); }
+/* Mobile ≤639px: Lista Horizontal */
+@media (max-width: 639px) {
+  .ed-grid { grid-template-columns: 1fr; gap: 0.6rem; }
+  .ed-card { flex-direction: row; align-items: stretch; min-height: 110px; border-radius: 10px; }
+  .ed-card-img { width: 110px; height: auto; min-height: 110px; aspect-ratio: unset; flex-shrink: 0; }
+  .ed-card-body { padding: 0.7rem; gap: 0.15rem; justify-content: center; }
+  .ed-card-name { font-size: 0.875rem; }
+  .ed-card-add { width: auto; align-self: flex-start; padding: 0.38rem 0.75rem; font-size: 0.72rem; margin-top: 0.3rem; }
+}
 
 /* ── List ── */
 .ed-list { display: flex; flex-direction: column; gap: .65rem; }
