@@ -369,41 +369,42 @@
 }
 .ed2-pcard-add:hover { background: var(--brand); }
 
-/* Mobile ≤639px: Lista Horizontal */
+/* Mobile ≤639px: Grade 2 Colunas */
 @media (max-width: 639px) {
-  .ed2-grid { gap: 0.65rem; }
+  .ed2-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
   .ed2-pcard {
-    flex-direction: row;
-    align-items: stretch;
     border-radius: 1rem;
-    min-height: 110px;
   }
   .ed2-pcard-img-wrap {
-    width: 110px;
-    flex-shrink: 0;
+    aspect-ratio: 4/3;
+    overflow: hidden;
   }
   .ed2-pcard-img {
-    width: 110px;
+    width: 100%;
     height: 100%;
-    min-height: 110px;
     aspect-ratio: unset;
+    object-fit: cover;
   }
   .ed2-pcard-placeholder {
-    width: 110px;
-    height: 100%;
-    min-height: 110px;
-    aspect-ratio: unset;
+    aspect-ratio: 4/3;
+    width: 100%;
+    height: auto;
     font-size: 2rem;
   }
-  .ed2-pcard-body { padding: 0.75rem; }
-  .ed2-pcard-name { font-size: 0.9rem; }
-  .ed2-pcard-price { font-size: 0.9rem; }
-  .ed2-pcard-ctrl { margin-top: 0.5rem; }
+  .ed2-pcard-body { padding: 0.625rem; }
+  .ed2-pcard-head { gap: 0.35rem; flex-wrap: wrap; }
+  .ed2-pcard-name { font-size: 0.72rem; line-height: 1.25; }
+  .ed2-pcard-price { font-size: 0.78rem; }
+  .ed2-pcard-desc { display: none; }
+  .ed2-pcard-ctrl { margin-top: 0.35rem; }
   .ed2-pcard-add {
-    width: auto;
-    padding: 0.45rem 0.875rem;
-    font-size: 0.75rem;
-    align-self: flex-start;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.72rem;
+    border-radius: 0.625rem;
   }
 }
 

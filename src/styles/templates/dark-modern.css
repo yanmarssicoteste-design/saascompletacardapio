@@ -222,35 +222,42 @@
 }
 .dk-card-add:hover { opacity: 0.85; transform: translateY(-1px); }
 
-/* ─── MOBILE ≤639px: Lista Horizontal ─── */
+/* ── MOBILE ≤639px: Grade 2 Colunas ── */
 @media (max-width: 639px) {
-  .dk-grid { grid-template-columns: 1fr; gap: 0.65rem; }
+  .dk-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
   .dk-card {
-    flex-direction: row;
-    align-items: stretch;
-    min-height: 110px;
     border-radius: 10px;
   }
   .dk-card-img {
-    width: 110px;
+    aspect-ratio: 4/3;
+    width: 100%;
     height: auto;
-    min-height: 110px;
-    aspect-ratio: unset;
-    flex-shrink: 0;
-    border-radius: 0;
+    min-height: unset;
+    border-radius: 10px 10px 0 0;
   }
   .dk-card-body {
-    padding: 0.75rem;
-    gap: 0.2rem;
-    justify-content: center;
+    padding: 0.625rem;
+    gap: 0.15rem;
   }
-  .dk-card-name { font-size: 0.875rem; }
+  .dk-card-cat { font-size: 0.55rem; }
+  .dk-card-name { font-size: 0.72rem; line-height: 1.25; }
+  .dk-card-desc { display: none; }
+  .dk-card-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    margin-top: 0.2rem;
+  }
+  .dk-card-price { font-size: 0.85rem; }
   .dk-card-add {
-    width: auto;
-    align-self: flex-start;
-    padding: 0.4rem 0.875rem;
-    font-size: 0.72rem;
-    margin-top: 0.35rem;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.7rem;
+    border-radius: 0.55rem;
+    margin-top: 0;
   }
 }
 
