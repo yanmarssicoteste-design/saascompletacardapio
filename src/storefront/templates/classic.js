@@ -163,6 +163,7 @@ function buildHTML() {
     <!-- CART DRAWER -->
     <div class="ah-cart-overlay" id="ah-cart-overlay" onclick="ahToggleCart()"></div>
     <div class="ah-cart-drawer" id="ah-cart-drawer">
+      <div class="ah-drawer-handle"></div>
       <div class="ah-cart-head">
         <span class="ah-cart-title">🛒 Seu Pedido</span>
         <button class="ah-cart-close" onclick="ahToggleCart()">✕</button>

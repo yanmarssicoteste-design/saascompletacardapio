@@ -134,6 +134,7 @@ function buildHTML() {
     <!-- CART OVERLAY + DRAWER -->
     <div class="nt-cart-overlay" id="nt-cart-overlay" onclick="ntToggleCart()"></div>
     <div class="nt-cart-drawer" id="nt-cart-drawer">
+      <div class="nt-drawer-handle"></div>
       <div class="nt-cart-head">
         <span class="nt-cart-title">🛒 Seu Pedido</span>
         <button class="nt-cart-close" onclick="ntToggleCart()">✕</button>

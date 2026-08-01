@@ -36,8 +36,16 @@
   padding-bottom: calc(72px + env(safe-area-inset-bottom));
 }
 @media(min-width: 640px) { .nt-root { padding-bottom: 0; } }
+/* Mobile: True Black OLED */
+@media(max-width: 639px) {
+  .nt-root {
+    --night:      #000000;
+    --night-soft: #0a0808;
+    --night-elev: #111010;
+  }
+}
 
-/* Camada 2: Grain/Noise SVG fixo em overlay */
+/* Camada 2: Grain/Noise — reduzido no mobile para performance */
 .nt-grain {
   pointer-events: none;
   position: fixed;
@@ -47,6 +55,7 @@
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
 }
+@media(max-width: 639px) { .nt-grain { opacity: 0.02; } }
 
 /* ── NAV sticky top-0 ── */
 .nt-nav {
@@ -207,13 +216,14 @@
 .nt-hero-img {
   position: relative;
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 3/2;
   object-fit: cover;
   border-radius: 1.5rem;
   box-shadow: 0 40px 80px -20px rgba(0,0,0,0.8);
   ring: 1px solid rgba(255,255,255,0.1);
   outline: 1px solid rgba(255,255,255,0.1);
 }
+@media (max-width: 639px) { .nt-hero-img { max-height: 240px; } }
 
 /* ── CATEGORY STRIP sticky top-16 ── */
 .nt-cats-strip {
@@ -288,8 +298,10 @@
 }
 .nt-combo-card:hover { border-color: rgba(255,90,31,0.4); box-shadow: 0 0 60px -20px var(--ember); }
 .nt-combo-img-wrap { margin-bottom: 1.5rem; }
-.nt-combo-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 1rem; outline: 1px solid rgba(255,255,255,0.05); }
-.nt-combo-placeholder { width: 100%; aspect-ratio: 4/3; border-radius: 1rem; background: var(--night-elev); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+.nt-combo-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 1rem; outline: 1px solid rgba(255,255,255,0.05); }
+@media (max-width: 639px) { .nt-combo-img { max-height: 200px; } }
+.nt-combo-placeholder { width: 100%; aspect-ratio: 16/9; border-radius: 1rem; background: var(--night-elev); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+@media (max-width: 639px) { .nt-combo-placeholder { max-height: 200px; } }
 .nt-combo-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem; }
 .nt-combo-name { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400; color: var(--cream); margin: 0; }
 .nt-combo-price-wrap { text-align: right; flex-shrink: 0; }
@@ -318,9 +330,11 @@
 }
 @media (min-width: 640px) { .nt-products-grid { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .nt-products-grid { grid-template-columns: 1fr 1fr 1fr; } }
-.nt-product-card { display: flex; flex-direction: column; gap: 1rem; }
+.nt-product-card { display: flex; flex-direction: column; gap: 1rem; cursor: pointer; transition: transform 0.15s ease; }
+.nt-product-card:active { transform: scale(0.97); }
 .nt-product-img-wrap { position: relative; overflow: hidden; border-radius: 1rem; outline: 1px solid rgba(255,255,255,0.1); }
-.nt-product-img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform 0.5s; display: block; }
+.nt-product-img { width: 100%; aspect-ratio: 3/2; object-fit: cover; transition: transform 0.5s; display: block; }
+@media (max-width: 639px) { .nt-product-img { max-height: 180px; } }
 .nt-product-card:hover .nt-product-img { transform: scale(1.05); }
 .nt-product-grad {
   position: absolute;
@@ -328,7 +342,8 @@
   background: linear-gradient(to top, rgba(15,10,8,0.7) 0%, transparent 50%);
   pointer-events: none;
 }
-.nt-product-placeholder { width: 100%; aspect-ratio: 1; border-radius: 1rem; background: var(--night-elev); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+.nt-product-placeholder { width: 100%; aspect-ratio: 3/2; border-radius: 1rem; background: var(--night-elev); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+@media (max-width: 639px) { .nt-product-placeholder { max-height: 180px; } }
 .nt-product-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
 .nt-product-name { font-size: 1.125rem; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; min-width: 0; color: var(--cream); }
 .nt-product-price { font-weight: 700; font-size: 1rem; white-space: nowrap; flex-shrink: 0; color: var(--ember); }
@@ -361,17 +376,43 @@
 .nt-footer-copy { font-size: 0.75rem; color: color-mix(in srgb, var(--ash) 70%, transparent); margin: 0; }
 
 /* ── CART DRAWER ── */
-.nt-cart-overlay { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.nt-cart-overlay { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,0.65); backdrop-filter: blur(8px) saturate(180%); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
 .nt-cart-overlay.on { opacity: 1; pointer-events: all; }
+/* Desktop: slide from right */
 .nt-cart-drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 70; width: min(28rem, 100vw); background: var(--night-soft); display: flex; flex-direction: column; box-shadow: -16px 0 48px rgba(0,0,0,0.5); transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); border-left: 1px solid rgba(255,255,255,0.05); }
 .nt-cart-drawer.open { transform: translateX(0); }
+/* Mobile: Bottom Sheet */
+@media(max-width: 639px) {
+  .nt-cart-drawer {
+    top: auto; left: 0; right: 0; bottom: 0;
+    width: 100%; max-height: 90dvh;
+    border-left: none; border-radius: 1.5rem 1.5rem 0 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    transform: translateY(100%);
+  }
+  .nt-cart-drawer.open { transform: translateY(0); }
+}
+/* Drag handle (mobile only) */
+.nt-drawer-handle {
+  display: none;
+}
+@media (max-width: 639px) {
+  .nt-drawer-handle {
+    display: block;
+    width: 2.5rem; height: 0.25rem;
+    border-radius: 9999px;
+    background: rgba(255,255,255,0.18);
+    margin: 0.75rem auto 0.25rem;
+    flex-shrink: 0;
+  }
+}
 .nt-cart-head { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
 .nt-cart-title { font-family: var(--font-serif); font-size: 1.125rem; font-weight: 600; color: var(--cream); }
 .nt-cart-close { background: none; border: none; font-size: 1rem; cursor: pointer; color: var(--ash); padding: 0.5rem; }
-.nt-cart-body { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.nt-cart-body { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; }
 .nt-cart-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 0.75rem; color: var(--ash); text-align: center; }
 .nt-cart-empty span { font-size: 2.5rem; }
-.nt-cart-footer { padding: 1.25rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.07); display: flex; flex-direction: column; gap: 0.75rem; }
+.nt-cart-footer { padding: 1.25rem 1.5rem; padding-bottom: calc(1.25rem + env(safe-area-inset-bottom)); border-top: 1px solid rgba(255,255,255,0.07); display: flex; flex-direction: column; gap: 0.75rem; }
 .nt-cart-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.875rem; color: var(--ash); }
 .nt-cart-total { display: flex; align-items: center; justify-content: space-between; font-size: 1rem; font-weight: 700; color: var(--cream); }
 .nt-input { width: 100%; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.75rem; padding: 0.75rem 1rem; font-family: var(--font-sans); font-size: 0.875rem; background: rgba(255,255,255,0.05); color: var(--cream); outline: none; transition: border-color 0.2s; box-sizing: border-box; }
@@ -388,9 +429,9 @@
 .nt-ci-name { font-size: 0.875rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--cream); }
 .nt-ci-price { font-size: 0.8125rem; color: var(--ash); margin-top: 0.125rem; }
 .nt-ci-ctrl { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.375rem; }
-.nt-qb { width: 2.25rem; height: 2.25rem; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
+.nt-qb { width: 2.75rem; height: 2.75rem; min-width: 44px; min-height: 44px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: background 0.15s, border-color 0.15s, transform 0.1s; flex-shrink: 0; }
 .nt-qb:hover { background: rgba(255,90,31,0.2); border-color: var(--ember); }
-.nt-qb:active { transform: scale(0.93); }
+.nt-qb:active { transform: scale(0.88); }
 .nt-qn { font-size: 0.9rem; font-weight: 700; min-width: 1.5rem; text-align: center; color: var(--cream); }
 
 /* ── WHATSAPP STICKY CTA ── */
@@ -456,7 +497,7 @@
 .nt-imimg img { width: 100%; height: 100%; object-fit: cover; }
 .nt-imnoimg { font-size: 4rem; }
 .nt-imclose { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: rgba(30,24,40,.9); border: 1px solid rgba(255,255,255,.12); color: var(--cream); font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.nt-imbody { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.nt-imbody { padding: 1.25rem 1.5rem; padding-bottom: calc(1.25rem + env(safe-area-inset-bottom)); flex: 1; display: flex; flex-direction: column; gap: 0.5rem; overscroll-behavior-y: contain; }
 .nt-imcat { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--ember); }
 .nt-imname { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700; color: var(--cream); line-height: 1.2; }
 .nt-imdesc { font-size: 0.85rem; color: var(--ash); line-height: 1.5; }
@@ -467,10 +508,11 @@
 .nt-size-btn.active { border-color: var(--ember); background: rgba(255,90,31,.15); color: var(--ember); }
 .nt-size-btn.active small { color: var(--ember); }
 .nt-qty-stepper { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.25rem; }
-.nt-qty-btn { width: 2.25rem; height: 2.25rem; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.15); background: rgba(255,255,255,.06); color: var(--cream); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
+.nt-qty-btn { width: 2.75rem; height: 2.75rem; min-width: 44px; min-height: 44px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.15); background: rgba(255,255,255,.06); color: var(--cream); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, border-color 0.15s, transform 0.1s; flex-shrink: 0; }
 .nt-qty-btn:hover { background: rgba(255,90,31,.2); border-color: var(--ember); }
+.nt-qty-btn:active { transform: scale(0.88); }
 .nt-qty-num { font-size: 1rem; font-weight: 700; min-width: 1.5rem; text-align: center; color: var(--cream); }
-.nt-imft { padding: 1rem 1.5rem 1.25rem; border-top: 1px solid rgba(255,255,255,.07); display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.nt-imft { padding: 1rem 1.5rem; padding-bottom: calc(1rem + env(safe-area-inset-bottom)); border-top: 1px solid rgba(255,255,255,.07); display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .nt-imtotal { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--cream); }
 .nt-imadd {
   flex: 1;
