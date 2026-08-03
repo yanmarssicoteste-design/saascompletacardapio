@@ -268,7 +268,7 @@ function buildHTML() {
   <!-- ITEM MODAL -->
   <div class="m-imbg" id="m-imbg" onclick="mCloseIM(event)">
     <div class="m-imbox">
-      <div class="m-imimg"><img id="m-im-img" src="" alt="" style="display:none"><div class="m-imnoimg" id="m-im-noimg">\uD83C\uDF55</div><button class="m-imclose" onclick="document.getElementById('m-imbg').classList.remove('on')" aria-label="Fechar">${SVG.close}</button></div>
+      <div class="m-imimg"><img id="m-im-img" src="" alt="" style="display:none"><div class="m-imnoimg" id="m-im-noimg">\uD83C\uDF55</div><button class="m-imclose" onclick="mCloseIMDirect()" aria-label="Fechar">${SVG.close}</button></div>
       <div class="m-imbody">
         <p class="m-imcat" id="m-imcat"></p>
         <p class="m-imname" id="m-imname"></p>
@@ -539,8 +539,13 @@ function boot(container, doc) {
     const tot = $('m-imtotal'); if (tot) tot.textContent = fmtR((p.prices[0]||0));
     $('m-imbg').classList.add('on'); document.body.classList.add('m-no-scroll');
   };
+  window.mCloseIMDirect = () => {
+    const imbg = $('m-imbg');
+    if (imbg) imbg.classList.remove('on');
+    document.body.classList.remove('m-no-scroll');
+  };
   window.mCloseIM = (e) => {
-    if (e.target === $('m-imbg')) { $('m-imbg').classList.remove('on'); document.body.classList.remove('m-no-scroll'); }
+    if (e.target === $('m-imbg')) window.mCloseIMDirect();
   };
   window.mSelectSize = (btn, price) => {
     document.querySelectorAll('.m-size-btn').forEach(b => b.classList.remove('active'));

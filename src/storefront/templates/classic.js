@@ -332,12 +332,14 @@ function renderProducts() {
           ? `<img src="${p.img || p.image}" alt="${p.name}" class="ah-product-img">`
           : `<div class="ah-product-img-placeholder">🍕</div>`}
       </div>
-      <div class="ah-product-meta">
-        <h3 class="ah-product-name">${p.name}</h3>
-        <span class="ah-product-price">${fmtR(price)}</span>
+      <div class="ah-product-body">
+        <div class="ah-product-meta">
+          <h3 class="ah-product-name">${p.name}</h3>
+          <span class="ah-product-price">${fmtR(price)}</span>
+        </div>
+        <p class="ah-product-desc">${p.desc || p.description || ''}</p>
+        <button class="ah-product-add" onclick="ahOpenIM('${p.id}')">+ Adicionar ao pedido</button>
       </div>
-      <p class="ah-product-desc">${p.desc || p.description || ''}</p>
-      <button class="ah-product-add" onclick="ahOpenIM('${p.id}')">+ Adicionar ao pedido</button>
     </article>`;
   }).join('');
 }

@@ -382,12 +382,14 @@ function renderProducts() {
           ? `<img src="${p.img || p.image}" alt="${p.name}" class="nt-product-img"><div class="nt-product-grad"></div>`
           : `<div class="nt-product-placeholder">🍕</div>`}
       </div>
-      <div class="nt-product-meta">
-        <h3 class="nt-product-name">${p.name}</h3>
-        <span class="nt-product-price">${fmtR(price)}</span>
+      <div class="nt-product-body">
+        <div class="nt-product-meta">
+          <h3 class="nt-product-name">${p.name}</h3>
+          <span class="nt-product-price">${fmtR(price)}</span>
+        </div>
+        <p class="nt-product-desc">${p.desc || p.description || ''}</p>
+        <button class="nt-product-add" onclick="ntOpenIM('${p.id}')">+ Adicionar ao pedido</button>
       </div>
-      <p class="nt-product-desc">${p.desc || p.description || ''}</p>
-      <button class="nt-product-add" onclick="ntOpenIM('${p.id}')">+ Adicionar ao pedido</button>
     </article>`;
   }).join('');
 }
