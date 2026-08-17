@@ -8,7 +8,7 @@ import { renderPoster } from '../lib/poster.js';
 
 import { auth } from '../firebase.js';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { getStoreByUid, saveStoreData } from '../lib/store-repo.js';
+import { getStoreByUid, saveStoreData, sanitizeLegacySeed } from '../lib/store-repo.js';
 import { uid as genId } from '../lib/format.js';
 
 const $ = (id) => document.getElementById(id);
@@ -32,8 +32,10 @@ let saveTimer = null;
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = './auth.html'; return; }
   ownerUid = user.uid;
-  const doc = await getStoreByUid(ownerUid);
+  let doc = await getStoreByUid(ownerUid);
   if (!doc) { await signOut(auth); window.location.href = './auth.html?erro=sem-loja'; return; }
+  // Sanitização automática e silenciosa de dados legados de demonstração
+  doc = await sanitizeLegacySeed(ownerUid, doc);
   loadDoc(doc);
   $('authGate').style.display = 'none';
   $('vAdmin').style.display = 'flex';
