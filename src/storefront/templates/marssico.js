@@ -80,56 +80,11 @@ function buildHTML() {
     const mins = products.map(p => Array.isArray(p.prices) && p.prices.length ? Math.min(...p.prices) : (p.price || 0));
     return Math.min(...mins.filter(v => v > 0));
   })();
-  // Banner oficial do lojista (cadastrado no painel) tem prioridade.
-  // Se não existir, exibimos o Widget de Garantias — sem dependência de foto de produto.
+  // Banner oficial do lojista (se cadastrado no painel)
   const bannerImg = s.banner || s.coverImage || s.heroImage || '';
   const logoHtml = s.logo
     ? `<img src="${s.logo}" alt="${s.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
     : `<span class="m-av-letter">${(s.name || 'P')[0].toUpperCase()}</span>`;
-
-  // Widget de garantias — aparece quando o lojista não cadastrou um banner
-  const heroRightWidget = bannerImg
-    ? `<div class="m-hero-banner-col">
-        <div class="m-hero-banner-wrap">
-          <img src="${bannerImg}" alt="${s.name || 'Banner'}" fetchpriority="high" class="m-hero-banner-img">
-          <div class="m-hero-img-fade"></div>
-        </div>
-      </div>`
-    : `<div class="m-hero-trust-col">
-        <div class="m-trust-widget">
-          <div class="m-trust-item">
-            <div class="m-trust-icon-wrap m-trust-icon--delivery">${SVG.truck}</div>
-            <div class="m-trust-text">
-              <strong>${cfg.deliveryTime}</strong>
-              <span>Tempo médio de entrega</span>
-            </div>
-          </div>
-          <div class="m-trust-divider"></div>
-          <div class="m-trust-item">
-            <div class="m-trust-icon-wrap m-trust-icon--free">${SVG.tag}</div>
-            <div class="m-trust-text">
-              <strong>Frete grátis</strong>
-              <span>Pedidos acima de ${cfg.freeShipFrom}</span>
-            </div>
-          </div>
-          <div class="m-trust-divider"></div>
-          <div class="m-trust-item">
-            <div class="m-trust-icon-wrap m-trust-icon--whatsapp">${SVG.whatsapp}</div>
-            <div class="m-trust-text">
-              <strong>Pedido no WhatsApp</strong>
-              <span>Sem taxas · Direto com a loja</span>
-            </div>
-          </div>
-          <div class="m-trust-divider"></div>
-          <div class="m-trust-item">
-            <div class="m-trust-icon-wrap m-trust-icon--pix">${SVG.shield}</div>
-            <div class="m-trust-text">
-              <strong>Pix, Cartão ou Dinheiro</strong>
-              <span>Escolha na finalização</span>
-            </div>
-          </div>
-        </div>
-      </div>`;
 
   return `
 <div class="m-root" id="m-root">
@@ -159,13 +114,13 @@ function buildHTML() {
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO (Imagem 4: Clean Single-Column Hero) -->
   <section class="m-hero" id="m-top">
-    <div class="m-hero-card">
+    <div class="m-hero-card${bannerImg ? ' m-hero-card--has-banner' : ''}">
+      ${bannerImg ? `<div class="m-hero-bg-banner" style="background-image:url('${bannerImg}')"></div><div class="m-hero-bg-overlay"></div>` : ''}
       <div class="m-hero-glow-gold"></div>
       <div class="m-hero-glow-red"></div>
       <div class="m-hero-inner">
-        ${heroRightWidget}
         <div class="m-hero-copy">
           <p class="m-hero-eyebrow">${s.name || 'Cardápio'} &middot; ${s.tagline || 'Peça online'}</p>
           <h1 class="m-hero-h1">Sabor que vira <em class="m-hero-em">memória</em>.</h1>
