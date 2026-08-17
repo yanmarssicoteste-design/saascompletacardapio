@@ -62,7 +62,7 @@ function buildHTML() {
       <div class="mstats">
         <div class="mst"><span class="mi">⚡</span><span class="ml">Entrega</span><span class="mv" id="msTime">40–60 min</span></div>
         <div class="mst"><span class="mi">🛵</span><span class="ml">Frete</span><span class="mv" id="msFee">A partir R$5</span></div>
-        <div class="mst"><span class="mi">⭐</span><span class="ml">Avaliação</span><span class="mv" id="msRating">4.9 (312)</span></div>
+        <div class="mst" id="mst-rating" style="display:none"><span class="mi">⭐</span><span class="ml">Avaliação</span><span class="mv" id="msRating"></span></div>
         <div class="mst"><span class="mi">⏰</span><span class="ml">Hoje</span><span class="mv" id="msHours">18h–23h</span></div>
       </div>
       <button class="mcta" onclick="document.getElementById('mNav').scrollIntoView({behavior:'smooth'})">🍕 Ver Cardápio</button>
@@ -94,8 +94,8 @@ function buildHTML() {
     <div id="mReviewsSec" class="reviews-sec fi-anim">
       <div class="reviews-header">
         <div class="reviews-avg">
-          <span class="reviews-score" id="rvScore">4.9</span>
-          <div><div class="reviews-stars-big">⭐⭐⭐⭐⭐</div><div class="reviews-total" id="rvTotal">312 avaliações</div></div>
+          <span class="reviews-score" id="rvScore"></span>
+          <div><div class="reviews-stars-big" id="rvStars"></div><div class="reviews-total" id="rvTotal"></div></div>
         </div>
       </div>
       <div class="reviews-grid" id="rvGrid"></div>
@@ -191,7 +191,9 @@ function populateHero() {
   $('mhTag').textContent = store.tagline || '';
   $('msTime').textContent   = store.deliveryTime || '40–60 min';
   $('msFee').textContent    = store.fee ? `A partir R$${store.fee}` : 'A partir R$5';
-  $('msRating').textContent = store.rating || '4.9 ★';
+  $('msRating').textContent = store.rating || '';
+  if (store.rating) $('mst-rating').style.display = '';
+  else $('mst-rating').style.display = 'none';
   $('msHours').textContent  = store.hours || '';
   $('mFootName').innerHTML  = `${p1 || n} <em>${rest.join(' ')}</em>`;
   $('mFootAddr').textContent  = store.addr  || '';

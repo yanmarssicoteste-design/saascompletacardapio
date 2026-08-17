@@ -50,7 +50,7 @@ function buildHTML() {
       <div class="ed-stats">
         <div class="ed-stat">⚡ <strong id="ed-time">40–60 min</strong></div>
         <div class="ed-stat">🛵 <strong id="ed-fee">Frete R$5</strong></div>
-        <div class="ed-stat">⭐ <strong id="ed-rating">4.9</strong></div>
+        <div class="ed-stat" id="ed-stat-rating" style="display:none">⭐ <strong id="ed-rating"></strong></div>
         <div class="ed-stat">⏰ <strong id="ed-hours">18h–23h</strong></div>
       </div>
       <div class="ed-free-bar" id="ed-free-bar">
@@ -176,7 +176,9 @@ function populateHero() {
   $('ed-tagline').textContent    = store.tagline || '';
   $('ed-time').textContent    = store.deliveryTime || '40–60 min';
   $('ed-fee').textContent     = store.fee ? `Frete R$${store.fee}` : 'Frete R$5';
-  $('ed-rating').textContent  = store.rating || '4.9 ★';
+  $('ed-rating').textContent  = store.rating || '';
+  if (store.rating) $('ed-stat-rating').style.display = '';
+  else $('ed-stat-rating').style.display = 'none';
   $('ed-hours').textContent   = store.hours || '';
   $('ed-foot-name').textContent  = store.name || '';
   $('ed-foot-addr').textContent  = store.addr || '';

@@ -91,7 +91,7 @@ function buildHTML() {
             <a href="#ed2-combos" class="ed2-cta-secondary">Combos com desconto</a>
           </div>
           <div class="ed2-trust-badges">
-            <span class="ed2-trust"><span>⭐</span> 4.9 · 2.140 avaliações</span>
+            <span class="ed2-trust" id="ed2-rating-badge" style="display:none"><span>⭐</span> <span id="ed2-rating-val"></span></span>
             <span class="ed2-trust"><span>🔥</span> Preparo na hora</span>
             <span class="ed2-trust"><span>🛵</span> Entrega rápida</span>
           </div>
@@ -101,8 +101,9 @@ function buildHTML() {
             <img
               id="ed2-hero-img"
               class="ed2-hero-img"
-              src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80"
-              alt="Pizza artesanal"
+              src=""
+              alt=""
+              style="display:none"
             >
             <div class="ed2-hero-pill">
               <p class="ed2-hero-pill-label">Mais pedida</p>

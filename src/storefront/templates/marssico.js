@@ -23,10 +23,10 @@ function loadDoc(doc) {
   cfg = Object.assign({
     ratingValue:    doc.rating        || '4.8',
     ratingSource:   doc.ratingSource  || 'Google',
-    ratingCount:    doc.ratingCount   || '312',
+    ratingCount:    doc.ratingCount   || '',
     deliveryTime:   doc.deliveryTime  || '35\u201345 min',
     freeShipFrom:   doc.freeShipFrom  || 'R$\u00a090',
-    guarantee:      doc.guarantee     || 'Chegou frio? Refazemos ou devolvemos o valor.',
+    guarantee:      doc.guarantee     || '',
     reviews:        doc.reviews       || [],
   }, doc.templateConfig || {});
 }
@@ -67,19 +67,9 @@ const SVG = {
   close:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>',
 };
 
-const DEFAULT_REVIEWS = [
-  { name: 'Marina R.', neighborhood: 'Pinheiros', rating: 5, date: 'h\u00e1 3 dias', text: 'A massa faz toda a diferen\u00e7a. Chegou quente e perfeita!', item: 'Pizza Especial' },
-  { name: 'Rodrigo P.', neighborhood: 'Vila Madalena', rating: 5, date: 'h\u00e1 1 semana', text: 'Pedi num s\u00e1bado lotado e chegou antes do previsto. A Diavola com mel \u00e9 absurda.', item: 'Pizza da Casa' },
-  { name: 'Camila S.', neighborhood: 'Perdizes', rating: 4, date: 'h\u00e1 2 semanas', text: 'Embalagem impec\u00e1vel. Cada detalhe mostra que eles se importam com a qualidade. Voltarei.', item: 'Pizza Premium' },
-  { name: 'Eduardo L.', neighborhood: 'Sumar\u00e9', rating: 5, date: 'h\u00e1 3 semanas', text: 'Qualidade premium a um pre\u00e7o justo. Todo mundo amou na mesa!', item: 'Combo Fam\u00edlia' },
-];
-const MIN_REVIEWS = 4;
+const MIN_REVIEWS = 0;
 function getReviews() {
-  const real = (cfg.reviews && cfg.reviews.length > 0) ? cfg.reviews : [];
-  if (real.length >= MIN_REVIEWS) return real;
-  // Preenche com reviews de demonstração para sempre ter o carrossel completo
-  const fill = DEFAULT_REVIEWS.filter(d => !real.find(r => r.name === d.name));
-  return [...real, ...fill].slice(0, Math.max(real.length, MIN_REVIEWS));
+  return (cfg.reviews && cfg.reviews.length > 0) ? cfg.reviews : [];
 }
 
 /* -- HTML Shell -- */

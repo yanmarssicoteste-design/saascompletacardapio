@@ -52,7 +52,7 @@ function buildHTML() {
       <div class="dk-stats">
         <div class="dk-stat"><span class="dk-stat-icon">⚡</span><span class="dk-stat-label">Entrega</span><span class="dk-stat-val" id="dk-time">40–60 min</span></div>
         <div class="dk-stat"><span class="dk-stat-icon">🛵</span><span class="dk-stat-label">Frete</span><span class="dk-stat-val" id="dk-fee">R$5</span></div>
-        <div class="dk-stat"><span class="dk-stat-icon">⭐</span><span class="dk-stat-label">Avaliação</span><span class="dk-stat-val" id="dk-rating">4.9</span></div>
+        <div class="dk-stat" id="dk-stat-rating" style="display:none"><span class="dk-stat-icon">⭐</span><span class="dk-stat-label">Avaliação</span><span class="dk-stat-val" id="dk-rating"></span></div>
         <div class="dk-stat"><span class="dk-stat-icon">⏰</span><span class="dk-stat-label">Hoje</span><span class="dk-stat-val" id="dk-hours">18h–23h</span></div>
       </div>
       <button class="dk-cta" onclick="document.getElementById('dk-nav').scrollIntoView({behavior:'smooth'})">🍕 Ver Cardápio</button>
@@ -169,7 +169,9 @@ function populateHero() {
   $('dk-tagline').textContent = store.tagline || '';
   $('dk-time').textContent    = store.deliveryTime || '40–60 min';
   $('dk-fee').textContent     = store.fee ? `R$${store.fee}` : 'R$5';
-  $('dk-rating').textContent  = store.rating || '4.9 ★';
+  $('dk-rating').textContent  = store.rating || '';
+  if (store.rating) $('dk-stat-rating').style.display = '';
+  else $('dk-stat-rating').style.display = 'none';
   $('dk-hours').textContent   = store.hours || '';
   $('dk-nav-logo').innerHTML  = `${p1} <em>${rest.join(' ')}</em>`;
   $('dk-foot-name').innerHTML = `${p1} <em>${rest.join(' ')}</em>`;

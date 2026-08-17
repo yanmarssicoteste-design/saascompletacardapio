@@ -87,8 +87,9 @@ function buildHTML() {
           <img
             id="nt-hero-img"
             class="nt-hero-img"
-            src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80"
-            alt="Pizza artesanal"
+            src=""
+            alt=""
+            style="display:none"
           >
         </div>
       </div>
@@ -127,7 +128,7 @@ function buildHTML() {
     <!-- FOOTER -->
     <footer class="nt-footer">
       <p class="nt-footer-logo" id="nt-footer-logo">Fornace</p>
-      <p class="nt-footer-addr" id="nt-footer-addr">R. Aspicuelta, 421 — Vila Madalena</p>
+      <p class="nt-footer-addr" id="nt-footer-addr"></p>
       <p class="nt-footer-copy" id="nt-footer-copy">© 2026 Fornace. Feito com fogo e carinho.</p>
     </footer>
 
