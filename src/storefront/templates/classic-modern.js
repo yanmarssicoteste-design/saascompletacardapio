@@ -56,8 +56,8 @@ function buildHTML() {
     <div class="mhc">
       <div class="mbadge">Sem taxas · Pedido direto</div>
       <img id="mhlogo" class="mhlogo" src="" alt="Logo">
-      <h1 class="mhtitle"><span class="t1" id="mhN1">La Bella</span><span class="t2" id="mhN2">Pizza</span></h1>
-      <p class="mhtagline" id="mhTag">Feita com amor, entregue com sabor</p>
+      <h1 class="mhtitle"><span class="t1" id="mhN1"></span><span class="t2" id="mhN2"></span></h1>
+      <p class="mhtagline" id="mhTag"></p>
       <div class="mdiv"><span>✦</span></div>
       <div class="mstats">
         <div class="mst"><span class="mi">⚡</span><span class="ml">Entrega</span><span class="mv" id="msTime">40–60 min</span></div>
@@ -147,7 +147,7 @@ function buildHTML() {
     <div class="mfl" id="mFootName"></div>
     <div class="mfi2" id="mFootAddr"></div>
     <div class="mfi2" id="mFootPhone"></div>
-    <div class="mpow">Powered by Pizzaria Cheia ✦</div>
+    <div class="mpow">Powered by Cardápio Food</div>
   </footer>
   </div>
   `;

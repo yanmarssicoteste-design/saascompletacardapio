@@ -77,11 +77,11 @@ function buildHTML() {
             Frete grátis acima de R$ 90
           </p>
           <h1 class="ed2-h1">
-            Pizza Artesanal,<br>
+            Sabor de verdade,<br>
             <span class="ed2-h1-brand" id="ed2-h1-brand">no seu endereço</span>.
           </h1>
           <p class="ed2-hero-sub" id="ed2-hero-sub">
-            Massa fresca e ingredientes selecionados. Peça agora e receba quentinha na sua casa.
+            Ingredientes selecionados, preparados com carinho. Peça agora e receba quentinho na sua casa.
           </p>
           <div class="ed2-hero-ctas">
             <a href="#ed2-menu" class="ed2-cta-primary">
@@ -105,10 +105,10 @@ function buildHTML() {
               alt=""
               style="display:none"
             >
-            <div class="ed2-hero-pill">
+            <div class="ed2-hero-pill" id="ed2-hero-pill" style="display:none">
               <p class="ed2-hero-pill-label">Mais pedida</p>
-              <p class="ed2-hero-pill-name">Margherita D.O.P.</p>
-              <p class="ed2-hero-pill-price" id="ed2-pill-price">R$ 62,00</p>
+              <p class="ed2-hero-pill-name" id="ed2-pill-name"></p>
+              <p class="ed2-hero-pill-price" id="ed2-pill-price"></p>
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@ function buildHTML() {
             class="ed2-search"
             id="ed2-search"
             type="text"
-            placeholder="Buscar pizza..."
+            placeholder="Buscar no cardápio..."
             oninput="edSearch(this.value)"
           >
         </div>
@@ -159,7 +159,7 @@ function buildHTML() {
         <div class="ed2-trust-block">
           <span class="ed2-trust-icon">🔥</span>
           <p class="ed2-trust-title">Preparo Artesanal</p>
-          <p class="ed2-trust-desc">Rapidez e qualidade, direto do forno para a sua mesa.</p>
+          <p class="ed2-trust-desc">Feito com atenção e qualidade, do preparo à entrega.</p>
         </div>
         <div class="ed2-trust-block">
           <span class="ed2-trust-icon">🌿</span>
@@ -228,7 +228,7 @@ function buildHTML() {
       <div class="ed2-drawer-body" id="ed2-drawer-body">
         <div class="ed2-drawer-empty">
           <p class="ed2-drawer-empty-title">Carrinho vazio</p>
-          <p class="ed2-drawer-empty-sub">Adicione uma pizza para começar.</p>
+          <p class="ed2-drawer-empty-sub">Adicione itens para começar seu pedido.</p>
         </div>
       </div>
 

@@ -139,7 +139,7 @@ function buildHTML() {
     <div class="ed-footer-name" id="ed-foot-name"></div>
     <div class="ed-footer-info" id="ed-foot-addr"></div>
     <div class="ed-footer-info" id="ed-foot-phone"></div>
-    <div class="ed-footer-pow">Powered by Pizzaria Cheia ✦</div>
+    <div class="ed-footer-pow">Powered by Cardápio Food</div>
   </footer>
   </div>
   `;

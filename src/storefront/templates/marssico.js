@@ -94,7 +94,7 @@ function buildHTML() {
       <a href="#m-top" class="m-brand">
         <div class="m-brand-av">${logoHtml}<span class="m-brand-dot"></span></div>
         <div class="m-brand-info">
-          <span class="m-brand-name">${s.name || 'Pizzaria'}</span>
+          <span class="m-brand-name">${s.name || 'Cardápio'}</span>
           <div class="m-brand-status">
             <span class="m-live-wrap"><span class="m-live-ping"></span><span class="m-live-dot"></span></span>
             <span>Aberto &middot; fecha ${s.hours || '23h'} &middot; entrega ${cfg.deliveryTime || '40-50 min'}</span>
@@ -103,7 +103,7 @@ function buildHTML() {
       </a>
       <div class="m-header-actions">
         <button class="m-icon-btn m-icon-btn--mobile" onclick="mOpenSearch()" aria-label="Buscar no cardápio">${SVG.search}</button>
-        <a href="tel:${(s.phone||'').replace(/\D/g,'')}" class="m-icon-btn" aria-label="Ligar para a pizzaria">${SVG.phone}</a>
+        <a href="tel:${(s.phone||'').replace(/\D/g,'')}" class="m-icon-btn" aria-label="Ligar para o estabelecimento">${SVG.phone}</a>
         <button class="m-cart-btn m-cart-btn--desktop" id="m-cart-btn-hd" onclick="mToggleCart()" aria-label="Ver carrinho">
           ${SVG.cart}
           <span class="m-cart-txt-full" id="m-cart-txt">Carrinho</span>
@@ -122,15 +122,15 @@ function buildHTML() {
         <div class="m-hero-img-col">
           <div class="m-hero-img-wrap">
             ${heroImg
-              ? `<img src="${heroImg}" alt="Pizza" fetchpriority="high" class="m-hero-img">`
-              : `<div class="m-hero-img-placeholder">\uD83C\uDF55</div>`}
+              ? `<img src="${heroImg}" alt="${s.name || 'Destaque'}" fetchpriority="high" class="m-hero-img">`
+              : `<div class="m-hero-img-placeholder">🍽️</div>`}
             <div class="m-hero-img-fade"></div>
           </div>
         </div>
         <div class="m-hero-copy">
-          <p class="m-hero-eyebrow">${s.name || 'Pizzaria'} &middot; ${s.tagline || 'Pizza Artesanal'}</p>
-          <h1 class="m-hero-h1">A pizza que vira <em class="m-hero-em">momento</em>.</h1>
-          <p class="m-hero-sub">Massa de fermenta\u00e7\u00e3o lenta, ingredientes selecionados &mdash; assadas no forno a lenha.</p>
+          <p class="m-hero-eyebrow">${s.name || 'Cardápio'} &middot; ${s.tagline || 'Peça online'}</p>
+          <h1 class="m-hero-h1">Sabor que vira <em class="m-hero-em">memória</em>.</h1>
+          <p class="m-hero-sub">Ingredientes selecionados, preparados com carinho &mdash; peça online e receba quentinho.</p>
           <div class="m-hero-rating">
             <span class="m-stars-row" aria-label="${cfg.ratingValue} de 5 estrelas">${renderStars(Math.round(parseFloat(cfg.ratingValue) || 5))}</span>
             <span class="m-rating-num">${cfg.ratingValue}</span>
@@ -162,7 +162,7 @@ function buildHTML() {
     <div class="m-cat-nav-inner">
       <div class="m-srch-wrap m-srch-wrap--desktop">
         <span class="m-srch-icon">${SVG.search}</span>
-        <input id="m-search" class="m-search" type="search" placeholder="Buscar pizza..." oninput="mOnSearch(this.value)" value="">
+        <input id="m-search" class="m-search" type="search" placeholder="Buscar no cardápio..." oninput="mOnSearch(this.value)" value="">
       </div>
       <div class="m-cat-chips" id="m-chips"></div>
     </div>
@@ -173,7 +173,7 @@ function buildHTML() {
     <div class="m-search-overlay-head">
       <label class="m-search-overlay-label">
         <span class="m-search-overlay-icon">${SVG.search}</span>
-        <input id="m-search-overlay-input" class="m-search-overlay-input" type="search" placeholder="Buscar pizza, ingrediente..." oninput="mOnSearch(this.value);mUpdateSearchOverlay()" autocomplete="off">
+        <input id="m-search-overlay-input" class="m-search-overlay-input" type="search" placeholder="Buscar no cardápio..." oninput="mOnSearch(this.value);mUpdateSearchOverlay()" autocomplete="off">
       </label>
       <button class="m-search-overlay-cancel" onclick="mCloseSearch()">Cancelar</button>
     </div>
@@ -209,7 +209,7 @@ function buildHTML() {
       <div><p class="m-footer-label">Funcionamento</p><p class="m-footer-val">${s.hours || ''}</p></div>
       <div><p class="m-footer-label">Contato</p><p class="m-footer-val">${s.phone || ''}</p></div>
     </div>
-    <p class="m-footer-copy">${s.name || 'Pizzaria'}</p>
+    <p class="m-footer-copy">${s.name || 'Cardápio'}</p>
   </footer>
 
   <!-- DOCK -->

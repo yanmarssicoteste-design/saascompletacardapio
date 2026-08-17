@@ -53,8 +53,8 @@ function buildHTML() {
           <div class="nt-nav-status">
             <span class="nt-ember-dot"></span>
             <div>
-              <p class="nt-status-label">Forno aceso</p>
-              <p class="nt-status-hours" id="nt-hours">18h–23h</p>
+              <p class="nt-status-label">Aberto agora</p>
+              <p class="nt-status-hours" id="nt-hours"></p>
             </div>
           </div>
           <button class="nt-cart-pill" onclick="ntToggleCart()">

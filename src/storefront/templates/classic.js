@@ -72,7 +72,7 @@ function buildHTML() {
     <header class="ah-hero">
       <div class="ah-hero-inner">
         <div class="ah-hero-text">
-          <span class="ah-eyebrow" id="ah-eyebrow">Pizzaria Artesanal</span>
+          <span class="ah-eyebrow" id="ah-eyebrow">Cardápio Online</span>
           <h1 class="ah-h1">
             <span id="ah-name-line1"></span><br>
             <em id="ah-name-line2"></em>
@@ -233,7 +233,7 @@ function populateStore() {
     if ($('ah-name-line1')) $('ah-name-line1').textContent = '';
     if ($('ah-name-line2')) $('ah-name-line2').textContent = n;
   }
-  if ($('ah-tagline'))       $('ah-tagline').textContent       = store.tagline || 'Pizzas artesanais preparadas com os melhores ingredientes.';
+  if ($('ah-tagline'))       $('ah-tagline').textContent       = store.tagline || 'Peça online e receba quentinho.';
   if ($('ah-hours'))         $('ah-hours').textContent         = store.hours   || '';
   if ($('ah-phone'))         $('ah-phone').textContent         = store.phone   || '';
   if ($('ah-phone'))         $('ah-phone').href                = `tel:${store.phone || ''}`;

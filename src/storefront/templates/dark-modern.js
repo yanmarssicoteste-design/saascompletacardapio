@@ -47,8 +47,8 @@ function buildHTML() {
     <div class="dk-hero-inner">
       <div class="dk-badge"><span class="dk-badge-dot"></span>Sem taxas · Pedido direto</div>
       <img id="dk-logo" class="dk-logo" src="" alt="">
-      <h1 class="dk-title"><span class="dk-t1" id="dk-t1">La Bella</span><span class="dk-t2" id="dk-t2">Pizza</span></h1>
-      <p class="dk-tagline" id="dk-tagline">Feita com amor, entregue com sabor</p>
+      <h1 class="dk-title"><span class="dk-t1" id="dk-t1"></span><span class="dk-t2" id="dk-t2"></span></h1>
+      <p class="dk-tagline" id="dk-tagline"></p>
       <div class="dk-stats">
         <div class="dk-stat"><span class="dk-stat-icon">⚡</span><span class="dk-stat-label">Entrega</span><span class="dk-stat-val" id="dk-time">40–60 min</span></div>
         <div class="dk-stat"><span class="dk-stat-icon">🛵</span><span class="dk-stat-label">Frete</span><span class="dk-stat-val" id="dk-fee">R$5</span></div>
@@ -125,10 +125,10 @@ function buildHTML() {
   </div>
 
   <footer class="dk-footer">
-    <div class="dk-footer-name" id="dk-foot-name">La <em>Bella</em> Pizza</div>
+    <div class="dk-footer-name" id="dk-foot-name"></div>
     <div class="dk-footer-info" id="dk-foot-addr"></div>
     <div class="dk-footer-info" id="dk-foot-phone"></div>
-    <div class="dk-footer-pow">Powered by Pizzaria Cheia ✦</div>
+    <div class="dk-footer-pow">Powered by Cardápio Food</div>
   </footer>
   </div>
   `;
