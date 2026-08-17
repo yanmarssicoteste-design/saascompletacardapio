@@ -253,10 +253,21 @@ window.updatePriceFields = function () {
 function renderAdmin() {
   const filtered = currentCatFilter === 'Todos' ? products : products.filter((p) => p.cat === currentCatFilter);
   const catName = (c) => categories.find((x) => x.id === c)?.name || c;
+  if (!filtered.length) {
+    $('prodGrid').innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--muted)">
+        <div style="font-size:3rem;margin-bottom:.75rem">🛒</div>
+        <p style="font-weight:600;font-size:1rem;margin-bottom:.35rem">Nenhum produto cadastrado ainda</p>
+        <p style="font-size:.84rem">Clique em <strong>+ Novo produto</strong> para adicionar seu primeiro item ao cardápio.</p>
+      </div>
+      <button class="add-pcard" onclick="openProdModal()"><span>+</span><p>Adicionar Produto</p></button>
+    `;
+    return;
+  }
   $('prodGrid').innerHTML = filtered.map((p) => `
     <div class="pcard">
       <div class="pcard-img">
-        ${p.img ? `<img src="${p.img}" alt="${p.name}">` : `<div class="pcard-noimg">🍕</div>`}
+        ${p.img ? `<img src="${p.img}" alt="${p.name}">` : `<div class="pcard-noimg">🍽️</div>`}
         <div class="pcard-status ${p.active ? 'son' : 'soff'}">${p.active ? 'Ativo' : 'Inativo'}</div>
       </div>
       <div class="pcard-body">
@@ -275,6 +286,16 @@ function renderAdmin() {
 }
 
 function renderCatList() {
+  if (!categories.length) {
+    $('catList').innerHTML = `
+      <div style="text-align:center;padding:2.5rem 1rem;color:var(--muted)">
+        <div style="font-size:2.5rem;margin-bottom:.6rem">🏷️</div>
+        <p style="font-weight:600;font-size:.95rem;margin-bottom:.3rem">Nenhuma categoria criada ainda</p>
+        <p style="font-size:.82rem">Crie categorias para organizar seu cardápio (ex: Lanches, Bebidas, Pratos).</p>
+      </div>
+    `;
+    return;
+  }
   $('catList').innerHTML = categories.map((c) => `
     <div class="cat-item">
       <span class="cat-emoji">${c.emoji}</span>
