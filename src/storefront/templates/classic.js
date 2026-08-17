@@ -170,9 +170,9 @@ function buildHTML() {
       </div>
       <div class="ah-cart-body" id="ah-cart-body">
         <div class="ah-cart-empty">
-          <span>🍕</span>
-          <p>Carrinho vazio.<br>Escolha uma pizza!</p>
-          <button class="ah-explore-btn" onclick="ahToggleCart()">🍕 Ver Cardápio</button>
+          <span>🍽️</span>
+          <p>Carrinho vazio.<br>Escolha seus itens!</p>
+          <button class="ah-explore-btn" onclick="ahToggleCart()">🍽️ Ver Cardápio</button>
         </div>
       </div>
       <div class="ah-cart-footer" id="ah-cart-footer" style="display:none">
@@ -421,7 +421,7 @@ function renderCart() {
   }
 
   if (!count) {
-    $('ah-cart-body').innerHTML = `<div class="ah-cart-empty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p><button class="ah-explore-btn" onclick="ahToggleCart()">🍕 Ver Cardápio</button></div>`;
+    $('ah-cart-body').innerHTML = `<div class="ah-cart-empty"><span>🍽️</span><p>Carrinho vazio.<br>Escolha seus itens!</p><button class="ah-explore-btn" onclick="ahToggleCart()">🍽️ Ver Cardápio</button></div>`;
     if ($('ah-cart-footer')) $('ah-cart-footer').style.display = 'none';
     return;
   }

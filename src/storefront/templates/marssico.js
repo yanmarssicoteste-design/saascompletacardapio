@@ -449,8 +449,8 @@ function renderCart() {
     body.innerHTML = `<div class="m-cart-empty">
       <div class="m-cart-empty-icon">${SVG.cart}</div>
       <p class="m-cart-empty-t">Carrinho vazio</p>
-      <p class="m-cart-empty-s">Adicione uma pizza para come\u00e7ar.</p>
-      <button class="m-cart-explore" onclick="mToggleCart()">\uD83C\uDF55 Ver Card\u00e1pio</button>
+      <p class="m-cart-empty-s">Adicione itens ao carrinho para começar.</p>
+      <button class="m-cart-explore" onclick="mToggleCart()">🍽️ Ver Cardápio</button>
     </div>`;
     if (footer) footer.style.display = 'none';
     return;

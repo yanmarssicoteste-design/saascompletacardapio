@@ -363,7 +363,7 @@ function renderCart() {
   const count = cart.length;
   const badge = $('ed-cart-badge');
   badge.textContent = count; badge.classList.toggle('on', count > 0);
-  if (!count) { $('ed-cbody').innerHTML = '<div class="ed-cempty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p><button class="ed-cempty-btn" onclick="edToggleCart()">🍕 Ver Cardápio</button></div>'; $('ed-cft').style.display = 'none'; return; }
+  if (!count) { $('ed-cbody').innerHTML = '<div class="ed-cempty"><span>🍽️</span><p>Carrinho vazio.<br>Escolha seus itens!</p><button class="ed-cempty-btn" onclick="edToggleCart()">🍽️ Ver Cardápio</button></div>'; $('ed-cft').style.display = 'none'; return; }
   const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
   const fee = store.fee ?? 5; const total = sub + fee;
   const min = store.minOrder ?? 30;

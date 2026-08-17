@@ -130,7 +130,7 @@ function buildHTML() {
   <div class="cov" id="cov" onclick="toggleCart()"></div>
   <div class="cdr" id="cdr">
     <div class="chd"><div class="chd-t">🛒 Seu Pedido</div><button class="cx" onclick="toggleCart()">✕</button></div>
-    <div class="cbody" id="cbody"><div class="cempty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p></div></div>
+    <div class="cbody" id="cbody"><div class="cempty"><span>🍽️</span><p>Carrinho vazio.<br>Escolha seus itens!</p></div></div>
     <div class="cft" id="cft" style="display:none">
       <div id="upsellWrap"></div>
       <div class="crow2"><span>Subtotal</span><span id="cSub">R$ 0,00</span></div>
@@ -465,7 +465,7 @@ function renderCart() {
   badge.classList.toggle('on', count > 0);
 
   if (!count) {
-    $('cbody').innerHTML = `<div class="cempty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p><button class="cempty-btn" onclick="toggleCart()">🍕 Ver Cardápio</button></div>`;
+    $('cbody').innerHTML = `<div class="cempty"><span>🍽️</span><p>Carrinho vazio.<br>Escolha seus itens!</p><button class="cempty-btn" onclick="toggleCart()">🍽️ Ver Cardápio</button></div>`;
     $('cft').style.display = 'none';
     return;
   }

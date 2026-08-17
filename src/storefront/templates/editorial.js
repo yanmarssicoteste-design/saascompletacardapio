@@ -504,7 +504,7 @@ function renderCart() {
   if ($('ed2-drawer-count')) $('ed2-drawer-count').textContent = `${count} ${count === 1 ? 'item' : 'itens'}`;
 
   if (!count) {
-    $('ed2-drawer-body').innerHTML = `<div class="ed2-drawer-empty"><p class="ed2-drawer-empty-title">Carrinho vazio</p><p class="ed2-drawer-empty-sub">Adicione uma pizza para começar.</p><button class="ed2-explore-btn" onclick="edToggleCart()">🍕 Ver Cardápio</button></div>`;
+    $('ed2-drawer-body').innerHTML = `<div class="ed2-drawer-empty"><p class="ed2-drawer-empty-title">Carrinho vazio</p><p class="ed2-drawer-empty-sub">Adicione itens ao carrinho para começar.</p><button class="ed2-explore-btn" onclick="edToggleCart()">🍽️ Ver Cardápio</button></div>`;
     if ($('ed2-drawer-footer')) $('ed2-drawer-footer').style.display = 'none';
     return;
   }

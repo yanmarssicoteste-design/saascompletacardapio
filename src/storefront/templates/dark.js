@@ -141,7 +141,7 @@ function buildHTML() {
       </div>
       <div class="nt-cart-body" id="nt-cart-body">
         <div class="nt-cart-empty">
-          <span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p>
+          <span>🍽️</span><p>Carrinho vazio.<br>Escolha seus itens!</p>
         </div>
       </div>
       <div class="nt-cart-footer" id="nt-cart-footer" style="display:none">
@@ -458,7 +458,7 @@ function renderCart() {
   }
 
   if (!count) {
-    $('nt-cart-body').innerHTML = `<div class="nt-cart-empty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p><button class="nt-explore-btn" onclick="ntToggleCart()">🍕 Ver Cardápio</button></div>`;
+    $('nt-cart-body').innerHTML = `<div class="nt-cart-empty"><span>🍽️</span><p>Carrinho vazio.<br>Escolha seus itens!</p><button class="nt-explore-btn" onclick="ntToggleCart()">🍽️ Ver Cardápio</button></div>`;
     if ($('nt-cart-footer')) $('nt-cart-footer').style.display = 'none';
     return;
   }

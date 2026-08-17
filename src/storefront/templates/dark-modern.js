@@ -355,7 +355,7 @@ function renderCart() {
   const count = cart.length;
   const badge = $('dk-cart-badge');
   badge.textContent = count; badge.classList.toggle('on', count > 0);
-  if (!count) { $('dk-cbody').innerHTML = '<div class="dk-cempty"><span>🍕</span><p>Carrinho vazio.<br>Escolha uma pizza!</p><button class="dk-cempty-btn" onclick="dkToggleCart()">🍕 Ver Cardápio</button></div>'; $('dk-cft').style.display = 'none'; return; }
+  if (!count) { $('dk-cbody').innerHTML = '<div class="dk-cempty"><span>🍽️</span><p>Carrinho vazio.<br>Escolha seus itens!</p><button class="dk-cempty-btn" onclick="dkToggleCart()">🍽️ Ver Cardápio</button></div>'; $('dk-cft').style.display = 'none'; return; }
   const sub = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
   const fee = store.fee ?? 5; const total = sub + fee;
   const min = store.minOrder ?? 30;
